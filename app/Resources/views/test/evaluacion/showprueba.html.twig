@@ -1,0 +1,37 @@
+{# src/Acme/TaskBundle/Resources/views/Task/new.html.twig #}
+{# ... #}
+{# reproduce únicamente los campos task: descripción #}
+
+ {#  form_start(form) #}
+
+   {# {{ form_widget(form) }} #}
+
+    <br/>
+    <div>Prueba:</div>
+    {{ prueba.textoOrientacion }}
+    <br/>
+    <br/>
+    <div>Reading:</div>
+{{ prueba.idReading.textoInstrucciones }}
+
+    <br/>
+{% for seccR in prueba.idReading.seccionesReading %}
+    {%  set indseccion =  loop.index-1 %}
+    <hr/>
+    <div>Texto:</div>
+    {{ seccR.textoInstruccion }}
+    <br/>
+
+
+    {% endfor %}
+
+
+
+
+{# form_end(form) #}
+
+
+{# ... #}
+<script src="{{ asset('bundles/app/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+{#<script src="{{asset('bundles/imagen/vendor/jquery/jquery.min.js')}}"></script>#}

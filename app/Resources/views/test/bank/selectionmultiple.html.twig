@@ -1,0 +1,60 @@
+<div id="multiple_selection" class="form-panel box box-primary" v-show="visibilidad==4">
+    <div class="container col-sm-12">
+        <!-- PREGUNTA -->
+        <h4>Question Multiple Selection</h4>
+        <div class="col-sm-12">
+            <div class="col-xs-0"></div>
+            <div class="col-xs-12 col-editor">
+                <text-ckeditor nnumber="150" :nhab="habilidad" nname="questionms" :ntext="questionMS.textoPregunta" @update-text="updateTextMultipleSelection" ></text-ckeditor>
+            </div>
+            <div class="col-xs-0"></div>
+        </div>
+        <p>
+            <br>
+        </p>
+    </div>
+    <!-- MODAL para incisos -->
+    <div class="container col-sm-12">
+        <!-- Trigger the modal with a button -->
+        <!-- INCISOS -->
+        <ol style="list-style: inside none none;" class="col-sm-12">
+            <li class="col-sm-12 borde-item-panel" v-for="(inciso, index) in questionMS.selectionmultiple.incisos" v-on:remove="questionMS.selectionmultiple.incisos.splice(index, 1)" style="vertical-align: middle">
+                <button class="ss-inciso-btn-cerrar" v-on:click="deleteItemMS(inciso, index)"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <div class="col-sm-12">
+                    <br/>
+                </div>
+                {#<textarea class="col-xs-7" v-model="questionMS.itemsList[index].texto">${inciso.texto}</textarea>#}
+                <div class="col-sm-1">
+                    <button type="button" v-on:click="subirSM(index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                    <button type="button" v-on:click="bajarSM(index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+                </div>
+                <label class="col-sm-0" style="visibility: hidden">{{"{{inciso.orden}}"}}</label>
+
+                <input class="col-sm-1" type="checkbox" v-model="inciso.correcta" v-bind:id="getIndex(index, 'item')">
+
+                <div class="col-xs-10 col-editor">
+                    <text-ckeditor nnumber="100" :nhab="habilidad" nname="itemms" :nindex="index" :ntext="inciso.texto" @update-text="updateTextItemMS" ></text-ckeditor>
+                </div>
+
+                <!-- div class="col-sm-2">
+                    <template v-if="questionMS.selectionmultiple.incisos.length > 1">
+                        <button class="btn btn-danger" v-on:click="deleteItemMS(inciso, index)"><i class="fa fa-minus-circle" aria-hidden="true"></i> Delete</button>
+                    </template>
+                </div -->
+                <div class="col-sm-0"></div>
+
+            </li>
+        </ol>
+        <div class="col-sm-12">
+            <button class="btn btn-success" v-on:click="addNewIncisoSM"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button>
+        </div>
+        <br /><br />
+
+    </div>
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarQuestion(questionMS)"><i class="fa fa-save"></i> Save</button>
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="continuarQuestion(questionMS)"><i class="fa fa-save"></i> Save and Continue</button>
+    <button class="btn btn-warning" style="margin-top: 20px;" v-on:click="cancelarQuestion(questionMS)"><i class="fa fa-save"></i> Cancel</button>
+
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showMultipleSelection()"><i class="fa fa-eye"></i> Show</button>
+
+</div>

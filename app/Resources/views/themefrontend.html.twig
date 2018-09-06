@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+      {% block title %}Admin Template{% endblock %}
+
+      {% block stylesheets %}
+    <!-- Bootstrap core CSS -->
+          <link href="{{ asset('bundles/app/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!--external css-->
+          <link href="{{ asset('bundles/app/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+          <link href="{{ asset('bundles/app/css/stylef.css') }}" rel="stylesheet">
+
+
+
+
+      {% endblock %}
+
+{% block body %}
+    <script src="{{ asset('bundles/app/js/jquery.js') }}"></script>
+
+        <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+
+      <header class="header black-bg">
+              <!-- div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div -->
+            <!--logo start-->
+            <a href="{{ path('homepage') }}" class="logo"><b>ENGLISH TEST</b></a>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+                <!--  notification start -->
+                <ul class="nav top-menu">
+                <!-- li id="header_inbox_bar" class="dropdown">
+                    <a class="dropdown-toggle" href="{{ path('fos_user_profile_show') }}">
+                        <i class="fa fa-user"></i> {{ app.user.nombre }} <i class="fa fa-arrow-circle-o-right"></i>
+                        <span class="badge bg-theme"></span>
+                    </a>
+
+                </li -->
+                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_PROFESOR') or is_granted('ROLE_ADMIN'))  %}
+                        <li id="header_inbox_bar" class="dropdown">
+                            <a class="dropdown-toggle" href="{{ path('test_route') }}">
+                                <i class="fa fa-external-link"></i> Backend
+                                <span class="badge bg-theme"></span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+                <!--  notification end -->
+            </div>
+            <div class="top-menu">
+            	<ul class="nav pull-right top-menu">
+
+
+
+
+
+                    <li>{% block tiemporestante %}{% endblock %}</li>
+                    {% if is_granted('ROLE_USUARIO') or is_granted('ROLE_ADMIN') %}
+                        <li><a class="logout" href={{ path('fos_user_security_logout') }}>Logout</a></li>
+                    {% else %}
+                        <li><a class="logout login" href={{ path('fos_user_security_login') }}>Login</a></li>
+                    {% endif %}
+            	</ul>
+            </div>
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+
+      <!--sidebar end-->
+
+         <!-- **********************************************************************************************************************************************************
+         MAIN CONTENT
+         *********************************************************************************************************************************************************** -->
+          <!--main content start-->
+
+          <section id="main-content">
+
+
+
+                          {% block content %}{% endblock %}
+
+          </section><!-- /MAIN CONTENT -->
+
+          <!--main content end-->
+
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2018 - UCLV
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+{% endblock %}
+  {% block javascripts %}
+    <!-- js placed at the end of the document so the pages load faster -->
+
+      <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+
+      <!-- <script src="{#asset('bundles/app/js/jquery-ui-1.9.2.custom.min.js') #}"></script> -->
+
+      <!--common script for all pages-->
+      <script src="{{ asset('bundles/app/js/bootbox.js') }}"></script>
+
+      <!--script for this page-->
+      <script src="{{ asset('bundles/app/js/jquery-ui.min.js') }}"></script>
+
+
+
+
+
+  {% endblock %}
+

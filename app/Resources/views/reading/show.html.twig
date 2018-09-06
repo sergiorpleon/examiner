@@ -1,0 +1,452 @@
+{% extends 'themebackend.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .nav-tabs-left {
+            margin-right: -1px;
+            padding-right: 0px;
+            border-right: 1px solid #ddd;
+        }
+        .nav-left>li>a {
+            margin-right: 2px;
+            line-height: 1.42857143;
+            border: 1px solid transparent;
+            border-radius: 4px 0px 0px 4px;
+        }
+        .nav-left>li>a {
+            padding-right: 0px;
+            margin-right: -1px;
+        }
+        .nav-left>li.active>a, .nav-left>li.active>a:focus, .nav-left>li.active>a:hover {
+            color: #555;
+            cursor: default;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-right-color: transparent;
+        }
+        .tab-content{
+            border-top: 1px solid #ddd;
+
+        }
+        .btn_empty{
+            background-color: transparent;
+            border-color: transparent;
+            padding: 0px;
+        }
+
+    </style>
+{% endblock %}
+{% block pageName %}
+    <ol class="breadcrumb col-xs-12">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">2013</a></li>
+        <li class="active">November</li>
+    </ol>
+    Test
+{% endblock %}
+{% block content %}
+    <div id="habilidad" class="row form-panel">
+
+        <p>.</p>
+        <p>Texto habilidad</p>
+        <textarea rows="5" class="col-xs-12" v-model="habilidad.textoInstrucciones">${habilidad.textoInstrucciones}</textarea>
+
+        <textarea rows="5" class="col-xs-12" v-model="habilidad.textoInformacion">${habilidad.textoInformacion}</textarea>
+
+        <p>.</p>
+        <p>Ejercicio Secciones</p>
+        <div class="row col-xs-12 nav" style="margin: auto; padding: 0; background-color: #f3f3f3;">
+            <div class="col-sm-2" style="padding: 0px;">
+                <ul class="nav  nav-tabs-left nav-left ">
+                    <li v-for="(seccionx, index) in habilidad.secciones"  v-bind:class="{ active: index==0 }" >
+                        <a v-bind:href="obtenerRef(index)"  data-toggle="tab">
+                            <button type="button" v-on:click="subirSeccion(index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                            <button type="button" v-on:click="bajarSeccion(index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+                            Section ${seccionx.num}
+                            <button type="button" v-on:click="deleteSeccion(index)" class="btn_empty" style="float: right  !important; margin-right: 5px;"><span class="btn__content"><i class="fa fa-trash-o"></i></span></button>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="col-xs-12">
+                    <button class="btn btn-info" v-on:click="addNewSeccion()" style="float: right !important; margin-right: 5px; margin-top: 30px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Seccion</button>
+                </div>
+                <p>.</p>
+            </div>
+            <div class="tab-content col-sm-10" style="background-color: #fff;">
+                <div  v-for="(seccionx, index) in habilidad.secciones" class="tab-pane" v-bind:class="{ active: index==0 }" v-bind:id="obtenerId(index)">
+                    <h4>Section ${seccionx.num}</h4>
+                    <p>Texto</p>
+                    <textarea rows="5" class="col-xs-12" v-model="seccionx.textoInstruccion">${seccionx.textoInstruccion}</textarea>
+                    <textarea rows="5" class="col-xs-12" v-model="seccionx.textoReading">${seccionx.textoReading}</textarea>
+                    <p>.</p>
+                    <div class="col-xs-12">
+                        <button v-on:click="setSeccion(seccionx.id)" style="float: right" type="button" id="boton_cerrar_1" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+                            <i aria-hidden="true" class="fa fa-plus-circle"></i> Add New Pregunta</button>
+                    </div>
+                    <p>.</p>
+                    <ul style="padding-left: 2px;">
+                        <li  class="row">
+                            <div class="col-xs-1">
+                                Orden
+                            </div>
+                            <div class="col-xs-7">Texto Pregunta</div>
+                            <div class="col-xs-2">Tipo</div>
+                            <div class="col-xs-2">
+                                Accion
+                            </div>
+                        </li>
+                        <li v-for="(preguntax, index) in seccionx.preguntas" class="row">
+                            <div class="col-xs-1">
+                                <button type="button" v-on:click="subirPregunta(seccionx, index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                                <button type="button" v-on:click="bajarPregunta(seccionx, index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+                            </div>
+                            <div class="col-xs-7">${preguntax.textoPregunta}</div>
+                            <div class="col-xs-2">${preguntax.tipoPregunta}</div>
+                            <div class="col-xs-2">
+                                <button v-on:click="editPregunta(preguntax, index)" class="btn btn-warning" style="padding-left: 10px; padding-right: 8px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                <button v-on:click="deletePregunta(seccionx, index)" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+
+
+                <!-- Modal -->
+                <div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close eventocerrar" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title">Adicionar nueva Pregunta</h3>
+                            </div>
+                            <div class="modal-body row">
+                                <div class="contenedor_respuestas">
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-3"></div>
+                                        <h4 class="col-xs-6">Tipo de pregunta</h4>
+                                        <div class="col-xs-3"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-3"></div>
+                                        <button v-on:click="newVoF()" class="col-xs-6">Add Verdadero Falso</button></div>
+                                    <div class="col-xs-3"></div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-3"></div>
+                                        <button v-on:click="newSimpleSeleccion()" class="col-xs-6">Add Seleccion Simple</button>
+                                        <div class="col-xs-3"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-3"></div>
+                                        <button v-on:click="newMultipleSeleccion()" class="col-xs-6">Add Seleccion Multiple</button>
+                                        <div class="col-xs-3"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-3"></div>
+                                        <button v-on:click="newListSeleccion()" class="col-xs-6">Add Lista Seleccion</button></div>
+                                    <div class="col-xs-3"></div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-3"></div>
+                                        <button v-on:click="newComplete()" class="col-xs-6">Add Completa</button></div>
+                                    <div class="col-xs-3"></div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default eventocerrar" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+
+            </div>
+        </div>
+
+
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+
+    <script type="text/javascript">
+        var app = new Vue({
+            delimiters: ['${', '}'],
+            el: '#habilidad',
+
+            data: {
+                seccionActual: '',
+                habilidad:{
+                    id: '1',
+                    textoInstrucciones:'Instrucciones',
+                    textoInformacion:'Informacion',
+                    horaComienzo: '1',
+                    tiempo: '',
+
+
+                    secciones: [
+                        {
+                            id: '1',
+                            ordenSeccion: '1',
+                            num: '1',
+                            textoInstruccion:'Instrucciones 1',
+                            textoReading:'texto reading 1',
+                            preguntas: [
+                                {
+                                    id: '11',
+                                    ordenPregunta: '11',
+                                    textoPregunta:'Pregunta 11',
+                                    tipoPregunta: 'seleccion simple',
+                                },
+                                {
+                                    id: '12',
+                                    ordenPregunta: '12',
+                                    textoPregunta:'Pregunta 12',
+                                    tipoPregunta: 'seleccion multiple',
+                                },
+                                {
+                                    id: '13',
+                                    ordenPregunta: '13',
+                                    textoPregunta:'Pregunta 13',
+                                    tipoPregunta: 'lista seleccion',
+                                },
+                            ],
+                        },
+                        {
+                            id: '2',
+                            ordenSeccion: '2',
+                            num: '2',
+                            textoInstruccion:'Instrucciones 2',
+                            textoReading:'texto reading 2',
+                            preguntas: [
+                                {
+                                    id: '21',
+                                    ordenPregunta: '21',
+                                    textoPregunta:'Pregunta 21',
+                                    tipoPregunta: 'seleccion simple',
+                                },
+                                {
+                                    id: '22',
+                                    ordenPregunta: '22',
+                                    textoPregunta:'Pregunta 22',
+                                    tipoPregunta: 'seleccion multiple',
+                                },
+                                {
+                                    id: '23',
+                                    ordenPregunta: '23',
+                                    textoPregunta:'Pregunta 23',
+                                    Preguntatipo: 'lista seleccion',
+                                },
+                            ],
+                        },
+                        {
+                            id: '3',
+                            ordenSeccion: '3',
+                            num: '3',
+                            textoInstruccion:'Instrucciones 3',
+                            textoReading:'texto reading 3',
+                            preguntas: [
+                                {
+                                    id: '31',
+                                    ordenPregunta: '31',
+                                    textoPregunta:'Pregunta 31',
+                                    tipoPregunta: 'seleccion simple',
+                                },
+                                {
+                                    id: '32',
+                                    ordenPregunta: '32',
+                                    textoPregunta:'Pregunta 32',
+                                    tipoPregunta: 'seleccion multiple',
+                                },
+                                {
+                                    id: '33',
+                                    ordenPregunta: '33',
+                                    textoPregunta:'Pregunta 33',
+                                    tipoPregunta: 'lista seleccion',
+                                },
+                                {
+                                    id: '34',
+                                    ordenPregunta: '34',
+                                    textoPregunta:'Pregunta 34',
+                                    tipoPregunta: 'True False',
+                                },
+                                {
+                                    id: '35',
+                                    ordenPregunta: '35',
+                                    textoPregunta:'Pregunta 35',
+                                    tipoPregunta: 'completa',
+                                },
+                            ],
+                        },
+                    ]}
+            },
+            created: function () {
+                // `this` points to the vm instance
+                //this.question.texto = "Pregunta ";
+                this.getList();
+
+            },
+
+            methods: {
+                obtenerId: function(index){
+                    return 'tab'+index;
+                },
+                obtenerRef: function(index){
+                    return '#tab'+index;
+                },
+                setSeccion: function (id) {
+                    this.seccionActual = id;
+                },
+                ordenarSeccion: function (){
+                    for(var i=0; i<this.habilidad.secciones.length; ){
+                        this.habilidad.secciones[i].num =  ++i;
+                    }
+                },
+
+                addNewSeccion: function () {
+                    //if(this.question.itemsList.length==0 || this.question.itemsList[this.question.itemsList.length -1].texto != '' && this.question.itemsList[this.question.itemsList.length -1].correcta != ''){
+                    this.habilidad.secciones.push({
+                        id: this.habilidad.secciones[(this.habilidad.secciones.length)-1].id+1,
+                        ordenSeccion: '',
+                        num: '',
+                        textoInstruccion:'Instrucciones vacia',
+                        textoReading:'Texto reading vacio',
+                        preguntas: []});
+                    //}
+                    this.ordenarSeccion();
+                },
+
+                subirSeccion: function( index) {
+                    //this.delValor(val.id);
+                    /*if (val.id > -1) {
+                     this.delV.push({
+                     id: val.id,
+                     });
+                     }*/
+                    //this.habilidad.secciones.splice(index, 1);
+                },
+
+                bajarSeccion: function( index) {
+                    //this.delValor(val.id);
+                    /*if (val.id > -1) {
+                     this.delV.push({
+                     id: val.id,
+                     });
+                     }*/
+                    //this.habilidad.secciones.splice(index, 1);
+                },
+
+                editSeccion: function( index) {
+                    //this.delValor(val.id);
+                    /*if (val.id > -1) {
+                     this.delV.push({
+                     id: val.id,
+                     });
+                     }*/
+                    //this.habilidad.secciones.splice(index, 1);
+                },
+
+                deleteSeccion: function( index) {
+                    //this.delValor(val.id);
+                    /*if (val.id > -1) {
+                     this.delV.push({
+                     id: val.id,
+                     });
+                     }*/
+                    this.habilidad.secciones.splice(index, 1);
+                    this.ordenarSeccion();
+                },
+
+                //-----
+                subirPregunta: function(seccion, indexP){
+
+                },
+
+                bajarPregunta: function(seccion, indexP){
+
+                },
+
+                editPregunta: function(pregunta, index){
+                    //this.delItem(item.id);
+                    //seccion.splice(index, 1);
+                },
+
+                deletePregunta: function(seccion, index){
+                    //this.delItem(item.id);
+                    /* if (item.id > -1) {
+                     this.delI.push({
+                     id: item.id,
+                     });
+                     }*/
+                    seccion.preguntas.splice(index, 1);
+                },
+                newVoF: function(){
+
+                },
+                newSimpleSeleccion: function(){
+
+                },
+                newMultipleSeleccion: function(){
+
+                },
+                newListSeleccion: function(){
+
+                },
+                newComplete: function(){
+
+                },
+
+                //CRUD
+                //read question
+                getList: function(){
+                    this.$http.get( "{{  path('reading_json', {'id': 1}) }}", function (data, status, request) {
+                        //this.$set('paneles', data);
+                        this.habilidad = data;
+                        this.ordenarSeccion();
+                        this.loading = false
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                    })
+                },
+                //update question
+                postQuestion: function(question, delI, delV){
+                    this.$http.post("{{  path('json_question_list_selection_edit') }}", {
+                        question: question,
+                        delI: delI,
+                        delV: delV,
+
+                    }, function (data, status, request) {
+                        //this.paneles.push(data);
+                        this.delV = [];
+                        this.delI = [];
+                        //this.paneles.push({id:9, rotulo: this.newTodoText,  txt: this.newTodoText})
+                        //this.newTodoText = '';
+                    });
+                },
+                //delete item
+                delItem: function(idItem){
+                    console.log(idItem);
+                    this.$http.delete("{{  path('json_item_list_selection_delete') }}", {
+                        id: idItem,
+                    }, function (data, status, request) {
+                        //this.getList();
+                    });
+                },
+                //delete valor
+                delValor: function(idValor){
+                    this.$http.delete("{{  path('json_valor_list_selection_delete') }}", {
+                        id: idValor,
+                    }, function (data, status, request) {
+                        //this.getList();
+                    });
+                },
+            },
+
+        });
+    </script>
+{% endblock %}

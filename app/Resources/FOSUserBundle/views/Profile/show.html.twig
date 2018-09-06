@@ -1,0 +1,71 @@
+{% extends 'themefrontend.html.twig' %}
+{# extends "FOSUserBundle::layout.html.twig" #}
+{% block stylesheets %}
+    {{ parent() }}
+<style>
+    .wrapper {
+        padding: 50px;
+    }
+    .fos_user_user_show, .fos_user_user_show{
+        padding: 0px 20px ;
+    }
+    .fos_user_user_action > a{
+        width: 100%;
+    }
+    .profileevaluaciones > div.celda{
+        border: 1px solid #ddd;
+    }
+    .profileevaluaciones{
+        margin: 50px 0px;
+    }
+</style>
+{% endblock stylesheets %}
+{% block content %}
+    <div class="wrapper site-min-height">
+    <div class="row col-sm-6">
+        <div class="col-sm-12">
+            <h4>
+                User Information
+            </h4>
+            </div>
+{% include "FOSUserBundle:Profile:show_content.html.twig" %}
+    </div>
+    <div class="row col-sm-6">
+        <div class="fos_user_user_action">
+
+        <a href="{{ path('homepage') }}" class="btn btn-default">
+            <div>
+                <span class="from"><i class="fa fa-home" aria-hidden="true"></i> Go Home</span>
+            </div>
+        </a>
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default">
+        <div>
+            <span class="from"><i class="fa fa-user" aria-hidden="true"></i> Edit Profile</span>
+        </div>
+    </a>
+        <a href="{{ path('fos_user_change_password') }}" class="btn btn-default">
+            <div>
+                <span class="from"><i class="fa fa-lock" aria-hidden="true"></i> Change Password</span>
+            </div>
+        </a>
+        </div>
+
+    </div>
+
+        <div class="row col-sm-12 profileevaluaciones">
+        <h4 style="text-align: center;">
+            Evaluations Test
+            </h4>
+
+            <div class="col-sm-4">Test</div>
+            <div class="col-sm-4">Hability</div>
+            <div class="col-sm-4">Points</div>
+
+ {% for eval in user.evaluaciones %}
+    <div class="celda col-sm-4">{{  eval.idTest.id  }}</div>
+     <div class="celda col-sm-4">{{  eval.idTest.id  }}</div>
+     <div class="celda col-sm-4">{{  eval.idTest.id  }}</div>
+ {% endfor %}
+</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'themebackend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/app/css/material-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vuetifytable.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/app/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+
+
+{% endblock %}
+
+{% block pageName %}
+    Lista Pruebas
+{% endblock %}
+
+{% block content %}
+
+<h1>OK</h1>
+
+
+        {{ name }}
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vuetify.min.js') }}"></script>
+
+    <script src="{{ asset('bundles/app/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+
+
+
+
+    </script>
+
+{% endblock %}

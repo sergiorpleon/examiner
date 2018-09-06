@@ -1,0 +1,233 @@
+{% extends 'themebackend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/app/css/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/dataTables/dataTables.responsive.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block pageName %}
+    Lista Pruebas
+{% endblock %}
+
+{% block content %}
+    <div id="app" class="form-panel">
+        <div id="counter-event-example">
+
+            <input type="text" style="float: right;" v-model="searchString" placeholder="Search description" />
+
+            </br>Mostrando de la ${(paginador.numElemEnPag*paginador.paginaActual)+1} a la ${ultimoVisualizado} de ${paginador.totalElementos} entradas
+            / Mostrar:
+            <select class="select" v-model="paginador.numElemEnPag" v-on:change="inicializar">
+                <option selected>1</option>
+                <option>5</option>
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+                <option>50</option>
+            </select>
+            <p></p>
+            <ul class="pagination">
+                <li class="paginate_button previous" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous" v-on:click="irPaginaX(1)">
+                    <a href="#"><<</a>
+                </li>
+                <li class="paginate_button previous " aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous" v-on:click="prev">
+                    <a href="#"><</a>
+                </li>
+                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0" v-for="n in  paginador.totalPagina" v-on:click="irPaginaX(n)">
+                    <a href="#">${ n }</a>
+                </li>
+                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next" v-on:click="next">
+                    <a href="#">></a>
+                </li>
+                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next" v-on:click="irPaginaX(0)">
+                    <a href="#">>></a>
+                </li>
+            </ul>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th style="width:20px;">Num</th>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Accion</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(p, index) in  filtrarArticulosPorTexto" >
+                    <td  style="width:20px;">${ index+1+(paginador.paginaActual*paginador.numElemEnPag) }</td>
+                    <td >${ p.id }</td>
+                    <td>${ p.fecha.date }</td>
+                    <td>${ p.texto }</td>
+                    <td><button >Edit</button><button >Delete</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination">
+                <li class="paginate_button previous" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous" v-on:click="irPaginaX(1)">
+                    <a href="#"><<</a>
+                </li>
+                <li class="paginate_button previous " aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous" v-on:click="prev">
+                    <a href="#"><</a>
+                </li>
+                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0" v-for="n in  paginador.totalPagina" v-on:click="irPaginaX(n)">
+                    <a href="#">${ n }</a>
+                </li>
+                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next" v-on:click="next">
+                    <a href="#">></a>
+                </li>
+                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next" v-on:click="irPaginaX(0)">
+                    <a href="#">>></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+
+    <script type="text/javascript">
+        var app=new Vue({
+            delimiters: ['${', '}'],
+            el: '#counter-event-example',
+            data: {
+                searchString: "",
+                paginador:{
+                    numElemEnPag: 1, //cantidad de elementos a mostrar
+                    paginaActual:1,     //numero pagina actual
+                    totalPagina: 0,     //total de paginas
+                    totalElementos: 0,
+                    articles_array: []  //los elementos que hay que mostrar en pagina x
+                },
+                articles: [
+                ]
+            },
+            created: function(){
+                this.getList();
+                this.inicializar();
+            },
+            computed: {
+                //busco los articulos y luego los pagino
+                filtrarArticulosPorTexto: function () {
+                    //busco en todos los articulos
+                    var articles_array = this.articles,
+                            searchString = this.searchString;
+                    if(!searchString){
+                        return this.paginarArticle(articles_array);
+                    }
+                    searchString = searchString.toLowerCase();
+                    articles_array = articles_array.filter(function(item){
+                        if(item.texto.toLowerCase().indexOf(searchString) !== -1){
+                            return item;
+                        }
+
+                    })
+                    this.paginador.totalElementos = articles_array.length;
+                    return this.paginarArticle(articles_array);
+                },
+                //mostrando de la pagina a la pagina x (no importante)
+                ultimoVisualizado: function(){
+                    if( this.paginador.numElemEnPag>this.paginador.totalElementos){
+                        return this.paginador.totalElementos
+                    }else{
+                        if(this.paginador.numElemEnPag*(this.paginador.paginaActual+1)>this.paginador.totalElementos){
+                            return this.paginador.totalElementos
+                        }else{
+                            return this.paginador.numElemEnPag*(this.paginador.paginaActual+1)
+                        }
+                    }
+                },
+            },
+            methods: {
+                //--------------------------------------BEGIN-PAGINACION---------------------------------------------
+
+                //metodo boton siguiente
+                prev: function(){
+                    if(this.paginador.paginaActual>0){
+                        this.paginador.paginaActual--;
+                        this.articulosPaginaX();
+                    }
+                },
+                //metodo boton anterior
+                next: function(){
+                    if(this.paginador.paginaActual<this. paginador.totalPagina-1){
+                        this.paginador.paginaActual++;
+                        this.articulosPaginaX();
+                    }
+                },
+                //metodo ir a pagina clickeada
+                irPaginaX: function (n) {
+                    n--;
+                    if(n==-1){
+                        this.paginador.paginaActual = this.paginador.totalPagina-1;
+                    }else{
+                        this.paginador.paginaActual = n;
+                    }
+                    this.articulosPaginaX();
+                },
+
+                //cada vez que cambia el numero de elementos por pagina
+                inicializar: function(){
+                    this.paginador.paginaActual = 0;
+                    this.paginador.articles_array=[];
+                    for(var i = 0; i<this.paginador.numElemEnPag && i<this.articles.length; i++){
+                        this.paginador.articles_array.push(this. articles[i]); //construyo los articulos de pagina x
+                    }
+                    //calculo de total de pagina, aseguro que sea numero entero
+                    var resto =(this.articles.length)%this.paginador.numElemEnPag;
+                    this. paginador.totalPagina =((this.articles.length)-resto)/this.paginador.numElemEnPag;
+                    if(resto>0){
+                        this. paginador.totalPagina++;
+                    }
+                    this.paginador.totalElementos = this.articles.length;
+                },
+
+                //se llama cada vez que se busca por texto porque cambia los articulos a mostrar
+                paginarArticle: function(aa){
+                    this.paginador.articles_array = [];
+                    var num = ((this.paginador.paginaActual)*(this.paginador.numElemEnPag));
+                    for(var i = num; i<num+this.paginador.numElemEnPag && i<aa.length; i++){
+                        this.paginador.articles_array.push(aa[i]);
+                    }
+                    var resto =(aa.length)%this.paginador.numElemEnPag;
+                    this. paginador.totalPagina =((aa.length)-resto)/this.paginador.numElemEnPag;
+                    if(resto>0){
+                        this. paginador.totalPagina++;
+                    }
+                    return this.paginador.articles_array;
+                },
+                //devuelve todos los articulos para una pagina X, se llama cuando se da en una pagina o en siguiente, anterior
+                articulosPaginaX: function () {
+                    this.paginador.articles_array=[];
+                    var num = (this.paginador.paginaActual*this.paginador.numElemEnPag);
+                    for(var i = num; i<num+this.paginador.numElemEnPag && i<this. articles.length; i++){
+                        this.paginador.articles_array.push(this. articles[i]);
+                    }
+                },
+                //--------------------------------------END-PAGINACION---------------------------------------------
+
+
+                //--------------------------------------BEGIN-CRUD---------------------------------------------
+                //read question
+                getList: function(){
+                    this.$http.get( "{{  path('test_json') }}", function (data, status, request) {
+                        this.articles = data;
+
+                        this.loading = true;
+
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                    });
+                },
+                //--------------------------------------END-CRUD---------------------------------------------
+            }
+        });
+    </script>
+
+{% endblock %}

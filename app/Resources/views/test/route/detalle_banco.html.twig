@@ -1,0 +1,62 @@
+
+<div id="habilidad" class="reading row form-panel box box-primary" v-show="visibilidad==9">
+    <div class="col-sm-12 container">
+        <p>Detalle Banco</p>
+        <div class="col-xs-12 col-editor">
+            <text-ckeditor  nnumber="150" :nhab="habilidad" nname="seccion" :ntext="seccionbancox.textoInstruccion"  @update-text="updateTextInstSeccion" ></text-ckeditor>
+        </div>
+
+        <div class="col-xs-12 audio" v-show="habilidad==2">
+            <form :id="setIdAudio(0)" enctype="multipart/form-data"  method="POST">
+                <input type="file" name="archivo" class="btn btn-mini btn-primary" accept="audio/*"/>
+            </form>
+            <br/>
+            <button v-on:click="cargarAudio(seccionbancox, 0)">Subir</button>
+            <br/>
+            <div>
+                Audio:
+                {{ '{{ seccionbancox.urlAudio }}' }}
+            </div>
+            <audio  v-bind:src="seccionbancox.urlAudio" controls></audio>
+        </div>
+
+        <p class="col-sm-12"><br/></p>
+
+        <div class="col-xs-12">
+
+        </div>
+        <p class="col-sm-12"><br/></p>
+        <ul style="padding-left: 2px;">
+            <li  class="row">
+                <div class="col-xs-1">
+                    Select
+                </div>
+                <div class="col-xs-6">Text question</div>
+                <div class="col-xs-2">Type</div>
+                <div class="col-xs-1">Items</div>
+                <div class="col-xs-2">
+                    Action
+                </div>
+            </li>
+            <li v-for="(preguntax, index) in seccionbancox.preguntas" class="row">
+                <div class="col-xs-1">
+
+                    <input class="col-sm-1" type="checkbox" v-model="check[index].opcion">
+
+                </div>
+                <label class="col-sm-0" style="visibility: hidden">{{"{{preguntax.ordenPregunta}}"}}</label>
+                <div class="col-xs-6 limit-height" v-html="preguntax.textoPregunta"></div>
+                <div class="col-xs-2">{{"{{ tipoPregunta[ preguntax.tipoPregunta ]}}"}}</div>
+                <div class="col-xs-1">{{"{{  preguntax.totalItem }}"}}</div>
+                <div class="col-xs-2">
+                    <button class="btn btn-default btn-70w" v-on:click="verQuestionBanco()"><i class="fa fa-eye"></i> View</button>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <button class="btn btn-default" v-on:click="regresarBancoReading( )"><i class="fa fa-arrow-left"></i> Return</button>
+
+
+</div>

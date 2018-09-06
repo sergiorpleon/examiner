@@ -1,0 +1,2802 @@
+{% extends 'themebackend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/app/css/material-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vuetifytable.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/bootstrap-timepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vue-html5-editor.css') }}" rel="stylesheet">
+    <style>
+        .list .ui-datepicker {
+            background-color: #FFF;
+            border: 1px solid rgba(0, 0, 0, .2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        }
+
+        .list .dropdown-menu, .ui-datepicker {
+            -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        }
+
+        .list .ui-datepicker {
+            width: 17em;
+            padding: .2em .2em 0;
+            display: none;
+        }
+
+        .list .ui-helper-clearfix {
+            min-height: 0;
+        }
+
+        .list .ui-helper-clearfix:after, .ui-helper-clearfix:before {
+            content: "";
+            display: table;
+            border-collapse: collapse;
+        }
+
+        .reading .nav-tabs-left {
+            margin-right: -1px;
+            padding-right: 0px;
+            border-right: 1px solid #ddd;
+        }
+
+        .reading .nav-left > li > a {
+            margin-right: 2px;
+            line-height: 1.42857143;
+            border: 1px solid transparent;
+            border-radius: 4px 0px 0px 4px;
+        }
+
+        .reading .nav-left > li > a {
+            padding-right: 0px;
+            margin-right: -1px;
+        }
+
+        .reading .nav-left > li.active > a, .nav-left > li.active > a:focus, .nav-left > li.active > a:hover {
+            color: #555;
+            cursor: default;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-right-color: transparent;
+        }
+
+        .reading .tab-content {
+            border-top: 1px solid #ddd;
+
+        }
+
+        .reading .btn_empty {
+            background-color: transparent;
+            border-color: transparent;
+            padding: 0px;
+        }
+        span.icon.custom-icon.table {
+            margin-bottom: 0px !important;
+        }
+
+        .col-sm-0, .col-xs-0 {
+            width: 0%;
+        }
+        /*estilo personalizado*/
+        .ss-inciso-panel {
+            border: 1px solid #ddd;
+            background: aliceblue;
+        }
+
+        .borde-item-panel {
+            border: 1px solid #ddd;
+        }
+
+        .fondo-blanco{
+            background: white;
+        }
+
+        .ss-inciso-btn-cerrar {
+            position: relative;
+            float: right;
+            right: -22px;
+            top: -7px;
+            z-index: 1;
+        }
+
+        .box.box-primary {
+            border-top-color: #3c8dbc;
+        }
+
+        .box {
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 3px solid #d2d6de;
+            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .btn-50w{
+            width: 50px;
+        }
+        .btn-70w{
+            width: 80px;
+        }
+
+        .col-editor {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+
+
+        @media (max-width: 768px){
+            .en-barra{
+                position: absolute;
+                top: -135px;
+            }
+        }
+
+        .card > ul {
+            background: white;
+        }
+        .mce-tinymce.mce-container.mce-panel.mce-fullscreen{
+            margin-top: 60px !important;
+        }
+
+        .btn{
+            padding: 4px 12px;
+            line-height: 1.5;
+
+        }
+        .btn-default {
+            background-color: #f4f4f4;
+            color: #444;
+            border-color: #ddd;
+        }
+
+        .modal-dialog > .modal-content .btn{
+            border-radius: 1px !important;
+        }
+        .modal-dialog > .modal-content{
+            border-radius: 1px !important;
+        }
+        .modal-dialog {
+            width: 400px;
+
+        }
+
+        .table>thead:first-child>tr:first-child>th {
+            color: #367fa9;
+        }
+
+        .overlay > div{
+            max-width: 200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            font-size: 30px;
+        }
+        .overlay{
+            width: 100%;
+            height: 100%;
+            background: rgba(200,200,200,0.1);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: fixed;
+            display: none;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1050;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+        }
+
+        .limit-height{
+            max-height: 35px;
+            overflow-y: hidden;
+
+        }
+
+        .mce-branding.mce-widget.mce-label.mce-flow-layout-item.mce-last{
+            display:none;
+        }
+
+        .test > ul{
+            display: block;
+        }
+
+        .show-preview  > div{
+            width: 90%;
+        }
+
+        .show-preview  > div > div .bootbox-body{
+            padding: 80px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="app">
+
+        <!-- route outlet -->
+        <!-- component matched by the route will render here -->
+        <router-view></router-view>
+
+        <!-- plantilla componente prueba -->
+        <script type="text/x-template" id="test">
+            <div>
+                <div class="en-barra" v-show="this.prueba.id==-1">
+                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postNewTest(prueba)"><i
+                                class="fa fa-save"></i> Create
+                    </button>
+                </div>
+                <div class="en-barra" v-show="this.prueba.id!=-1">
+                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
+                    </button>
+                </div>
+                <div class="prueba row form-panel box box-primary" v-show="visibilidad==0">
+                    <div class="col-xs-12 col-editor">
+                        <text-ckeditor  nnumber="150" :nhab="0" nname="prueba" :nindex="1" :ntext="prueba.textoOrientacion" @update-text="updateTextPrueba" ></text-ckeditor>
+                    </div>
+                    <div class="row col-sm-12">
+                        <p>
+                            <br/>
+                            <input class="col-sm-1" type="checkbox" v-model="prueba.deprueba"> It proves for studients practices
+                            {{ "{{ prueba.activeReading }}" }}
+                            {{ "{{ prueba.reading.fecha }}" }}
+                            {{ "{{ prueba.reading.horaComienzo }}" }}
+                        </p>
+                    </div>
+                    <div class="row col-sm-12">
+                        <div class="row col-sm-12">
+
+                            <h4>Hability Reading</h4>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="row col-sm-12" v-if="prueba.activeReading==false">
+                    <div class="row col-sm-2">
+                        <button class="btn btn-primary" v-on:click="crearReading()">
+                            Create
+                        </button>
+                    </div>
+                    </div>
+                    <div class="row col-sm-12" v-if="prueba.activeReading==true">
+
+                        <div class="row col-sm-4">
+                            Date
+                        </div>
+                        <div class="row col-sm-4">
+                            Time
+                        </div>
+                        <div class="row col-sm-2">
+                            Items
+                        </div>
+                        <div class="row col-sm-2">
+
+                        </div>
+
+                        <div class="row col-sm-4">
+                            <date-picker idd="dater" class="col-xs-8" :date="prueba.reading.fecha"  @update-date="updateDateR" ></date-picker>
+                        </div>
+                        <div class="row col-sm-4">
+                        <time-picker idt="timer" class="col-xs-8" :time="prueba.reading.horaComienzo" @update-time="updateTimeR" ></time-picker>
+                        </div>
+                        <div class="row col-sm-2">
+                            <div class="">
+                                    {{ "{{ prueba.reading.totalItem }}" }}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-2" >
+                        <button class="btn btn-primary" v-on:click="mostrarReading()">
+                            Reading
+                        </button>
+                            <button class="btn btn-primary" v-on:click="eliminarReading()">
+                                Delete
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="row col-sm-12">
+                        <div class="row col-sm-12">
+
+                            <h4>Hability Listening</h4>
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" v-if="prueba.activeListening==false">
+                    <div class="row col-sm-2">
+                        <button class="btn btn-primary" v-on:click="crearListening()">
+                            Create
+                        </button>
+                    </div>
+                    </div>
+                    <div class="row col-sm-12" v-if="prueba.activeListening==true">
+                        <div class="row col-sm-4">
+                            Date
+                        </div>
+                        <div class="row col-sm-4">
+                            Time
+                        </div>
+                        <div class="row col-sm-2">
+                            Items
+                        </div>
+                        <div class="row col-sm-2">
+
+                        </div>
+
+
+                        <div class="row col-sm-4">
+                            <date-picker idd="datel" class="col-xs-8" :date="prueba.listening.fecha"  @update-date="updateDateL" ></date-picker>
+                        </div>
+                        <div class="row col-sm-4">
+                            <time-picker idt="timel" class="col-xs-8" :time="prueba.listening.horaComienzo" @update-time="updateTimeL" ></time-picker>
+                        </div>
+                        <div class="row col-sm-2">
+                            <div class="">
+                                {{ "{{prueba.listening.totalItem}}" }}
+                            </div>
+                        </div>
+
+                            <div class="row col-sm-2" >
+                                <button class="btn btn-primary" v-on:click="mostrarListening()">
+                                    Listening
+                                </button>
+                                <button class="btn btn-primary" v-on:click="eliminarListening()">
+                                    Delete
+                                </button>
+                            </div>
+                    </div>
+
+                </div>
+                {{ include('test/route/seccion.html.twig') }}
+                {{ include('test/route/listselection.html.twig') }}
+                {{ include('test/route/selectionsimple.html.twig') }}
+                {{ include('test/route/truefalse.html.twig') }}
+                {{ include('test/route/selectionmultiple.html.twig') }}
+                {{ include('test/route/completa.html.twig') }}
+
+                {{ include('test/route/banco.html.twig.') }}
+                {{ include('test/route/detalle_banco.html.twig') }}
+            </div>
+        </script>
+
+        <!-- plantilla componente lista prueba -->
+        <script type="text/x-template" id="list">
+            <div class="list1">
+                <div class="row form-panel box box-primary">
+                    <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
+                        <div class="col-sm-4 col-xs-6 col col-editor">
+                            <input class="form-control " type="text" v-model="search" placeholder="Search..."/>
+                        </div>
+                        <div class="col-sm-8 col-xs-6">
+                            <!-- router-link v-bind:to="enrutar(-1)" class="btn btn-default btn-70w" style="float: right" -->
+                            <router-link v-bind:to="{ name: 'new_prueba', params: { id: -1 }}" class="btn btn-default btn-70w" style="float: right">
+                                <i class="fa fa-plus-circle"></i>  Add
+                            </router-link>
+                        </div>
+                    </div>
+                    <div class="row col-xs-12" style="margin-left: 0px;">
+                        <template>
+                            <v-card>
+                                <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
+                                    <template slot="items" scope="props">
+                                        <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
+                                        <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
+
+                                        <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
+                                        <td class="text-xs-right">{{ "{{ props.item.profesor}}" }}</td>
+
+                                        <td class="text-xs-right">{{ "{{ props.item.reading}}" }}</td>
+                                        <td class="text-xs-right">{{ "{{ props.item.listening}}" }}</td>
+
+                                        <td>
+                                            <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
+                                            <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'new_prueba', params: { id: props.item.id }}">
+                                                <i class="fa fa-pencil"></i> Edit
+                                            </router-link>
+                                            <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+                                        </td>
+                                    </template>
+                                </v-data-table>
+                            </v-card>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </script>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-router.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vuetify.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+
+        var veditorc = Vue.component( 'text-ckeditor' , {
+            template : '<textarea v-model="ntext" v-bind:id="newid" v-bind:class="newid">{{ '{{ntext}}' }}</textarea>',
+            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex' ],
+            data: {
+                valor: '',
+                newid: '',
+            },
+            created: function() {
+                this.newid =this.nname +'_'+ this.nhab+ '_' + (+ new Date);
+                this.valor = "#" + this.newid;
+            },
+            updated: function (){
+                var self = this;
+                if(tinymce.get(self.newid).getContent()!=self.ntext){
+                    tinymce.get(self.newid).setContent(self.ntext);
+                }
+            },
+            beforeDestroy: function beforeDestroy(){
+
+            },
+            mounted : function () {
+                //this.valor = "." + this.nid;
+                var self = this ;
+                tinymce.init({
+                    mode: "specific_textareas",
+                    selector: self.valor,
+                    height: self.nnumber,
+                    plugins: [
+                        "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak",
+                        "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                        "table contextmenu directionality emoticons template textcolor paste fullpage textcolor colorpicker textpattern"
+                    ],
+                    //styleselect formatselect
+                    //1 1 fullpage 2 1 cut copy paste |  2 3 blockquote 2 5 link unlink anchor code insertdatetime 3 print | ltr rtl | visualchars visualblocks nonbreaking template pagebreak restoredraft emoticons
+                    toolbar1: "newdocument | undo redo | searchreplace |  fontselect fontsizeselect | table image charmap hr | pagebreak | preview fullscreen",
+                    toolbar2: "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | outdent indent |  subscript superscript | removeformat ",
+
+                    menubar: false,
+                    toolbar_items_size: 'small',
+
+                    style_formats: [{
+                        title: 'Bold text',
+                        inline: 'b'
+                    }, {
+                        title: 'Red text',
+                        inline: 'span',
+                        styles: {
+                            color: '#ff0000'
+                        }
+                    }, {
+                        title: 'Red header',
+                        block: 'h1',
+                        styles: {
+                            color: '#ff0000'
+                        }
+                    }, {
+                        title: 'Example 1',
+                        inline: 'span',
+                        classes: 'example1'
+                    }, {
+                        title: 'Example 2',
+                        inline: 'span',
+                        classes: 'example2'
+                    }, {
+                        title: 'Table styles'
+                    }, {
+                        title: 'Table row 1',
+                        selector: 'tr',
+                        classes: 'tablerow1'
+                    }],
+
+                    templates: [{
+                        title: 'Test template 1',
+                        content: 'Test 1'
+                    }, {
+                        title: 'Test template 2',
+                        content: 'Test 2'
+                    }],
+
+                    image_advtab: true,
+                    images_upload_url: "{{ path('postacceptor') }}",
+
+                    // enable title field in the Image dialog
+                    image_title: true,
+                    // enable automatic uploads of images represented by blob or data URIs
+                    automatic_uploads: true,
+                    // URL of our upload handler (for more details check: https://www.tinymce.com/docs/configure/file-image-upload/#images_upload_url)
+                    //images_upload_url: 'http://localhost/images/postAcceptor.php',
+
+                    // here we add custom filepicker only to Image dialog
+                    file_picker_types: 'image',
+                    // and here's our custom image picker
+                    file_picker_callback: function(cb, value, meta) {
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/*');
+                        selector: self.valor,  // change this value according to your html
+
+                            // Note: In modern browsers input[type="file"] is functional without
+                            // even adding it to the DOM, but that might not be the case in some older
+                            // or quirky browsers like IE, so you might want to add it to the DOM
+                            // just in case, and visually hide it. And do not forget do remove it
+                            // once you do not need it anymore.
+                                input.onchange = function() {
+                                    var file = this.files[0];
+                                    var reader = new FileReader();
+                                    reader.readAsDataURL(file);
+                                    reader.onload = function () {
+                                        // Note: Now we need to register the blob in TinyMCEs image blob
+                                        // registry. In the next release this part hopefully won't be
+                                        // necessary, as we are looking to handle it internally.
+                                        var id = 'blobid' + (new Date()).getTime();
+                                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                                        var base64 = reader.result.split(',')[1];
+                                        var blobInfo = blobCache.create(id, file, base64);
+                                        blobCache.add(blobInfo);
+
+                                        // call the callback and populate the Title field with the file name
+                                        cb(blobInfo.blobUri(), { title: file.name });
+                                    };
+                                };
+                        input.click();
+                    },
+                    setup: function (ed) {
+                        ed.on('keyup', function (e) {
+                            self.$emit( 'update-text', ed.getContent(), self.nindex, self.nsubindex);
+                            //tinyMceChange(ed);
+                        });
+                        ed.on('change', function(e) {
+                            self.$emit( 'update-text', ed.getContent(), self.nindex, self.nsubindex);
+                            //tinyMceChange(ed);
+                        });
+                    }
+                });
+            },
+        });
+
+        Vue.component( 'date-picker' , {
+            template : '<input id="idd" v-model="date"/>',
+            props : [ 'date' , 'idd'],
+            mounted : function () {
+                var self = this ;
+                jQuery(self.$el).datepicker ({
+                    format : 'dd-mm-yyyy',
+                }).on('focus', function( date ){
+                            var ganno =date['result']['viewDate'].getUTCFullYear();
+                            var gmes = date['result']['viewDate'].getUTCMonth()+1;
+                            var gdia = date['result']['viewDate'].getUTCDate();
+                            gfecha=gdia+'-'+gmes+'-'+ganno;
+                            self.$emit( 'update-date' , gfecha );
+                        }
+                ).datepicker("setDate", self.date);
+            },
+            updated: function (){
+                var self = this;
+                if(jQuery(self.$el).datepicker ('getDate')!=self.date){
+                    jQuery(self.$el).datepicker ('setDate', self.date);
+                }
+            },
+            beforeDestroy : function () {
+                jQuery( this.$el ).datepicker ( 'hide' ).datepicker( 'destroy' );
+            },
+        });
+
+        Vue.component( 'time-picker' , {
+            template : '<input  id="idt"  v-model="time" />',
+            props : [ 'time', 'idt' ],
+            mounted : function () {
+                var self = this ;
+                jQuery(self.$el).timepicker ({
+                    minuteStep: 1,
+                    showSeconds: false,
+                    showMeridian: true,
+                    disableFocus: true,
+                    icons: {
+                        up: 'fa fa-chevron-up',
+                        down: 'fa fa-chevron-down'
+                    }
+                }).timepicker("setTime", self.time).on('focus', function() {
+                    jQuery(self.$el).timepicker('showWidget').on('change', function( time ){
+                        var ghour = jQuery(self.$el).data()['timepicker'].hour;
+
+                        var gminute = jQuery(self.$el).data()['timepicker'].minute;
+                        //var gsecond = jQuery(self.$el).data()['timepicker'].second;
+                        var gmeridian = jQuery(self.$el).data()['timepicker'].meridian;
+                        if(gmeridian=="PM"){
+                            ghour+=12;
+                        }
+
+                        if(ghour < 10){
+                            ghour = "0"+ghour;
+                        }
+                        if(gminute < 10){
+                            gminute = "0"+gminute;
+                        }
+
+                        var gtime=ghour+":"+gminute;
+                        self.$emit( 'update-time' , gtime );
+                    });
+                });
+            },
+            updated: function (){
+                var self = this;
+                if(jQuery(self.$el).timepicker ('getTime')!=self.time){
+                    jQuery(self.$el).timepicker ('setTime', self.time);
+                }
+            },
+        });
+
+        // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter and then call `Vue.use(VueRouter)`.
+        // 1. Define route components.
+        // These can be imported from other files
+        var Prueba = Vue.extend({
+            template: '#test',
+            data: function () {
+                return {
+                    numIdUnico: 1,
+                    habilidad: 1,
+                    stringfecha : "10-11-2011",
+                    visibilidad: 0, //0-prueba 1-seccion 2-listaseleccion
+                    editPrueba: 0,  //0 new <-> 1 edit
+                    editPregunta: 0,
+                    numHabilidad: -1, //1-reading 2-listening
+                    numSeccion: 0,
+                    numPregunta: -1,
+
+                    //---table
+                    isActive: false,
+                    search: '',
+                    pagination: {},
+                    headers: [
+                        {
+                            text: 'Id',
+                            left: true,
+                            sortable: false,
+                            value: 'id'
+                        },
+                        //{text: 'Fecha', value: 'fecha'},
+                        {text: 'Texto', value: 'texto'},
+                        {text: 'Accion', sortable: false,},
+                    ],
+                    items: [
+                        {
+                            id: -1,
+                            //fecha: 'fecha',
+                            texto: 'KitKat',
+                        },
+                    ],
+                    check:[
+                        {
+                            opcion: true
+                        },
+                    ],
+
+                    seccionbancox: {
+                        id: '-1',
+                        ordenSeccion: '1',
+                        num: '1',
+                        textoInstruccion: 'Text instruction...',
+                        preguntas: [
+                            {
+                                id: '-1',
+                                ordenPregunta: '11',
+                                textoPregunta: 'Text question...',
+                                tipoPregunta: 4,
+                                totalItem: 0,
+                                listselection: {
+                                    valores: [
+                                        {
+                                            id: '-1',
+                                            texto: 'empty'
+                                        }
+                                    ],
+                                    itemsList: [
+                                        {
+                                            id: '-1',
+                                            orden: '1',
+                                            texto: 'Text option...',
+                                            correcta: '1'
+                                        },
+                                    ]
+                                }
+                            },
+                        ],
+                    },
+
+                    //---fin table
+                    tipoPregunta: ['','true false','simple selection','multiple selection','list selection','complete'],
+                    delSecR: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delSecL: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delQuestion: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delItemVoF: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delItemSS: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delIncisoSS: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delIncisoMS: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delItemLS: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delValorLS: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    delItemC: [
+                        {
+                            id: '',
+                        }
+                    ],
+                    questionMS: {
+                        id: '-1',
+                        ordenPregunta: '11',
+                        textoPregunta: 'Text question...',
+                        tipoPregunta: 2,
+                        totalItem: 0,
+                        selectionmultiple: {
+                            incisos: [
+                                {
+                                    id: '-1',
+                                    correcta: 0,
+                                    orden: '1',
+                                    texto: 'Text option...'
+                                }
+                            ]
+                        },
+                    },
+                    questionTF: {
+                        id: '-1',
+                        ordenPregunta: '11',
+                        textoPregunta: 'Text question...',
+                        tipoPregunta: 2,
+                        totalItem: 0,
+                        truefalse: {
+                            incisos: [
+                                {
+                                    id: '-1',
+                                    texto: 'Text option...',
+                                    orden: '1',
+                                    seleccion: 'empty'
+                                },
+                            ]
+                        },
+                    },
+                    questionSS: {
+                        id: '-1',
+                        ordenPregunta: '11',
+                        textoPregunta: 'Text question...',
+                        tipoPregunta: 2,
+                        totalItem: 0,
+                        itemsSimple: [{
+                            id: '-1',
+                            orden: '2',
+                            texto: 'Text item...',
+                            correcta: '1',
+                            incisos: [
+                                {
+                                    id: '-1',
+                                    orden: '2',
+                                    texto: 'Text option...',
+                                },
+                            ]
+                        }],
+                    },
+                    questionLS: {
+                        id: '-1',
+                        ordenPregunta: '11',
+                        textoPregunta: 'Text question...',
+                        tipoPregunta: 2,
+                        totalItem: 0,
+                        listselection: {
+                            valores: [
+                                {
+                                    id: '-1',
+                                    texto: 'empty'
+                                }
+                            ],
+                            itemsList: [
+                                {
+                                    id: '-1',
+                                    orden: '1',
+                                    texto: 'Text option...',
+                                    correcta: '1'
+                                },
+                            ]
+                        },
+                    },
+                    questionC: {
+                        id: '-1',
+                        ordenPregunta: '11',
+                        textoPregunta: 'Text question...',
+                        tipoPregunta: 2,
+                        totalItem: 0,
+                        completa: {
+                            vistaHtml: 'Text option...',
+                            itemsComplete: [
+                                {}
+                            ]
+                        },
+                    },
+
+                    readingtmp: {
+                        id: '-1',
+                        fecha: '{{ fechaaactual }}',
+                        textoInstrucciones: 'Text instruction...',
+                        //textoInformacion: 'Informacion',
+                        horaComienzo: '10:00',
+                        tiempo: '24',
+                        totalItem: 0,
+                        secciones: [
+                            {
+                                id: '-1',
+                                ordenSeccion: '1',
+                                num: '1',
+                                urlAudio: 'http://#',
+                                textoInstruccion: 'Text instruction...',
+                                //textoReading: 'texto reading 1',
+
+                                preguntas: [
+                                    {
+                                        id: '-1',
+                                        ordenPregunta: '11',
+                                        textoPregunta: 'Text question...',
+                                        tipoPregunta: 4,
+                                        totalItem: 0,
+                                        listselection: {
+                                            valores: [
+                                                {
+                                                    id: '-1',
+                                                    texto: 'empty'
+                                                }
+                                            ],
+                                            itemsList: [
+                                                {
+                                                    id: '-1',
+                                                    orden: '2',
+                                                    texto: 'Text option...',
+                                                    correcta: 'a'
+                                                },
+                                            ]
+                                        }
+                                    },
+                                ],
+                            },
+                        ]
+                    },
+                    prueba: {
+                        id: '1',
+                        textoOrientacion: 'Text instruction...',
+                        deprueba: false,
+                        activeReading: false,
+                        activeListening: false,
+                        reading: {
+                            id: '1',
+                            fecha: '10-10-2020',
+                            textoInstrucciones: 'Text instruction...',
+                            urlAudio: 'http://#',
+                            //textoInformacion: 'Informacion',
+                            horaComienzo: '11:11',
+                            tiempo: '1',
+                            totalItem: 0,
+                            secciones: [
+                                {
+                                    id: '-1',
+                                    ordenSeccion: '1',
+                                    num: '1',
+                                    textoInstruccion: 'Text instruction...',
+                                    preguntas: [
+                                        {
+                                            id: '-1',
+                                            ordenPregunta: '11',
+                                            textoPregunta: 'Text question...',
+                                            tipoPregunta: 4,
+                                            totalItem: 0,
+                                            listselection: {
+                                                valores: [
+                                                    {
+                                                        id: '-1',
+                                                        texto: 'empty'
+                                                    }
+                                                ],
+                                                itemsList: [
+                                                    {
+                                                        id: '-1',
+                                                        orden: '1',
+                                                        texto: 'Text option...',
+                                                        correcta: '1'
+                                                    },
+                                                ]
+                                            }
+                                        },
+                                    ],
+                                },
+                            ]
+                        },
+                        listening: {
+                            id: '-1',
+                            fecha: '{{ fechaaactual }}',
+                            textoInstrucciones: 'Text instruction...',
+                            horaComienzo: '10:00',
+                            tiempo: '24',
+                            totalItem: 0,
+                            secciones: [
+                                {
+                                    id: '-1',
+                                    ordenSeccion: '1',
+                                    num: '1',
+                                    textoInstruccion: 'Text instruction...',
+                                    urlAudio: 'http://#',
+                                    preguntas: [
+                                        {
+                                            id: '-1',
+                                            ordenPregunta: '11',
+                                            textoPregunta: 'Text question...',
+                                            tipoPregunta: 4,
+                                            totalItem: 0,
+                                            listselection: {
+                                                valores: [
+                                                    {
+                                                        id: '-1',
+                                                        texto: 'empty'
+                                                    }
+                                                ],
+                                                itemsList: [
+                                                    {
+                                                        id: '-1',
+                                                        orden: '1',
+                                                        texto: 'Text option...',
+                                                        correcta: '1'
+                                                    },
+                                                ]
+                                            }
+                                        },
+                                    ],
+                                },
+                            ]
+                        },
+                    },
+                };
+            },
+            created: function () {
+                jQuery('.overlay').css('display','block');
+                this.prueba.id = (this.$route.params.id);
+                this.numIdUnico = +new Date;
+                this.getList();
+                window.scrollTo(0, 0);
+            },
+
+            methods: {
+                inciopagina: function(){
+                    window.scrollTo(0, 0);
+                },
+
+                boxScrollTop: function(){
+                    jQuery('.bootbox').animate({ scrollTop: 0 }, 'slow');
+                },
+
+                updateTextTrueFalse : function ( txt ) {
+                    this.questionTF.textoPregunta = txt;
+                },
+
+                updateTextItemTF : function ( txt, index ) {
+                    this.questionTF.truefalse.incisos[index].texto = txt;
+                },
+
+
+                updateTextSimpleSelection : function ( txt ) {
+                    this.questionSS.textoPregunta = txt;
+                },
+                updateTextItemSS : function ( txt, index ) {
+                    this.questionSS.itemsSimple[index].texto = txt;
+                },
+                updateTextIncisoSS : function ( txt, index, subindex ) {
+                    this.questionSS.itemsSimple[index].incisos[subindex].texto = txt;
+                },
+
+
+                updateTextMultipleSelection : function ( txt ) {
+                    this.questionMS.textoPregunta = txt;
+                },
+                updateTextItemMS : function ( txt, index ) {
+                    this.questionMS.selectionmultiple.incisos[index].texto = txt;
+                },
+
+
+                updateTextListSelection : function ( txt ) {
+                    this.questionLS.textoPregunta = txt;
+                },
+                updateTextItemLS : function ( txt, index ) {
+                    this.questionLS.listselection.itemsList[index].texto = txt;
+                },
+
+                updateTextComplete : function ( txt ) {
+                    this.questionC.textoPregunta = txt;
+                },
+
+
+                updateTextInstSeccion : function ( txt ) {
+                    this.readingtmp.secciones[this.numSeccion].textoInstruccion = txt;
+                },
+
+
+                updateTextInstReading : function ( txt ) {
+                    this.readingtmp.textoInstrucciones = txt;
+                },
+
+                updateTextPrueba : function ( txt ) {
+                    this.prueba.textoOrientacion = txt;
+                },
+
+
+                updateDateR : function ( date ) {
+                    this.prueba.reading.fecha=date;
+                },
+
+                updateTimeR : function ( time ) {
+                    this.prueba.reading.horaComienzo=time;
+
+                },
+
+
+                updateDateL : function ( date ) {
+                    this.prueba.listening.fecha=date;
+                },
+
+                updateTimeL : function ( time ) {
+                    this.prueba.listening.horaComienzo=time;
+
+                },
+
+                alertar: function(mensaje){
+
+                },
+
+
+                obtenerOrden: function () {
+                    neworden = +new Date - 1500000000000;
+                    return neworden;
+                },
+
+                crearReading: function () {
+                    this.habilidad = 1;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    //this.readingtmp = JSON.parse(JSON.stringify(this.prueba.reading));
+
+                    this.readingtmp = {
+                        id: '-1',
+                        fecha: '{{ fechaaactual }}',
+                        textoInstrucciones: 'Text instruction...',
+                        //textoInformacion: 'Informacion',
+                        horaComienzo: '10:00',
+                        tiempo: '24',
+                        totalItem: 0,
+                        secciones: [
+                            {
+                                id: '-1',
+                                ordenSeccion: '1',
+                                num: '1',
+                                urlAudio: 'http://#',
+                                textoInstruccion: 'Text instruction...',
+                                //textoReading: 'texto reading 1',
+
+                                preguntas: [
+                                    {
+                                        id: '-1',
+                                        ordenPregunta: '11',
+                                        textoPregunta: 'Text question...',
+                                        tipoPregunta: 4,
+                                        totalItem: 0,
+                                        listselection: {
+                                            valores: [
+                                                {
+                                                    id: '-1',
+                                                    texto: 'empty'
+                                                }
+                                            ],
+                                            itemsList: [
+                                                {
+                                                    id: '-1',
+                                                    orden: '2',
+                                                    texto: 'Text option...',
+                                                    correcta: 'a'
+                                                },
+                                            ]
+                                        }
+                                    },
+                                ],
+                            },
+                        ]
+                    };
+                    this.prueba.reading = this.readingtmp;
+
+                    this.visibilidad = 1;
+                    this.prueba.activeReading= true ;
+                    this.inciopagina();
+                },
+
+                mostrarReading: function () {
+                    this.habilidad = 1;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    this.readingtmp = JSON.parse(JSON.stringify(this.prueba.reading));
+                    this.visibilidad = 1;
+                    this.prueba.activeReading= true ;
+                    this.inciopagina();
+                },
+
+                eliminarReading: function(){
+                    this.prueba.activeReading= false ;
+
+                },
+
+                crearListening: function () {
+                    this.habilidad = 2;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    //this.readingtmp = JSON.parse(JSON.stringify(this.prueba.listening));
+                    //this.prueba.listening.fecha= '10-10-2010';
+                    //this.prueba.listening.horaComienzo= '11:11';
+                    //this.prueba.listening.tiempo= '24';
+                    //this.prueba.listening.totalItem= 0;
+                    this.readingtmp = {
+                        id: '-1',
+                        fecha: '{{ fechaaactual }}',
+                        textoInstrucciones: 'Instrucciones',
+                        //textoInformacion: 'Informacion',
+                        horaComienzo: '10:00',
+                        tiempo: '24',
+                        totalItem: 0,
+                        secciones: [
+                            {
+                                id: '-1',
+                                ordenSeccion: '1',
+                                num: '1',
+                                urlAudio: 'http://#',
+                                textoInstruccion: 'Text intruction...',
+                                //textoReading: 'texto reading 1',
+
+                                preguntas: [
+                                    {
+                                        id: '-1',
+                                        ordenPregunta: '11',
+                                        textoPregunta: 'Text question...',
+                                        tipoPregunta: 4,
+                                        totalItem: 0,
+                                        listselection: {
+                                            valores: [
+                                                {
+                                                    id: '-1',
+                                                    texto: 'empty'
+                                                }
+                                            ],
+                                            itemsList: [
+                                                {
+                                                    id: '-1',
+                                                    orden: '2',
+                                                    texto: 'Text option...',
+                                                    correcta: 'a'
+                                                },
+                                            ]
+                                        }
+                                    },
+                                ],
+                            },
+                        ]
+                    };
+                    this.prueba.listening = this.readingtmp;
+
+                    this.visibilidad = 1;
+                    this.prueba.activeListening= true ;
+                    this.inciopagina();
+                },
+                mostrarListening: function () {
+                    this.habilidad = 2;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    this.readingtmp = JSON.parse(JSON.stringify(this.prueba.listening));
+                    this.visibilidad = 1;
+                    this.prueba.activeListening= true ;
+                    this.inciopagina();
+                },
+
+                eliminarListening: function(){
+                    this.prueba.activeListening= false ;
+
+                },
+
+                mostrarPregunta: function (tipoPregunta, seccionx, index) {
+                    this.numSeccion = seccionx.num-1;
+                    this.numPregunta = index;
+                    this.editPregunta = 1;
+
+                    //---copy
+                    var question = JSON.parse(JSON.stringify(this.readingtmp.secciones[seccionx.num - 1].preguntas[index]));
+                    if (question.tipoPregunta == 5) {
+                        this.questionC = question;
+                        this.visibilidad = 6;
+                    } else if (question.tipoPregunta == 4) {
+                        this.questionLS = question;
+                        this.visibilidad = 5;
+                    } else if (question.tipoPregunta == 3) {
+                        this.questionMS = question;
+                        this.visibilidad = 4;
+                    } else if (question.tipoPregunta == 2) {
+                        this.questionSS = question;
+                        this.visibilidad = 3;
+                    } else if (question.tipoPregunta == 1) {
+                        this.questionTF = question;
+                        this.visibilidad = 2;
+                    }
+                    this.inciopagina();
+
+                },
+
+                //==========================BEGIN READING==================================
+                contarItemReading:function(){
+                    var totalItemR = 0;
+                    for(var i=0; i< this.prueba.reading.secciones.length; i++){
+                        for(var j=0; j<this.prueba.reading.secciones[i].preguntas.length; j++){
+                            totalItemR += this.prueba.reading.secciones[i].preguntas[j].totalItem;
+                        }
+                    }
+
+                    this.prueba.reading.totalItem = totalItemR;
+                },
+
+                //===========================END READING===================================
+
+                //==========================BEGIN LISTENING==================================
+                contarItemListening:function(){
+                    var totalItemL = 0;
+                    for(var i=0; i< this.prueba.listening.secciones.length; i++){
+                        for(var j=0; j<this.prueba.listening.secciones[i].preguntas.length; j++){
+                            totalItemL += this.prueba.listening.secciones[i].preguntas[j].totalItem;
+                        }
+                    }
+                    this.prueba.listening.totalItem = totalItemL;
+                },
+                //===========================END LISTENING===================================
+
+                //=========================BEGIN SECCIONES=================================
+                setNumSeccion: function(index){
+                    this.numSeccion = index;
+                },
+
+                obtenerId: function (index) {
+                    return 'tab' + index;
+                },
+                obtenerRef: function (index) {
+                    //this.numSeccion = index;
+                    return '#tab' + index;
+                },
+
+                ordenarSeccion: function () {
+                    for (var i = 0; i < this.readingtmp.secciones.length;) {
+                        this.readingtmp.secciones[i].num = ++i;
+                    }
+                },
+
+                addNewSeccion: function () {
+                    var neworden = this.obtenerOrden();
+                    this.readingtmp.secciones.push({
+                        id: -1,
+                        ordenSeccion: neworden,
+                        num: ((this.readingtmp.secciones.length) - 1),
+                        textoInstruccion: 'Text...',
+                        //textoReading: 'Texto reading vacio',
+                        preguntas: []
+                    });
+                    this.ordenarSeccion();
+                },
+
+                subirSeccion: function (index) {
+                    if (index != 0) {
+                        var tmpNum = this.readingtmp.secciones[index].textoInstruccion;
+                        this.readingtmp.secciones[index].textoInstruccion = this.readingtmp.secciones[index - 1].textoInstruccion;
+                        this.readingtmp.secciones[index - 1].textoInstruccion = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].urlAudio;
+                        this.readingtmp.secciones[index].urlAudio = this.readingtmp.secciones[index - 1].urlAudio;
+                        this.readingtmp.secciones[index - 1].urlAudio = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].preguntas;
+                        this.readingtmp.secciones[index].preguntas = this.readingtmp.secciones[index - 1].preguntas;
+                        this.readingtmp.secciones[index - 1].preguntas = tmpNum;
+                        //this.ordenarSeccion();
+                    }
+                },
+
+                bajarSeccion: function (index) {
+                    if (index != (this.readingtmp.secciones.length - 1)) {
+
+                        var tmpNum = this.readingtmp.secciones[index].textoInstruccion;
+                        this.readingtmp.secciones[index].textoInstruccion = this.readingtmp.secciones[index + 1].textoInstruccion;
+                        this.readingtmp.secciones[index + 1].textoInstruccion = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].urlAudio;
+                        this.readingtmp.secciones[index].urlAudio = this.readingtmp.secciones[index + 1].urlAudio;
+                        this.readingtmp.secciones[index + 1].urlAudio = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].preguntas;
+                        this.readingtmp.secciones[index].preguntas = this.readingtmp.secciones[index + 1].preguntas;
+                        this.readingtmp.secciones[index + 1].preguntas = tmpNum;
+                        //this.ordenarSeccion();
+                    }
+                },
+
+                editSeccion: function (index) {
+                },
+
+                deleteSeccion: function (index) {
+                    var gthis = this;
+                    var gindex = index;
+                        //a = this.readingtmp.secciones;
+                        bootbox.confirm("Are you sure?", function (result) {
+                            if (result) {
+                                if (gthis.readingtmp.secciones[gindex].id != -1) {
+                                    if(this.habilidad==1) {
+                                        gthis.delSecR.push({id: gthis.readingtmp.secciones[gindex].id});
+                                    }
+                                    if(this.habilidad==2) {
+                                        gthis.delSecL.push({id: gthis.readingtmp.secciones[gindex].id});
+                                    }
+                                }
+                                gthis.readingtmp.secciones.splice(gindex, 1);
+                                gthis.ordenarSeccion();
+                            }
+                        });
+                    //this.readingtmp.secciones.splice(index, 1);
+                    //this.ordenarSeccion();
+                },
+
+            setIdAudio: function(index){
+                return "form_"+index;
+            },
+            cargarAudio: function(seccionx, index){
+                var gthis = this;
+                var secx = seccionx;
+                var gindex = index;
+                var formData = new FormData(document.getElementById("form_"+gindex));
+                formData.append("dato", "valor");
+                //formData.append(f.attr("name"), $(this)[0].files[0]);
+                jQuery.ajax({
+                            url: "{{ path('loadaudio') }}",
+                            type: "post",
+                            dataType: "html",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false
+                        })
+                        .done(function(res){
+                            //alert(res);
+                            //alert(gthis.readingtmp.secciones[gindex].urlAudio);
+                            gthis.readingtmp.secciones[gindex].urlAudio=res;
+                            //seccionx.urlAudio=res;
+                            //alert(gthis.readingtmp.secciones[gindex].urlAudio);
+                        });
+            },
+
+
+                //-----
+                subirPregunta: function (seccion, indexP) {
+                    if (indexP != 0) {
+                        //cambio propiedad orden
+                        var numsecc = seccion.num-1;
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta = this.readingtmp.secciones[numsecc].preguntas[indexP - 1].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP - 1].ordenPregunta = tmpNum;
+                        //cambio de preguntas
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP] = this.readingtmp.secciones[numsecc].preguntas[indexP - 1];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP - 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                bajarPregunta: function (seccion, indexP) {
+                    if (indexP != (this.readingtmp.secciones[seccion.num - 1].preguntas.length - 1)) {
+                        //cambio propiedad orden
+                        var numsecc = seccion.num-1;
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta = this.readingtmp.secciones[numsecc].preguntas[indexP + 1].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP + 1].ordenPregunta = tmpNum;
+                        //cambio de elementos
+
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP] = this.readingtmp.secciones[numsecc].preguntas[indexP + 1];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP + 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                editPregunta: function (pregunta, index) {
+                },
+
+                deletePregunta: function (seccion, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gseccion = seccion;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gseccion.preguntas[gindex].id != -1) {
+                                gthis.delQuestion.push({id: gseccion.preguntas[gindex].id});
+                            }
+                            gseccion.preguntas.splice(gindex, 1);
+                        }
+                    });
+
+                    //if (seccion.preguntas[index].id != -1) {
+                    //    this.delQuestion.push({id: seccion.preguntas[index].id});
+                    //}
+                    //seccion.preguntas.splice(index, 1);
+                },
+                newVoF: function () {
+                    var neworden = this.obtenerOrden();
+
+                    this.questionTF = {
+                        id: '-1',
+                        ordenPregunta: '12',
+                        textoPregunta: 'Text...',
+                        tipoPregunta: 1,
+                        totalItem: 0,
+                        truefalse: {
+                            incisos: [
+                                {
+                                    id: '-1',
+                                    texto: 'Text...',
+                                    orden: neworden,
+                                    seleccion: 'empty'
+                                },
+                            ]
+                        },
+                    }
+                    this.editPregunta = 0;
+                    this.visibilidad = 2;
+                    this.inciopagina();
+                },
+                newSimpleSeleccion: function () {
+                    var neworden = this.obtenerOrden();
+                    ;
+                    this.questionSS = {
+                        id: '-1',
+                        ordenPregunta: '12',
+                        textoPregunta: 'Text...',
+                        tipoPregunta: 2,
+                        totalItem: 0,
+                        itemsSimple: [{
+                            id: '-1',
+                            orden: neworden,
+                            texto: 'Text...',
+                            correcta: '1',
+                            incisos: [
+                                {
+                                    id: '-1',
+                                    orden: neworden,
+                                    texto: 'Text...',
+                                }
+                            ]
+                        }],
+                    }
+                    this.editPregunta = 0;
+                    this.visibilidad = 3;
+                    this.inciopagina();
+                },
+                newMultipleSeleccion: function () {
+                    var neworden = this.obtenerOrden();
+                    ;
+                    this.questionMS = {
+                        id: '-1',
+                        ordenPregunta: '12',
+                        textoPregunta: 'Text...',
+                        tipoPregunta: 3,
+                        totalItem: 0,
+                        selectionmultiple: {
+                            incisos: [
+                                {
+                                    id: '-1',
+                                    correcta: 0,
+                                    orden: neworden,
+                                    texto: 'Text...'
+                                }
+                            ]
+                        },
+                    }
+                    this.editPregunta = 0;
+                    this.visibilidad = 4;
+                    this.inciopagina();
+                },
+                newListSeleccion: function () {
+                    var neworden = this.obtenerOrden();
+                    ;
+                    this.questionLS = {
+                        id: '-1',
+                        ordenPregunta: '12',
+                        textoPregunta: 'Text...',
+                        tipoPregunta: 4,
+                        totalItem: 0,
+                        listselection: {
+                            valores: [
+                                {
+                                    id: '-1',
+                                    texto: 'empty'
+                                }
+                            ],
+                            itemsList: [
+                                {
+                                    id: '-1',
+                                    orden: neworden,
+                                    texto: 'Text...',
+                                    correcta: 'a'
+                                },
+                            ]
+                        }
+                    };
+                    this.editPregunta = 0;
+                    this.visibilidad = 5;
+                    this.inciopagina();
+                },
+
+                newComplete: function () {
+                    this.questionC = {
+                        id: '-1',
+                        ordenPregunta: '12',
+                        textoPregunta: 'Text...',
+                        tipoPregunta: 5,
+                        totalItem: 0,
+                        completa: {
+                            vistaHtml: 'Text...',
+                            itemsComplete: []
+                        }
+                    };
+                    this.editPregunta = 0;
+                    this.visibilidad = 6;
+                    this.inciopagina();
+                },
+
+                guardarReading: function () {
+                    this.prueba.reading = this.readingtmp;
+                    this.contarItemReading();
+                    this.visibilidad = 0;
+
+                    this.inciopagina();
+                },
+                continuarReading: function () {
+                    this.prueba.reading = this.readingtmp;
+                    this.contarItemReading();
+                    this.editPregunta == 1;
+                    this.inciopagina();
+                },
+                cancelarReading: function () {
+                    this.contarItemReading();
+                    this.visibilidad = 0;
+                    this.inciopagina();
+                },
+
+                guardarListening: function () {
+                    this.prueba.listening = this.readingtmp;
+                    this.contarItemListening();
+                    this.visibilidad = 0;
+                    this.inciopagina();
+                },
+                continuarListening: function () {
+                    this.prueba.listening = this.readingtmp;
+                    this.contarItemListening();
+                    this.editPregunta == 1;
+                    this.inciopagina();
+                },
+                cancelarListening: function () {
+                    this.contarItemListening();
+                    this.visibilidad = 0;
+                    this.inciopagina();
+                },
+
+
+                actualizarTotalItem: function(question){
+                    switch (question.tipoPregunta){
+                        case 1:
+                            question.totalItem = question.truefalse.incisos.length;
+                            break;
+                        case 2:
+                            question.totalItem = question.itemsSimple.length;
+                            break;
+                        case 3:
+                            question.totalItem = 0;
+                            for(var i=0; i<question.selectionmultiple.incisos.length; i++){
+                                if(question.selectionmultiple.incisos[i].correcta == true){
+                                    question.totalItem +=1;
+                                }
+                            }
+                            break;
+                        case 4:
+                            question.totalItem = question.listselection.itemsList.length;
+                            break;
+                        case 5:
+                            question.totalItem = question.completa.itemsComplete.length;
+                            break;
+
+                    }
+                },
+
+                showSection: function(){
+
+                    var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
+                    for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
+
+                        htmlsections += "<div class='secciones'><p>" + this.readingtmp.secciones[indes].textoInstruccion + "</p>";
+                        htmlsections += "<audio src='"+this.readingtmp.secciones[indes].urlAudio+"' controls='controls'></audio>";
+                        for (var indeq = 0; indeq < this.readingtmp.secciones[indes].preguntas.length; indeq++) {
+                            htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].textoPregunta + "</p>";
+
+                            switch (this.readingtmp.secciones[indes].preguntas[indeq].tipoPregunta){
+                                case 1:
+
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].truefalse.incisos.length; index++) {
+                                        htmlsections += "<div><p>"+this.readingtmp.secciones[indes].preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
+                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                        htmlsections += "TRUE";
+                                        htmlsections += "</p></label></div>";
+                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_2' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                        htmlsections += "FALSE";
+                                        htmlsections += "</p></label></div>";
+                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_3' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                        htmlsections += "NOT GIVEN";
+                                        htmlsections += "</p></label></div>";
+                                        htmlsections += "</div></div>";
+
+                                    }
+
+                                    break;
+                                case 2:
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple.length; index++) {
+                                        htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
+                                        for (var indi = 0; indi < this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
+                                            htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_" + indi + "' name='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                            htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].incisos[indi].texto;
+                                            htmlsections += "</p></label></div>";
+                                        }
+                                        htmlsections += "</div></div>";
+
+                                    }
+
+
+                                    break;
+                                case 3:
+
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].selectionmultiple.incisos.length; index++) {
+                                        htmlsections += "<div><div class='ident'>";
+                                        htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                        htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].selectionmultiple.incisos[index].texto;
+                                        htmlsections += "</p></label></div>";
+                                        htmlsections += "</div></div>";
+
+                                    }
+                                    break;
+                                case 4:
+                                    var htmlvalores = "<select>";
+
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].listselection.valores.length; index++) {
+                                        htmlvalores += "<option>";
+                                        htmlvalores += this.readingtmp.secciones[indes].preguntas[indeq].listselection.valores[index].texto;
+                                        htmlvalores += "</option>";
+
+                                    }
+                                    htmlvalores += "</select>";
+
+
+
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].listselection.itemsList.length; index++) {
+                                        htmlsections += "<div class='itemls'><div class='ident'>";
+                                        //htmllistselection += "<p>";
+                                        htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].listselection.itemsList[index].texto;
+                                        htmlsections += htmlvalores;
+                                        //htmllistselection += "</p>";
+                                        htmlsections += "</div></div>";
+
+                                    }
+
+                                    break;
+                                case 5:
+                                    this.questionC.completa.vistaHtml = this.readingtmp.secciones[indes].preguntas[indeq].completa.vistaHtml;
+                                    htmlsections += this.previewPregunta();
+
+                                    break;
+                            }
+                            htmlsections += "</div>";
+                        }
+                        htmlsections += "</div>";
+                    }
+
+                    bootbox.dialog({
+                        message: htmlsections,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                    this.boxScrollTop();
+
+                },
+                //============================END SECCIONES======================================
+
+                //========================BEGIN TRUE-FALSE==================================
+                subirVoF: function (indexP) {
+                    if (indexP != 0) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionTF.truefalse.incisos[indexP].orden;
+                        this.questionTF.truefalse.incisos[indexP].orden = this.questionTF.truefalse.incisos[indexP - 1].orden;
+                        this.questionTF.truefalse.incisos[indexP - 1].orden = tmpNum;
+                        //cambio de preguntas
+                        var tmpNum = this.questionTF.truefalse.incisos[indexP];
+                        this.questionTF.truefalse.incisos[indexP] = this.questionTF.truefalse.incisos[indexP - 1];
+                        this.questionTF.truefalse.incisos[indexP - 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                bajarVoF: function (indexP) {
+                    if (indexP != (this.questionTF.truefalse.incisos.length - 1)) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionTF.truefalse.incisos[indexP].orden;
+                        this.questionTF.truefalse.incisos[indexP].orden = this.questionTF.truefalse.incisos[indexP + 1].orden;
+                        this.questionTF.truefalse.incisos[indexP + 1].orden = tmpNum;
+                        //cambio de elementos
+
+                        var tmpNum = this.questionTF.truefalse.incisos[indexP];
+                        this.questionTF.truefalse.incisos[indexP] = this.questionTF.truefalse.incisos[indexP + 1];
+                        this.questionTF.truefalse.incisos[indexP + 1] = tmpNum;
+                    }
+                },
+
+                addNewIncisoTF: function () {
+                    var neworden = this.obtenerOrden();
+                    ;
+                    this.questionTF.truefalse.incisos.push({
+                        id: '-1',
+                        texto: 'Text...',
+                        orden: neworden,
+                        seleccion: 'a'
+                    })
+                },
+
+                deleteItemVoF: function (item, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gitem = item;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.questionTF.truefalse.incisos[gindex].id != -1) {
+                                gthis.delItemVoF.push({id: gthis.questionTF.truefalse.incisos[gindex].id});
+                            }
+                            gthis.questionTF.truefalse.incisos.splice(gindex, 1);
+                        }
+                    });
+                    //if (this.question.truefalse.incisos[index].id != -1) {
+                    //    this.delItemVoF.push({id: this.question.truefalse.incisos[index].id});
+                    //}
+                    //this.question.truefalse.incisos.splice(index, 1);
+
+                },
+
+
+
+
+                showTrueFalse: function(){
+
+                    var htmltruefalse = "<div><p>"+this.questionTF.textoPregunta+"</p>";
+
+                    for (var index = 0; index < this.questionTF.truefalse.incisos.length; index++) {
+                        htmltruefalse += "<div><p>"+this.questionTF.truefalse.incisos[index].texto+"</p><div class='ident'>";
+                        htmltruefalse += "<div class='div-radio'><input type='radio' id='form_p_r_s2_q0_ss"+index+"_1' name='form_p_r_s2_q0_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                        htmltruefalse += "TRUE";
+                        htmltruefalse += "</p></label></div>";
+                        htmltruefalse += "<div class='div-radio'><input type='radio' id='form_p_r_s2_q0_ss"+index+"_2' name='form_p_r_s2_q0_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                        htmltruefalse += "FALSE";
+                        htmltruefalse += "</p></label></div>";
+                        htmltruefalse += "<div class='div-radio'><input type='radio' id='form_p_r_s2_q0_ss"+index+"_3' name='form_p_r_s2_q0_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                        htmltruefalse += "NOT GIVEN";
+                        htmltruefalse += "</p></label></div>";
+                        htmltruefalse += "</div></div>";
+
+                    }
+                    htmltruefalse += "</div>";
+
+                    bootbox.dialog({
+                        message: htmltruefalse,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                    this.boxScrollTop();
+                },
+                //===========================END TRUE-FALSE==================================
+
+
+                //========================BEGIN SELECTION-SIMPLE==================================
+                subirItemSS: function (indexP) {
+                    if (indexP != 0) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionSS.itemsSimple[indexP].orden;
+                        this.questionSS.itemsSimple[indexP].orden = this.questionSS.itemsSimple[indexP - 1].orden;
+                        this.questionSS.itemsSimple[indexP - 1].orden = tmpNum;
+                        //cambio de preguntas
+                        var tmpNum = this.questionSS.itemsSimple[indexP];
+                        this.questionSS.itemsSimple[indexP] = this.questionSS.itemsSimple[indexP - 1];
+                        this.questionSS.itemsSimple[indexP - 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                bajarItemSS: function (indexP) {
+                    if (indexP != (this.questionSS.itemsSimple.length - 1)) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionSS.itemsSimple[indexP].orden;
+                        this.questionSS.itemsSimple[indexP].orden = this.questionSS.itemsSimple[indexP + 1].orden;
+                        this.questionSS.itemsSimple[indexP + 1].orden = tmpNum;
+                        //cambio de elementos
+
+                        var tmpNum = this.questionSS.itemsSimple[indexP];
+                        this.questionSS.itemsSimple[indexP] = this.questionSS.itemsSimple[indexP + 1];
+                        this.questionSS.itemsSimple[indexP + 1] = tmpNum;
+                    }
+                },
+
+                subirIncisoSS: function (indexP, index) {
+                    if (index != 0) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionSS.itemsSimple[indexP].incisos[index].orden;
+                        this.questionSS.itemsSimple[indexP].incisos[index].orden = this.questionSS.itemsSimple[indexP].incisos[index - 1].orden;
+                        this.questionSS.itemsSimple[indexP].incisos[index - 1].orden = tmpNum;
+                        //cambio de preguntas
+
+                        var tmpNum = this.questionSS.itemsSimple[indexP].incisos[index];
+                        this.questionSS.itemsSimple[indexP].incisos[index] = this.questionSS.itemsSimple[indexP].incisos[index - 1];
+                        this.questionSS.itemsSimple[indexP].incisos[index - 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                bajarIncisoSS: function (indexP, index) {
+                    if (index != (this.questionSS.itemsSimple[indexP].incisos.length - 1)) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionSS.itemsSimple[indexP].incisos[index].orden;
+                        this.questionSS.itemsSimple[indexP].incisos[index].orden = this.questionSS.itemsSimple[indexP].incisos[index + 1].orden;
+                        this.questionSS.itemsSimple[indexP].incisos[index + 1].orden = tmpNum;
+                        //cambio de elementos
+
+                        var tmpNum = this.questionSS.itemsSimple[indexP].incisos[index];
+                        this.questionSS.itemsSimple[indexP].incisos[index] = this.questionSS.itemsSimple[indexP].incisos[index + 1];
+                        this.questionSS.itemsSimple[indexP].incisos[index + 1] = tmpNum;
+                    }
+                },
+
+                grupo: function (index) {
+                    return "grupo_" + index;
+                },
+
+                addNewIncisoSS: function (item) {
+                    //  if(this.question.valores[this.question.valores.length -1].texto != ''){
+                    var neworden = this.obtenerOrden();
+
+                    item.incisos.push({
+                        id: '-1',
+                        orden: neworden,
+                        texto: 'Text...',
+                    });
+                },
+                addNewItemSS: function () {
+                    //  if(this.question.valores[this.question.valores.length -1].texto != ''){
+                    var neworden = this.obtenerOrden();
+                    ;
+                    this.questionSS.itemsSimple.push({
+                        id: '-1',
+                        orden: neworden,
+                        texto: 'Text...',
+                        correcta: '1',
+                        incisos: [
+                            {
+                                id: '-1',
+                                orden: neworden,
+                                texto: 'a',
+                            },
+                        ]
+                    });
+                },
+
+                deleteIncisoSS: function (item, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gitem = item;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gitem.incisos[gindex].id != -1) {
+                                gthis.delIncisoSS.push({id: gitem.incisos[gindex].id});
+                            }
+                            gitem.incisos.splice(gindex, 1);
+                        }
+                    });
+                    //if (item.incisos[index].id != -1) {
+                    //    this.delIncisoSS.push({id: item.incisos[index].id});
+                    //}
+                    //item.incisos.splice(index, 1);
+                },
+
+                deleteItemSS: function (item, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gitem = item;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.questionSS.itemsSimple[gindex].id != -1) {
+                                gthis.delItemSS.push({id: gthis.questionSS.itemsSimple[gindex].id});
+                            }
+                            gthis.questionSS.itemsSimple.splice(gindex, 1);
+                        }
+                    });
+
+                },
+
+                showSimpleSelection: function(){
+
+                    var htmlsimpleselection = "<div><p>"+this.questionSS.textoPregunta+"</p>";
+
+                    for (var index = 0; index < this.questionSS.itemsSimple.length; index++) {
+                        htmlsimpleselection += "<div><p>"+this.questionSS.itemsSimple[index].texto+"</p><div class='ident'>";
+                        for (var indi = 0; indi < this.questionSS.itemsSimple[index].incisos.length; indi++) {
+                            htmlsimpleselection += "<div class='div-radio'><input type='radio' id='form_p_r_s2_q0_ss" + index + "_" + indi + "' name='form_p_r_s2_q0_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                            htmlsimpleselection += this.questionSS.itemsSimple[index].incisos[indi].texto;
+                            htmlsimpleselection += "</p></label></div>";
+                        }
+                        htmlsimpleselection += "</div></div>";
+
+                    }
+                    htmlsimpleselection += "</div>";
+
+                    bootbox.dialog({
+                        message: htmlsimpleselection,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                    this.boxScrollTop();
+                },
+                //========================END SELECTION-SIMPLE==================================
+
+
+                //========================BEGIN SELECCION-MULTIPLE==================================
+                subirSM: function (indexP) {
+                    if (indexP != 0) {
+                        //cambio propiedad orden
+
+                        var tmpNum = this.questionMS.selectionmultiple.incisos[indexP].orden;
+                        this.questionMS.selectionmultiple.incisos[indexP].orden = this.questionMS.selectionmultiple.incisos[indexP - 1].orden;
+                        this.questionMS.selectionmultiple.incisos[indexP - 1].orden = tmpNum;
+
+                        //cambio de preguntas
+                        var tmpNum = this.questionMS.selectionmultiple.incisos[indexP];
+                        this.questionMS.selectionmultiple.incisos[indexP] = this.questionMS.selectionmultiple.incisos[indexP - 1];
+                        this.questionMS.selectionmultiple.incisos[indexP - 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                bajarSM: function (indexP) {
+                    if (indexP != (this.questionMS.selectionmultiple.incisos.length - 1)) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionMS.selectionmultiple.incisos[indexP].orden;
+                        this.questionMS.selectionmultiple.incisos[indexP].orden = this.questionMS.selectionmultiple.incisos[indexP + 1].orden;
+                        this.questionMS.selectionmultiple.incisos[indexP + 1].orden = tmpNum;
+                        //cambio de elementos
+
+                        var tmpNum = this.questionMS.selectionmultiple.incisos[indexP];
+                        this.questionMS.selectionmultiple.incisos[indexP] = this.questionMS.selectionmultiple.incisos[indexP + 1];
+                        this.questionMS.selectionmultiple.incisos[indexP + 1] = tmpNum;
+                    }
+                },
+
+                getIndex: function (index, tipo) {
+                    if (tipo == "item") {
+                        return "item_" + index;
+                    } else {
+                        return "inciso_" + index;
+                    }
+                },
+
+                addNewIncisoSM: function () {
+                    var neworden = this.obtenerOrden();
+                    ;
+                    if (this.questionMS.selectionmultiple.incisos[this.questionMS.selectionmultiple.incisos.length - 1].texto != '') {
+                        this.questionMS.selectionmultiple.incisos.push({
+                            id: '-1',
+                            correcta: false,
+                            orden: neworden,
+                            texto: 'Text...'
+                        });
+                    }
+                },
+
+                deleteItemMS: function (item, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gitem = item;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.questionMS.selectionmultiple.incisos[gindex].id != -1) {
+                                gthis.delIncisoMS.push({id: gthis.questionMS.selectionmultiple.incisos[gindex].id});
+                            }
+                            gthis.questionMS.selectionmultiple.incisos.splice(gindex, 1);
+                        }
+                    });
+                },
+
+                showMultipleSelection: function(){
+
+                    var htmlselectionmultiple = "<div><p>"+this.questionMS.textoPregunta+"</p>";
+
+                    for (var index = 0; index < this.questionMS.selectionmultiple.incisos.length; index++) {
+                        htmlselectionmultiple += "<div><div class='ident'>";
+                        htmlselectionmultiple += "<div class='div-radio'><input type='checkbox' id='form_p_r_s2_q0_ss"+index+"_1' name='form_p_r_s2_q0_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                        htmlselectionmultiple += this.questionMS.selectionmultiple.incisos[index].texto;
+                        htmlselectionmultiple += "</p></label></div>";
+                        htmlselectionmultiple += "</div></div>";
+
+                    }
+                    htmlselectionmultiple += "</div>";
+
+                    bootbox.dialog({
+                        message: htmlselectionmultiple,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                    this.boxScrollTop();
+                },
+                //========================END SELECCION-MULTIPLE==================================
+
+                //========================BEGIN LIST-SELECTION==================================
+                subirLS: function (indexP) {
+                    if (indexP != 0) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionLS.listselection.itemsList[indexP].orden;
+                        this.questionLS.listselection.itemsList[indexP].orden = this.questionLS.listselection.itemsList[indexP - 1].orden;
+                        this.questionLS.listselection.itemsList[indexP - 1].orden = tmpNum;
+                        //cambio de preguntas
+                        var tmpNum = this.questionLS.listselection.itemsList[indexP];
+                        this.questionLS.listselection.itemsList[indexP] = this.questionLS.listselection.itemsList[indexP - 1];
+                        this.questionLS.listselection.itemsList[indexP - 1] = tmpNum;
+
+                        //this.ordenarPreguntas();
+                    }
+                },
+
+                bajarLS: function (indexP) {
+                    if (indexP != (this.questionLS.listselection.itemsList.length - 1)) {
+                        //cambio propiedad orden
+                        var tmpNum = this.questionLS.listselection.itemsList[indexP].orden;
+                        this.questionLS.listselection.itemsList[indexP].orden = this.questionLS.listselection.itemsList[indexP + 1].orden;
+                        this.questionLS.listselection.itemsList[indexP + 1].orden = tmpNum;
+                        //cambio de elementos
+
+                        var tmpNum = this.questionLS.listselection.itemsList[indexP];
+                        this.questionLS.listselection.itemsList[indexP] = this.questionLS.listselection.itemsList[indexP + 1];
+                        this.questionLS.listselection.itemsList[indexP + 1] = tmpNum;
+                    }
+                },
+
+                addNewItem: function () {
+                    //if(this.question.listselection.itemsList[this.question.listselection.itemsList.length -1].texto != '' && this.question.listselection.itemsList[this.question.listselection.itemsList.length -1].correcta != ''){
+                    var neworden = this.obtenerOrden();
+                    ;
+                    this.questionLS.listselection.itemsList.push({
+                        id: '-1',
+                        orden: neworden,
+                        texto: 'Text...',
+                        correcta: this.questionLS.listselection.valores[0].texto
+                    })
+                    //}
+                },
+                addNewValor: function () {
+                    //if(this.questionLS.listselection.valores[this.questionLS.listselection.valores.length -1].texto != ''){
+                    this.questionLS.listselection.valores.push({
+                        id: '-1',
+                        texto: 'empty'
+                    });
+                    //}
+                },
+                actualizar: function (val, num) {
+                    if (this.questionLS.listselection.valores[num].texto == val) {
+                        num++;
+                    }
+                    for (var index = 0; index < this.questionLS.listselection.itemsList.length; index++) {
+                        if (this.questionLS.listselection.itemsList[index].correcta == val) {
+                            this.questionLS.listselection.itemsList[index].correcta = this.questionLS.listselection.valores[num].texto;
+                        }
+                    }
+                },
+
+                deleteValorLS: function (val, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gval = val;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.questionLS.listselection.valores[gindex].id != -1) {
+                                gthis.delValorLS.push({id: gthis.questionLS.listselection.valores[gindex].id});
+                            }
+                            gthis.questionLS.listselection.valores.splice(gindex, 1);
+                        }
+                    });
+
+                },
+
+                deleteItemLS: function (item, index) {
+                    var gthis = this;
+                    var gindex = index;
+                    var gitem = item;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.questionLS.listselection.itemsList[gindex].id != -1) {
+                                gthis.delItemLS.push({id: gthis.questionLS.listselection.itemsList[gindex].id});
+                            }
+                            gthis.questionLS.listselection.itemsList.splice(gindex, 1);
+                        }
+                    });
+
+                },
+
+                showListSelection: function(){
+
+                    var htmlvalores = "<select>";
+
+                    for (var index = 0; index < this.questionLS.listselection.valores.length; index++) {
+                        htmlvalores += "<option>";
+                        htmlvalores += this.questionLS.listselection.valores[index].texto;
+                        htmlvalores += "</option>";
+
+                    }
+                    htmlvalores += "</select>";
+
+                    var htmllistselection = "<div><p>"+this.questionMS.textoPregunta+"</p>";
+
+                    for (var index = 0; index < this.questionLS.listselection.itemsList.length; index++) {
+                        htmllistselection += "<div class='itemls'><div class='ident'>";
+                        //htmllistselection += "<p>";
+                        htmllistselection += this.questionLS.listselection.itemsList[index].texto;
+                        htmllistselection += htmlvalores;
+                        //htmllistselection += "</p>";
+                        htmllistselection += "</div></div>";
+
+                    }
+                    htmllistselection += "</div>";
+
+
+                    bootbox.dialog({
+                        message: htmllistselection,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                    this.boxScrollTop();
+                },
+
+                //========================END LIST-SELECTION==================================
+
+
+                //==================================BEGIN COMPLETA=====================================
+                updateData: function (data) {
+                    // sync content to component
+                    this.questionC.completa.vistaHtml = data;
+                    //this.html_preview=previewPregunta(data)
+                },
+                fullScreen: function () {
+                    this.$refs.editor.enableFullScreen()
+                },
+                focus: function () {
+                    // this.$refs.editor.focus()
+                },
+                reset: function () {
+                },
+                previewPregunta: function () {
+                    //construye html de la pregunta
+                    var ins = 7;
+                    var val = this.questionC.completa.vistaHtml;
+
+                    var caracteres = val;
+                    var temp = "";
+                    caracteres = caracteres.split("");
+                    var estexto = true;
+
+                    if (caracteres[0] == "|") {
+                        temp = "" + val;
+                    } else {
+                        temp = val;
+                    }
+
+                    var valoresk = [];
+                    var cuentaPalabras = 0;
+
+                    //this.question.completa.itemsComplete = [{}];
+                    valoresk = temp.split("|");
+                    var resultado = "";
+
+                    for (var i = 0; i < valoresk.length; i++) {
+
+                        if (estexto) {
+                            resultado += valoresk[i];
+                            //estexto = false;
+                        }
+                        else {
+                            //hay que crear un objeto item nuevo y hacerle push al arreglo de itemsComplete
+                            cuentaPalabras++;
+
+                            var itemC = new Object();
+                            itemC.id = '-1';
+                            itemC.orden = cuentaPalabras;//en contexto de otras preguntas debera ser, IndiceDeInicio+cuentaPalabras
+                            itemC.texto = valoresk[i];
+                            //alert(itemC.texto + " - " + i);
+                            //-----
+                            //this.question.completa.itemsComplete.push(itemC);
+                            resultado += " [" + cuentaPalabras + "]" + "<input v-on:input='alerta($event.target.value)' type='text' id='ins_" + ins + "_pal_" + cuentaPalabras + "' /> ";
+                        }
+                        estexto = !estexto;
+                    }
+
+                    var final = resultado; //.replace(/\n/g,"</br>");
+                    return final;
+
+                    //return "final";
+                },
+
+                guardarPalabras: function () {
+                    //construye html de la pregunta
+
+                    var ins = 7;
+                    var val = this.questionC.completa.vistaHtml;
+
+                    var caracteres = val;
+                    var temp = "";
+                    caracteres = caracteres.split("");
+                    var estexto = true;
+
+                    if (caracteres[0] == "|") {
+                        temp = "" + val;
+                    } else {
+                        temp = val;
+                    }
+
+                    var valoresk = [];
+                    var cuentaPalabras = 0;
+
+                    this.questionC.completa.itemsComplete = [];
+                    valoresk = temp.split("|");
+                    var resultado = "";
+
+                    for (var i = 0; i < valoresk.length; i++) {
+
+                        if (estexto) {
+                            resultado += valoresk[i];
+                            //estexto = false;
+                        }
+                        else {
+                            //hay que crear un objeto item nuevo y hacerle push al arreglo de itemsComplete
+                            cuentaPalabras++;
+
+                            var itemC = new Object();
+                            itemC.id = '-1';
+                            itemC.orden = cuentaPalabras;//en contexto de otras preguntas debera ser, IndiceDeInicio+cuentaPalabras
+                            itemC.texto = valoresk[i];
+                            //-----
+
+                            this.questionC.completa.itemsComplete.push(itemC);
+                            //resultado += " [" + cuentaPalabras + "]" + "<input v-on:input='alerta($event.target.value)' type='text' id='ins_" + ins + "_pal_" + cuentaPalabras + "' /> ";
+                        }
+                        estexto = !estexto;
+                    }
+
+                    //var final = resultado; //.replace(/\n/g,"</br>");
+                    //return final;
+                },
+
+                showComplete: function(){
+
+                    var htmlcomplete = "<div><p>"+this.questionC.textoPregunta+"</p>";
+
+                    htmlcomplete += this.previewPregunta();
+                    htmlcomplete += "</div>";
+
+
+                    bootbox.dialog({
+                        message: htmlcomplete,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                    this.boxScrollTop();
+                },
+
+                //==============================END COMPLETA=====================================
+
+
+                //===============================Question============================
+
+                guardarQuestion: function (question) {
+
+                    if (this.editPregunta == 1) {
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas[this.numPregunta] = question;
+
+                    } else {
+                        question.ordenPregunta = this.obtenerOrden();
+
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas.push(question);
+                    }
+                    this.visibilidad = 1;
+                    this.inciopagina();
+                },
+
+                continuarQuestion: function (question) {
+                    /*if (this.editPregunta == 1) {
+                     this.readingtmp.secciones[this.numSeccion - 1].preguntas[this.numPregunta] = question;
+                     } else {
+                     this.readingtmp.secciones[this.numSeccion - 1].preguntas.push(question);
+                     }*/
+                    if (this.editPregunta == 1) {
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas[this.numPregunta] = question;
+
+                    } else {
+                        question.ordenPregunta = this.obtenerOrden();
+
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas.push(question);
+                    }
+                    this.editPregunta == 1;
+                },
+
+                cancelarQuestion: function (question) {
+                    this.visibilidad = 1;
+                    this.inciopagina();
+                },
+
+                //==============================END QUESTION=====================================
+
+
+                //==============================BEGIN BANCO=====================================
+
+                mostrarBanco: function () {
+                    this.getBancoR();
+                },
+
+                regresarBancoReading: function () {
+                    //this.getBancoR();
+                    this.visibilidad=8;
+                    this.inciopagina();
+
+                },
+
+                regresarReading: function () {
+                    //this.getBancoR();
+                    this.visibilidad=1;
+                    this.inciopagina();
+
+                },
+
+                getBancoR: function () {
+                    if(this.habilidad==1){
+                        this.$http.get("{{  path('list_bank_reading_json') }}", function (data, status, request) {
+                            this.items = data;
+                            if(this.items.length > 0){
+                                var a=[];
+                                for(var i=0; i < this.items.length; i++){
+                                    a.push({opcion:false});
+                                }
+                                this.check = a;
+
+                                this.loading = true;
+                                jQuery('.overlay').css('display','none');
+                                this.visibilidad=8;
+                                this.inciopagina();
+                            }else{
+                                //banco vacio
+                            }
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }else if(this.habilidad==2){
+                        this.$http.get("{{  path('list_bank_listening_json') }}", function (data, status, request) {
+                            this.items = data;
+
+                            if(this.items.length > 0){
+                                var a=[];
+                                for(var i=0; i < this.items.length; i++){
+                                    a.push({opcion:false});
+                                }
+                                this.check = a;
+
+                                this.loading = true;
+                                jQuery('.overlay').css('display','none');
+
+                                this.visibilidad=8;
+                                this.inciopagina();
+                            }else{
+                                //banco vacio
+                            }
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }
+                },
+
+                verDetalleBancoReading: function(idbp){
+                    if(this.habilidad==1){
+                        this.$http.post("{{  path('bank_reading_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+                            this.visibilidad=9;
+                            this.inciopagina();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }else if(this.habilidad==2){
+                        this.$http.post("{{  path('bank_listening_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+                            this.visibilidad=9;
+                            this.inciopagina();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }
+                },
+
+                addDetalleBancoReading: function(idbp){
+                    if(this.habilidad==1){
+                        this.$http.post("{{  path('bank_reading_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+
+                            this.readingtmp.secciones.push(this.seccionbancox);
+
+                            this.visibilidad=1;
+                            this.inciopagina();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }else if(this.habilidad==2){
+                        this.$http.post("{{  path('bank_listening_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+
+                            this.readingtmp.secciones.push(this.seccionbancox);
+
+                            this.visibilidad=1;
+                            this.inciopagina();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }
+                },
+
+                //===============================END BANCO=====================================
+
+
+                //============================BEGIN CRUD==================================
+                postNewTest: function (prueba) {
+                    //alert(JSON.stringify(this.prueba));
+                    var longcadena = ((JSON.stringify(this.prueba)).split("\"\"")).length;
+                    if (longcadena > 1) {
+                        bootbox.dialog({
+                            message: "Existen datos nulos en la prueba",
+                            buttons: {
+                                "click": {
+                                    "label": "Aceptar",
+                                    "className": "btn-sm btn-primary",
+                                    "callback": function () {
+                                        //Example.show("Primary button");
+                                    }
+                                },
+                            },
+                        });
+
+                    } else {
+                        //alert(JSON.stringify(this.prueba));
+                        jQuery('.overlay').css('display','block');
+                        this.$http.post("{{  path('new_prueba') }}", {
+                            prueba: this.prueba,
+                        }, function (data, status, request) {
+                            this.prueba.id = data;
+                            this.$route.params.id = this.prueba.id;
+                            this.getList();
+                            window.location.href = '#' + this.prueba.id;
+
+                        });
+                    }
+                },
+                postEditTest: function (prueba) {
+                    //alert(JSON.stringify(this.prueba));
+                    var longcadena = ((JSON.stringify(this.prueba)).split("\"\"")).length;
+                    if (longcadena > 1) {
+                        bootbox.dialog({
+                            message: "Existen datos nulos en la prueba",
+                            buttons: {
+                                "click": {
+                                    "label": "Aceptar",
+                                    "className": "btn-sm btn-primary",
+                                    "callback": function () {
+                                        //Example.show("Primary button");
+                                    }
+                                },
+                            },
+                        });
+
+                    } else {
+                        //alert(JSON.stringify(this.prueba));
+                        jQuery('.overlay').css('display','block');
+
+                        this.$http.post("{{  path('edit_prueba') }}", {
+                            prueba: this.prueba,
+                            delSecR: this.delSecR,
+                            delQuestion: this.delQuestion,
+                            delItemVoF: this.delItemVoF,
+                            delItemSS: this.delItemSS,
+                            delIncisoSS: this.delIncisoSS,
+                            delIncisoMS: this.delIncisoMS,
+                            delItemLS: this.delItemLS,
+                            delValorLS: this.delValorLS,
+                            delItemC: this.delItemC,
+                        }, function (data, status, request) {
+                            this.delSecR = [];
+                            this.delQuestion = [];
+                            this.delItemVoF = [];
+                            this.delItemSS = [];
+                            this.delIncisoSS = [];
+                            this.delIncisoMS = [];
+                            this.delItemLS = [];
+                            this.delValorLS = [];
+                            this.delItemC = [];
+                            this.getList();
+                        });
+                    }
+                },
+
+                //read question
+                getList: function () {
+
+                    if (this.$route.params.id != -1) {
+                        this.$http.post("{{  path('prueba_json') }}", {
+                            id: this.prueba.id,
+                        }, function (data, status, request) {
+                            this.prueba = data;
+                            //alert(JSON.stringify(this.prueba));
+                            jQuery('.overlay').css('display','none');
+
+                            //this.$route.params.id = 2;
+                        })
+                    }else{
+                        jQuery('.overlay').css('display','none');
+
+                    }
+                },
+                //========================END CRUD==================================
+
+            },
+        });
+
+        //--->>>>>ruta lista de prueba<<<<<---
+        var List = Vue.extend({
+            template: '#list',
+            data: function () {
+                return {
+                    isActive: false,
+                    search: '',
+                    pagination: {},
+                    headers: [
+                        {
+                            text: 'Id',
+                            left: true,
+                            sortable: false,
+                            value: 'id'
+                        },
+                        //{text: 'Fecha', value: 'fecha'},
+                        {text: 'Testeo', value: 'testeo'},
+                        {text: 'Text', value: 'texto'},
+                        {text: 'Teacher', value: 'teacher'},
+                        {text: 'Reading', value: 'Reading'},
+                        {text: 'Listening', value: 'Listening'},
+                        {text: 'Action', sortable: false,},
+                    ],
+                    items: [
+                        {
+                            id: -1,
+                            //fecha: 'fecha',
+                            texto: 'KitKat',
+                        },
+                    ],
+                    startDate: '25-04-2010',
+                }
+            },
+            created: function () {
+                jQuery('.overlay').css('display','block');
+                this.getList();
+                //this.inicializar();
+            },
+
+            methods: {
+                enrutar: function (id) {
+                    return "/" + id;
+                },
+
+                ocultar: function () {
+                    this.isActive = false;
+                },
+
+                mostrar: function () {
+                    this.isActive = true;
+                },
+                //--------------------------------------BEGIN-CRUD---------------------------------------------
+                //read question
+                getList: function () {
+                    this.$http.get("{{  path('test_json') }}", function (data, status, request) {
+                        this.items = data;
+                        this.loading = true;
+                        jQuery('.overlay').css('display','none');
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                    });
+                },
+                delTest: function( index){
+                    jQuery('.overlay').css('display','block');
+                    this.$http.post("{{  path('delete_prueba') }}", {
+                        id: index,
+                    }, function (data, status, request) {
+                        this.getList();
+                    });
+                },
+
+            }
+        });
+
+        // 2. Define some routes
+        const routes = [
+            {path: '/:id', name: 'new_prueba', component: Prueba},
+            {path: '/', name: 'list_prueba', component: List},
+        ]
+
+        // 3. Create the router instance and pass the `routes` option
+        const router = new VueRouter({
+            routes: routes, // short for `routes: routes`
+        })
+
+        // 4. Create and mount the root instance.
+        const app = new Vue({
+            router: router,
+            delimiters: ['${', '}'],
+            data: {
+                msg: 'Sergio',
+            },
+
+        }).$mount('#app');
+
+        jQuery('.test').addClass('active');
+        jQuery('.test > a').addClass('active');
+    </script>
+{% endblock %}

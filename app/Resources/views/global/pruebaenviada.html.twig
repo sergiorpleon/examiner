@@ -1,0 +1,72 @@
+{% extends 'themefrontend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/app/css/material-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vuetifytable.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('bundles/app/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+    <style>
+        .tarjeta{
+            padding: 30px;
+            min-height: 240px;
+            margin: 20px 0px;
+            border: 1px solid #adadad;
+            border-radius: 4px;
+        }
+        .t-hab{
+            padding: 30px;
+
+        }
+        .t-hab > a{
+            width: 100%;
+            text-align: center;
+
+
+        }
+
+        .areabuttontest, .areabuttonpractice{
+            position: absolute;
+            bottom: -170px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block pageName %}
+   Examen Fuera de Tiempo
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    <div class="col-lg-12 tarjeta examen">
+        <div class="col-lg-12">
+            Examen Enviado con exito!!!
+
+        </div>
+        <div class="col-lg-12">
+        <!-- div class="col-lg-12 areabuttontest">
+            <div class="col-lg-6 t-hab"><a href="{{ path('list_reading') }}" class="btn btn-default"><div>READING</div></a></div>
+            <div class="col-lg-6 t-hab"><a href="{{ path('list_listening') }}" class="btn btn-default"><div>LISTENING</div></a></div>
+        </div -->
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vuetify.min.js') }}"></script>
+
+    <script src="{{ asset('bundles/app/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+    </script>
+
+{% endblock %}

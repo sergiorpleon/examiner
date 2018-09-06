@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Reading list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Horacomienzo</th>
+                <th>Textoinstrucciones</th>
+                <th>Textoinformacion</th>
+                <th>Tiempo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reading in readings %}
+            <tr>
+                <td><a href="{{ path('reading_show', { 'id': reading.id }) }}">{{ reading.id }}</a></td>
+                <td>{% if reading.horaComienzo %}{{ reading.horaComienzo|date('H:i:s') }}{% endif %}</td>
+                <td>{{ reading.textoInstrucciones }}</td>
+                <td>{{ reading.textoInformacion }}</td>
+                <td>{{ reading.tiempo }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('reading_show', { 'id': reading.id }) }}">show</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

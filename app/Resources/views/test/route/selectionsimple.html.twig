@@ -1,0 +1,73 @@
+<div id="selection-simple" class="form-panel box box-primary" v-show="visibilidad==3">
+    <div class="col-sm-12 container">
+        <!-- PREGUNTA -->
+        <h4>Question Simple Selection</h4>
+        <div class="">
+            <div class="col-sm-0"></div>
+            <div class="col-xs-12 col-editor">
+                <text-ckeditor nnumber="150" :nhab="habilidad" nname="questionss" :ntext="questionSS.textoPregunta" @update-text="updateTextSimpleSelection" ></text-ckeditor>
+            </div>
+            <div class="col-sm-0"></div>
+        </div>
+        <p>
+            <br>
+        </p>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-12 ss-inciso-panel" v-for="(item, indx) in questionSS.itemsSimple">
+
+            <button class="ss-inciso-btn-cerrar" v-on:click="deleteItemSS(item, indx)"><i class="fa fa-times" aria-hidden="true"></i></button>
+
+            <div class="col-sm-12">
+                <br/>
+            </div>
+
+            <div class="col-sm-1">
+                <button type="button" v-on:click="subirItemSS(indx)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                <button type="button" v-on:click="bajarItemSS(indx)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+            </div>
+            <label class="col-sm-0" style="visibility: hidden">{{"{{item.orden}}"}}</label>
+
+            <div class="col-sm-11 col-editor">
+                <text-ckeditor nnumber="100" :nhab="habilidad" nname="itemss" :nindex="indx" :ntext="item.texto" @update-text="updateTextItemSS" ></text-ckeditor>
+            </div>
+
+            <div class="col-sm-1">
+            </div>
+            <ul class="col-sm-11 col-editor">
+                <li class="col-sm-12 fondo-blanco borde-item-panel" v-for="(inciso, index) in item.incisos">
+                    <button class="ss-inciso-btn-cerrar" v-on:click="deleteIncisoSS(item, index)"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <div class="col-sm-12">
+                        <br/>
+                    </div>
+
+
+                    <div class="col-sm-1">
+                        <button type="button" v-on:click="subirIncisoSS(indx, index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                        <button type="button" v-on:click="bajarIncisoSS(indx, index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+                    </div>
+                    <label class="col-sm-0" style="visibility: hidden">{{"{{inciso.orden}}"}}</label>
+
+                    <input class="col-sm-1" type="radio" v-model="item.correcta"  v-bind:value="inciso.orden" v-bind:name="grupo(indx)"  >
+                    <div class="col-sm-10 col-editor">
+                        <text-ckeditor nnumber="100" :nhab="habilidad" nname="incisoss" :nindex="indx" :nsubindex="index" :ntext="inciso.texto" @update-text="updateTextIncisoSS" ></text-ckeditor>
+                    </div>
+                    <!-- div class="col-sm-2">
+                        <button class="btn btn-danger" v-on:click="deleteIncisoSS(item, index)"><i class="fa fa-minus-circle" aria-hidden="true"></i> Delete</button>
+                    </div -->
+                </li>
+            </ul>
+
+            <div class="col-sm-12 col-sm-push-1">
+                <button class="btn btn-success" v-on:click="addNewIncisoSS(item)"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-success" v-on:click="addNewItemSS()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button>
+
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarQuestion(questionSS)"><i class="fa fa-save"></i> Save</button>
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="continuarQuestion(questionSS)"><i class="fa fa-save"></i> Save and Continue</button>
+    <button class="btn btn-warning" style="margin-top: 20px;" v-on:click="cancelarQuestion(questionSS)"><i class="fa fa-save"></i> Cancel</button>
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSimpleSelection()"><i class="fa fa-eye"></i> Show</button>
+
+</div>

@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+      {% block title %}Admin Template{% endblock %}
+
+      {% block stylesheets %}
+    <!-- Bootstrap core CSS -->
+          <link href="{{ asset('bundles/app/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!--external css-->
+          <link href="{{ asset('bundles/app/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+          <link href="{{ asset('bundles/app/css/style.css') }}" rel="stylesheet">
+          <link href="{{ asset('bundles/app/css/style-responsive.css') }}" rel="stylesheet">
+
+          <link href="{{ asset('bundles/app/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+
+
+
+      {% endblock %}
+
+{% block body %}
+
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="{{ path('homepage') }}" class="logo"><b>ENGLISH TEST</b></a>
+            <!--logo end-->
+          <div class="top-menu">
+              <ul class="nav pull-right top-menu">
+                  {% if is_granted('ROLE_ADMIN') %}
+                      <li><a class="logout" href={{ path('fos_user_security_logout') }}>Logout</a></li>
+                  {% else %}
+                      <li><a class="logout login" href={{ path('fos_user_security_login') }}>Login</a></li>
+                  {% endif %}
+              </ul>
+          </div>
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+              	  <p class="centered"><a href="{{ path('fos_user_profile_show') }}"><img src="{{ asset('bundles/app/img/ui-sam.jpg') }}" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered"><a style="color: rgb(242, 242, 242);" href="{{ path('fos_user_profile_show') }}">{{ app.user.nombre }}</a></h5>
+
+                  <li class="mt">
+                      <a href="{{ path('config') }}">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu bank">
+                      <a href="javascript:;" >
+                          <i class="fa fa-cogs"></i>
+                          <span>Bank of Section</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="{{ path('bank_reading_index') }}">Reading Bank</a></li>
+                          <li><a  href="{{ path('bank_listening_index') }}">Listening Bank</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu test">
+                      <a class="" href="javascript:;" >
+                          <i class="fa fa-book"></i>
+                          <span>Tests</span>
+                      </a>
+                      <ul class="sub">
+                          <li class=""><a  href="{{ path('test_route') }}#/-1">New Test</a></li>
+                          <li><a  href="{{ path('test_route') }}">List Tests</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu result">
+                      <a href="javascript:;" >
+                          <i class=" fa fa-bar-chart-o"></i>
+                          <span>Results</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="{{ path('list_results') }}">List All Results</a></li>
+                      </ul>
+                      <ul class="sub">
+                          <li><a  href="{{ path('list_evals') }}">List Results for Test</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu config">
+                      <a href="#" >
+                          <i class="fa fa-users"></i>
+                          <span>Users</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="{{ path('list_users') }}">List Users</a></li>
+                      </ul>
+                  </li>
+
+                  <!-- li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Forms</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="form_component.html">Form Components</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-th"></i>
+                          <span>Data Tables</span>
+                      </a>
+                      <ul class="sub">
+                          <li><a  href="basic_table.html">Basic Table</a></li>
+                          <li><a  href="responsive_table.html">Responsive Table</a></li>
+                      </ul>
+                  </li  -->
+
+
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+
+         <!-- **********************************************************************************************************************************************************
+         MAIN CONTENT
+         *********************************************************************************************************************************************************** -->
+          <!--main content start-->
+
+          <section id="main-content">
+
+              <div class="wrapper site-min-height">
+                  <!-- h3><i class="fa fa-angle-right"></i> {# block pageName %} {% endblock #}</h3 -->
+                  <div class="row mt">
+                      <div class="overlay">
+                          <div>
+                              <div>
+                                  <i class="fa fa-refresh fa-spin"></i><span> Loading...</span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-12 ">
+
+                          {% block content %}{% endblock %}
+                      </div>
+                  </div>
+
+              </div><! --/wrapper -->
+          </section><!-- /MAIN CONTENT -->
+
+          <!--main content end-->
+
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2018 - UCLV
+              <a href="#" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+{% endblock %}
+  {% block javascripts %}
+    <!-- js placed at the end of the document so the pages load faster -->
+      <script src="{{ asset('bundles/app/js/jquery.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+
+      <!-- <script src="{#asset('bundles/app/js/jquery-ui-1.9.2.custom.min.js') #}"></script> -->
+      <script src="{{ asset('bundles/app/js/jquery.ui.touch-punch.min.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/jquery.dcjqaccordion.2.7.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/jquery.scrollTo.min.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/jquery.nicescroll.js') }}"></script>
+      <!--common script for all pages-->
+      <script src="{{ asset('bundles/app/js/common-scripts.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/bootbox.js') }}"></script>
+
+      <!--script for this page-->
+      <script src="{{ asset('bundles/app/js/jquery-ui.min.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/bootstrap-datepicker.min.js') }}"></script>
+      <script src="{{ asset('bundles/app/js/bootstrap-timepicker.min.js') }}"></script>
+
+
+
+
+  {% endblock %}
+

@@ -1,0 +1,660 @@
+{% extends 'themebackend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/app/css/material-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vuetifytable.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/bootstrap-timepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vue-html5-editor.css') }}" rel="stylesheet">
+    <style>
+        .list .ui-datepicker {
+            background-color: #FFF;
+            border: 1px solid rgba(0, 0, 0, .2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        }
+
+        .list .dropdown-menu, .ui-datepicker {
+            -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        }
+
+        .list .ui-datepicker {
+            width: 17em;
+            padding: .2em .2em 0;
+            display: none;
+        }
+
+        .list .ui-helper-clearfix {
+            min-height: 0;
+        }
+
+        .list .ui-helper-clearfix:after, .ui-helper-clearfix:before {
+            content: "";
+            display: table;
+            border-collapse: collapse;
+        }
+
+        .reading .nav-tabs-left {
+            margin-right: -1px;
+            padding-right: 0px;
+            border-right: 1px solid #ddd;
+        }
+
+        .reading .nav-left > li > a {
+            margin-right: 2px;
+            line-height: 1.42857143;
+            border: 1px solid transparent;
+            border-radius: 4px 0px 0px 4px;
+        }
+
+        .reading .nav-left > li > a {
+            padding-right: 0px;
+            margin-right: -1px;
+        }
+
+        .reading .nav-left > li.active > a, .nav-left > li.active > a:focus, .nav-left > li.active > a:hover {
+            color: #555;
+            cursor: default;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-right-color: transparent;
+        }
+
+        .reading .tab-content {
+            border-top: 1px solid #ddd;
+
+        }
+
+        .reading .btn_empty {
+            background-color: transparent;
+            border-color: transparent;
+            padding: 0px;
+        }
+
+        span.icon.custom-icon.table {
+            margin-bottom: 0px !important;
+        }
+
+        .col-sm-0, .col-xs-0 {
+            width: 0%;
+        }
+
+        /*estilo personalizado*/
+        .ss-inciso-panel {
+            border: 1px solid #ddd;
+            background: aliceblue;
+        }
+
+        .borde-item-panel {
+            border: 1px solid #ddd;
+        }
+
+        .fondo-blanco {
+            background: white;
+        }
+
+        .ss-inciso-btn-cerrar {
+            position: relative;
+            float: right;
+            right: -22px;
+            top: -7px;
+            z-index: 1;
+        }
+
+        .box.box-primary {
+            border-top-color: #3c8dbc;
+        }
+
+        .box {
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 3px solid #d2d6de;
+            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-50w {
+            width: 50px;
+        }
+
+        .btn-70w {
+            width: 80px;
+        }
+
+        .col-editor {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .en-barra {
+            position: fixed;
+            z-index: 10000;
+            top: -5px;
+            right: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .en-barra {
+                position: absolute;
+                top: -135px;
+            }
+        }
+
+        .card > ul {
+            background: white;
+        }
+
+        .mce-tinymce.mce-container.mce-panel.mce-fullscreen {
+            margin-top: 60px !important;
+        }
+
+        .btn {
+            padding: 4px 12px;
+            line-height: 1.5;
+
+        }
+
+        .btn-default {
+            background-color: #f4f4f4;
+            color: #444;
+            border-color: #ddd;
+        }
+
+        .modal-dialog > .modal-content .btn {
+            border-radius: 1px !important;
+        }
+
+        .modal-dialog > .modal-content {
+            border-radius: 1px !important;
+        }
+
+        .modal-dialog {
+            width: 400px;
+
+        }
+
+        .table > thead:first-child > tr:first-child > th {
+            color: #367fa9;
+        }
+
+        .overlay > div {
+            max-width: 200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            background: rgba(200, 200, 200, 0.1);
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: fixed;
+            display: none;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1050;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+            outline: 0;
+        }
+
+        .limit-height {
+            max-height: 35px;
+            overflow-y: hidden;
+
+        }
+
+        .mce-branding.mce-widget.mce-label.mce-flow-layout-item.mce-last {
+            display: none;
+        }
+
+        .result > ul {
+            display: block;
+        }
+
+        .show-preview > div > div .bootbox-body {
+            padding: 20px;
+        }
+
+        .institucionr{
+            padding: 0px;
+            background-color: rgb(243, 243, 243);
+        }
+        .carrerar{
+            border-top: 1px solid darkgrey;
+        }
+        .row-margin.col-sm-9{
+            border-top: 1px solid darkgrey;
+
+        }
+        .row-margin{
+            padding: 5px 10px;
+        }
+        .institucionr > div > div,
+        .carrerar > div > div{
+            padding: 10px 15px;
+        }
+
+        .inactivei{
+            color: #23527c;
+        }
+        .activei{
+            border-radius: 5px 0px 0px 5px;
+            border-left: 1px solid darkgrey;
+            border-top: 1px solid darkgrey;
+            border-bottom: 1px solid darkgrey;
+            background-color: white;
+        }
+
+        .addbtn{
+            border-top: 1px solid darkgrey;
+            padding-top: 20px;
+            padding-left: 0px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="app">
+        <router-view></router-view>
+        <!-- plantilla componente prueba -->
+        <script type="text/x-template" id="config">
+            <div>
+                <div class="row form-panel box box-primary">
+                    <div class="col-sm-6">
+                        <h4>Institution</h4>
+
+                        <div v-for="(inst, index) in this.config.instituciones">
+
+                            <div v-if="inst.edit==false">
+                                <div class="row-margin col-sm-9">
+                                    {{ "{{ inst.nombre }}" }}
+                                </div>
+                                <div class="row-margin1 col-sm-3">
+                                    <button type="button" v-on:click="editInstitucion(index)" class="btn_empty"
+                                            style="float: left  !important; margin-right: 5px;"><span
+                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
+                                    <button type="button" v-on:click="deleteInstitucion(index)" class="btn_empty"
+                                            style="float: left  !important; margin-right: 5px;"><span
+                                                class="btn__content"><i class="fa fa-trash-o"></i></span></button>
+                                </div>
+                            </div>
+                            <div v-if="inst.edit==true">
+                                <div class="row-margin col-sm-9">
+                                    <input class="" v-model="inst.nombre">
+                                </div>
+                                <div class="row-margin1 col-sm-3">
+                                    <button type="button" v-on:click="editInstitucion(index)" class="btn_empty"
+                                            style="float: left  !important; margin-right: 5px;"><span
+                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-9 addbtn">
+                            <button type="button" v-on:click="addInstitucion()" class="btn_empty"
+                                    style="float: left  !important; margin-right: 5px;"><span class="btn__content"><i
+                                            class="fa fa-plus-circle"></i> New</span></button>
+
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h4>Career</h4>
+
+                        <div v-for="(car, index) in this.config.carreras">
+
+                            <div v-if="car.edit==false">
+                                <div class="row-margin col-sm-9">
+                                    {{ "{{ car.nombre }}" }}
+                                </div>
+                                <div class="row-margin1 col-sm-3">
+                                    <button type="button" v-on:click="editCarrera(index)" class="btn_empty"
+                                            style="float: left  !important; margin-right: 5px;"><span
+                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
+                                    <button type="button" v-on:click="deleteCarrera(index)" class="btn_empty"
+                                            style="float: left  !important; margin-right: 5px;"><span
+                                                class="btn__content"><i class="fa fa-trash-o"></i></span></button>
+                                </div>
+                            </div>
+                            <div v-if="car.edit==true">
+                                <div class="row-margin col-sm-9">
+                                    <input class="" v-model="car.nombre">
+                                </div>
+                                <div class="row-margin1 col-sm-3">
+                                    <button type="button" v-on:click="editCarrera(index)" class="btn_empty"
+                                            style="float: left  !important; margin-right: 5px;"><span
+                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-9 addbtn">
+                            <button type="button" v-on:click="addCarrera()" class="btn_empty"
+                                    style="float: left  !important; margin-right: 5px;"><span class="btn__content"><i
+                                            class="fa fa-plus-circle"></i> New</span></button>
+
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarCarreraInstitucion()">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <div class="row form-panel box box-primary">
+                    <h4>Define Institution Career</h4>
+                    <div class="institucionr col-sm-6">
+                        <div v-for="(est, index) in this.config.estudias">
+
+                            <div class="col-sm-12" v-on:click="actualizarIndex(index)" v-bind:class="{ inactivei: index!=indinstactual, activei: index==indinstactual }">
+                                {{ "{{ est.nombre_institucion }}" }}
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 carrerar">
+                        <div v-for="(estt, indext) in this.carrerasActuales">
+
+
+                            <div class="carrera col-sm-12">
+                                <input class="" type="checkbox" v-model="estt.select">
+                              {{ "{{ estt.nombre_carrera }}" }}
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarEstudia()">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-router.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vuetify.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+
+
+        //-----------------Result user x prueba x
+        var Config = Vue.extend({
+            template: '#config',
+            data: function () {
+                return {
+
+                    config: {
+                        carreras:[ ],
+                        instituciones:[ ],
+                        estudias:[ ]
+                    },
+                    delInstitucion: [],
+                    newInstitucion: '',
+                    delCarrera: [],
+                    newCarrera: '',
+                    delEstudia: [],
+                    newCarrera: '',
+
+                    carrerasActuales: [],
+                    indinstactual: 0,
+
+                };
+            },
+            created: function () {
+                jQuery('.overlay').css('display', 'block');
+
+                this.getConfig();
+
+                window.scrollTo(0, 0);
+            },
+
+            methods: {
+
+                actualizarIndex: function (index) {
+                    if(this.config.estudias){
+                        this.carrerasActuales = {};
+                        this.carrerasActuales = this.config.estudias[index].carreras;
+
+                        this.indinstactual = index;
+                    }
+                    //console.log(JSON.stringify(this.carrerasActuales));
+                },
+
+                addCarrera: function () {
+                    var textaddcar = '<div class="col-sm-12"><h4>Add Career</h4> </div><div class="col-sm-12">';
+                    textaddcar += '<input class="" id="newcar" v-model="newCarrera"> </div> <div class="col-sm-3"> </div>';
+                    var gthis = this;
+
+                    bootbox.dialog({
+                        message: textaddcar,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Add",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    var inputcar = jQuery("#newcar").val();
+                                    if (inputcar != '') {
+
+                                        gthis.config.carreras.push(
+                                                {
+                                                    'id': -1,
+                                                    'nombre': inputcar,
+                                                    'edit': false,
+                                                }
+                                        );
+                                        gthis.newInstitucion = '';
+                                    }
+                                }
+                            },
+                            "cancelar": {
+                                "label": "Cancelar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+                },
+                editCarrera: function (index) {
+                    if (this.config.carreras[index].edit) {
+                        this.config.carreras[index].edit = false;
+                    } else {
+                        this.config.carreras[index].edit = true;
+                    }
+                    //alert(this.config.carreras[index].edit);
+                },
+                deleteCarrera: function (index) {
+                    var gthis = this;
+                    var gindex = index;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.config.carreras[gindex].id != -1) {
+                                gthis.delCarrera.push({id: gthis.config.carreras[gindex].id});
+                            }
+                            gthis.config.carreras.splice(gindex, 1);
+                            // gthis.ordenarSeccion();
+                        }
+                    });
+                },
+
+                addInstitucion: function () {
+                    var textaddinst = '<div class="col-sm-12"><h4>Add Institution</h4> </div><div class="col-sm-12">';
+                    textaddinst += '<input class="" id="newinst" v-model="newInstitucion"> </div> ';
+                    var gthis = this;
+
+                    bootbox.dialog({
+                        message: textaddinst,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Add",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    var inputinst = jQuery("#newinst").val();
+                                    if (inputinst != '') {
+
+                                        console.log(gthis.config.instituciones);
+                                        gthis.config.instituciones.push(
+                                                {
+                                                    'id': -1,
+                                                    'nombre': inputinst,
+                                                    'edit': false,
+                                                }
+                                        );
+                                        gthis.newInstitucion = '';
+                                    }
+                                }
+                            },
+                            "cancelar": {
+                                "label": "Cancelar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+
+                    //alert(JSON.stringify(this.config));
+                },
+                editInstitucion: function (index) {
+                    if (this.config.instituciones[index].edit) {
+                        this.config.instituciones[index].edit = false;
+                    } else {
+                        this.config.instituciones[index].edit = true;
+                    }
+                    //alert(this.config.carreras[index].edit);
+                },
+
+                deleteInstitucion: function (index) {
+                    var gthis = this;
+                    var gindex = index;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            if (gthis.config.instituciones[gindex].id != -1) {
+                                gthis.delInstitucion.push({id: gthis.config.instituciones[gindex].id});
+                            }
+                            gthis.config.instituciones.splice(gindex, 1);
+                            // gthis.ordenarSeccion();
+                        }
+                    });
+                },
+
+
+                //============================BEGIN CRUD==================================
+
+                //read question
+                getConfig: function () {
+                    this.$http.get("{{  path('config_json') }}", {
+                        //id: this.results.prueba,
+                    }, function (data, status, request) {
+                        if(data.carreras) {
+                            this.config.carreras = data.carreras;
+                        }
+                        if(data.instituciones){
+                        this.config.instituciones = data.instituciones;
+                        }
+                        this.carrerasActuales = {};
+
+                        if(data.estudias) {
+                            this.config.estudias = data.estudias;
+                            this.actualizarIndex(0);
+                        }
+
+                        //alert(JSON.stringify(this.config));
+                        jQuery('.overlay').css('display', 'none');
+                    })
+                },
+
+                guardarCarreraInstitucion: function () {
+
+
+                    this.$http.post("{{  path('save_carrera_institucion') }}", {
+                        config: this.config,
+                        delCarrera: this.delCarrera,
+                        delInstitucion: this.delInstitucion,
+                    }, function (data, status, request) {
+                        this.getConfig();
+
+                        //alert(JSON.stringify(this.prueba));
+                        jQuery('.overlay').css('display', 'none');
+                    })
+
+                },
+                guardarEstudia: function () {
+                    alert(JSON.stringify(this.config));
+                    //console.log(this.config.estudias);
+                    this.$http.post("{{  path('save_estudia') }}", {
+                        config: this.config,
+                        //delEstudia: this.delInstitucion,
+                    }, function (data, status, request) {
+                        //this.results = data;
+                        this.getConfig();
+
+                        //alert(JSON.stringify(this.prueba));
+                        jQuery('.overlay').css('display', 'none');
+                    })
+
+                },
+                //========================END CRUD==================================
+
+            },
+        });
+
+        // 2. Define some routes
+        const routes = [
+            {path: '/', name: 'view_config', component: Config},
+        ]
+
+        // 3. Create the router instance and pass the `routes` option
+        const router = new VueRouter({
+            routes: routes, // short for `routes: routes`
+        })
+
+        // 4. Create and mount the root instance.
+        const app = new Vue({
+            router: router,
+            delimiters: ['${', '}'],
+            data: {
+                msg: 'Sergio',
+            },
+
+        }).$mount('#app');
+
+        jQuery('.config').addClass('active');
+        jQuery('.config > a').addClass('active');
+    </script>
+{% endblock %}

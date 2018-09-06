@@ -1,0 +1,18 @@
+# common trashes
+*~
+*.DS_Store
+*.project
+*.settings
+*.tmp
+*.swp
+*Thumb.db
+
+# Symfony2 related
+vendor/*
+doc/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+app/config/*.ini
+app/spool/*

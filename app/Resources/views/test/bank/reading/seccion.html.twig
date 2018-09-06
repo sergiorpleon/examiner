@@ -1,0 +1,139 @@
+
+<div id="habilidad" class="reading row form-panel box box-primary" v-show="visibilidad==1">
+    
+            <div class="col-sm-12" style="background-color: #fff;">
+                
+                    <h4>Section</h4>
+                    <div class="col-xs-12 col-editor">
+                        <text-ckeditor  nnumber="150" :nhab="habilidad" nname="seccion" :ntext="readingtmp.textoInstruccion"  @update-text="updateTextInstSeccion" ></text-ckeditor>
+                    </div>
+
+                    <div class="col-xs-12 audio" v-show="habilidad==2">
+                        <form :id="setIdAudio()" enctype="multipart/form-data"  method="POST">
+                        <input type="file" name="archivo" class="btn btn-mini btn-primary" accept="audio/*"/>
+                        </form>
+                        <br/>
+                        <button v-on:click="cargarAudio(readingtmp)">Upload</button>
+                        <br/>
+                        <div>
+                          Audio:
+                            {{ '{{ readingtmp.urlAudio }}' }}
+                        </div>
+                        <audio  v-bind:src="readingtmp.urlAudio" controls></audio>
+                    </div>
+
+                    <p class="col-sm-12"><br/></p>
+                    <div class="col-xs-12">
+                        <button style="float: right" type="button" id="boton_cerrar_1" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+                            <i aria-hidden="true" class="fa fa-plus-circle"></i> Add New Question</button>
+                    </div>
+                    <p class="col-sm-12"><br/></p>
+                    <ul style="padding-left: 2px;">
+                        <li  class="row">
+                            <div class="col-xs-1">
+                                Order
+                            </div>
+                            <div class="col-xs-6">Texto Question</div>
+                            <div class="col-xs-2">Type</div>
+                            <div class="col-xs-1">Items</div>
+                            <div class="col-xs-2">
+                                Action
+                            </div>
+                        </li>
+                        <li v-for="(preguntax, index) in readingtmp.preguntas" class="row">
+                            <div class="col-xs-1">
+                                <button type="button" v-on:click="subirPregunta(readingtmp, index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                                <button type="button" v-on:click="bajarPregunta(readingtmp, index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+                            </div>
+                            <label class="col-sm-0" style="visibility: hidden">{{"{{preguntax.ordenPregunta}}"}}</label>
+                            <div class="col-xs-6 limit-height" v-html="preguntax.textoPregunta"></div>
+                            <div class="col-xs-2">{{"{{ tipoPregunta[ preguntax.tipoPregunta ]}}"}}</div>
+                            <div class="col-xs-1">{{"{{  preguntax.totalItem }}"}}</div>
+                            <div class="col-xs-2">
+                                <button  class="btn btn-warning  btn-xs btn-50w" v-on:click="mostrarPregunta(preguntax.tipoPregunta, readingtmp, index)" >
+                                    <span ><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                </button>
+
+                                <button v-on:click="deletePregunta(readingtmp, index)" class="btn btn-danger  btn-xs btn-50w"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            </div>
+                        </li>
+                    </ul>
+
+               
+
+
+                <!-- Modal -->
+                <div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close eventocerrar" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title">Adicionar nueva Pregunta</h3>
+                            </div>
+                            <div class="modal-body row">
+                                <div class="contenedor_respuestas">
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-1"></div>
+                                        <h4 class="col-xs-10">Type of Question</h4>
+                                        <div class="col-xs-1"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-1"></div>
+                                        <a v-on:click="newVoF()" data-dismiss="modal"class="btn btn-primary col-xs-10 eventocerrar" >
+                                            <span >Add True False</span>
+                                        </a>
+                                        <div class="col-xs-1"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-1"></div>
+                                        <a  v-on:click="newSimpleSeleccion()" data-dismiss="modal"class="btn btn-primary col-xs-10 eventocerrar">
+                                            <span >Add Simple Seleccion</span>
+                                        </a>
+                                        <div class="col-xs-1"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-1"></div>
+                                        <a  v-on:click="newMultipleSeleccion()" data-dismiss="modal" class="btn btn-primary col-xs-10 eventocerrar">
+                                            <span >Add Multiple Selection</span>
+                                        </a>
+                                        <div class="col-xs-1"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-1"></div>
+                                        <a  v-on:click="newListSeleccion()" data-dismiss="modal" class="btn btn-primary col-xs-10 eventocerrar">
+                                            <span >Add List Selection</span>
+                                        </a>
+                                        <div class="col-xs-1"></div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-1"></div>
+                                        <a  v-on:click="newComplete()" data-dismiss="modal"  class="btn btn-primary col-xs-10 eventocerrar">
+                                            <span>Add Complete</span>
+                                        </a>
+                                        <div class="col-xs-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <p type="button" class="btn btn-default eventocerrar" data-dismiss="modal">Close</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+            </div>
+       
+    <!-- div v-show="habilidad==1">
+        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarReading()"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="continuarReading()"><i class="fa fa-save"></i> Guardar y Continuar</button>
+        <button class="btn btn-warning" style="margin-top: 20px;" v-on:click="cancelarReading()"><i class="fa fa-save"></i> Cancelar</button>
+    </div>
+    <div v-show="habilidad==2">
+        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarListening()"><i class="fa fa-save"></i> Guardar</button>
+        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="continuarListening()"><i class="fa fa-save"></i> Guardar y Continuar</button>
+        <button class="btn btn-warning" style="margin-top: 20px;" v-on:click="cancelarListening()"><i class="fa fa-save"></i> Cancelar</button>
+    </div -->
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i class="fa fa-eye"></i> Show</button>
+
+</div>

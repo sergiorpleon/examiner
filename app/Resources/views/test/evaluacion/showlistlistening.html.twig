@@ -1,0 +1,58 @@
+{% extends 'themefrontend.html.twig' %}
+{# reproduce únicamente los campos task: descripción #}
+
+ {#  form_start(form) #}
+{% block tiemporestante %}
+
+    {% set fecha1 = '10-2-2018-2-5'  %}
+    <div id="tiempo" class="tiempo" style="position: absolute;
+    top: 85px;
+    right: 50px;
+    z-index: 10;">
+
+        {{ fecha1 | hora_actual(zonahoraria) }}
+    </div>
+    <canvas id="canvas_reloj" style="position:absolute; transform: scale(0.6); right: -20px; top: -20px; background-color: #fefefe; border-radius: 100%;"></canvas>
+    {% set fechaactual = anno_actual~','~mes_actual~','~dia_actual~','~hora_actual~','~minuto_actual~','~segundo_actual  %}
+
+    {% include 'global/reloj.html.twig' with { 'fechaactual': fechaactual } %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="wrapper site-min-height">
+    {# {{ form_widget(form) }} #}
+    <h1>List of Test</h1>
+    <br/>
+    {% for prueba in pruebas %}
+        {%  if (prueba.idListening != null) %}
+            {%  set ind =  loop.index-1 %}
+            {% set dia = prueba.idListening.fecha  | date('d') %}
+            {% set mes = prueba.idListening.fecha  | date('m') %}
+            {% set anno = prueba.idListening.fecha  | date('Y') %}
+            {% set hora = prueba.idListening.horaComienzo | date('H') %}
+            {% set minuto = prueba.idListening.horaComienzo | date('i') %}
+            {% set fecha = anno~'-'~mes~'-'~dia~'-'~hora~'-'~minuto  %}
+
+            {%   if ((true)) %}
+                    <br/>
+                    {{ prueba.id }}
+                    Orientacion Prueba: {{ prueba.textoOrientacion |raw}}
+                    <div>Listening:</div>
+                    {{ prueba.idListening.textoInstrucciones | raw }}
+                <div id="tiempo{{ ind }}" class="tiempo btn btn-default">
+                    {{ fecha | mostrar_tiempo(90, path('eval_examen_listening',
+                    { 'id': prueba.id }), ind, zonahoraria) }}
+
+
+                </div>
+                ----
+                <a href="{{ path('eval_examen_listening',
+                { 'id': prueba.id }) }}"> Resolver</a>
+                     <hr/>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

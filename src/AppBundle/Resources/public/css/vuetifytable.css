@@ -1,0 +1,255 @@
+
+/*flechas arrivas abajo*/
+.datatable thead th.column.sortable.active.desc i {
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+}
+.datatable thead th.column.sortable.active i {
+    color: rgba(0,0,0,.87);
+    opacity: 1;
+}
+.datatable thead th.column.sortable:hover i {
+    opacity: .6;
+}
+.datatable thead th.column.sortable i {
+    color: rgba(0,0,0,.38);
+    font-size: 16px;
+    vertical-align: sub;
+    display: inline-block;
+    opacity: 0;
+    transition: .3s cubic-bezier(.25,.8,.25,1);
+}
+
+/*elementos por paginas*/
+.datatable__actions {
+    height: 20px;
+    color: rgba(0,0,0,.54);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 12px;
+}
+.datatable__actions__select {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.input-group--select .input-group__selections__comma {
+    display: inline-block;
+    font-size: 16px;
+    height: 30px;
+    padding-top: 4px;
+    padding-right: 4px;
+}
+
+.input-group--select.input-group--dark .input-group__selections__comma {
+    color: rgba(0,0,0,.87);
+}
+.datatable__actions__select .input-group--select .input-group__selections__comma {
+    color: rgba(0,0,0,.54)!important;
+    font-size: 12px;
+    padding-top: 6px;
+}
+.input-group--select .input-group__selections__comma {
+    display: inline-block;
+    font-size: 16px;
+    height: 30px;
+    padding-top: 4px;
+    padding-right: 4px;
+}
+
+.datatable__actions__select .input-group--select {
+    margin: 13px 0 13px 34px;
+    position: static;
+    /*padding-left: 20px;
+    padding-right:27px;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: thin;
+    height: 20px;*/
+}
+.input-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    min-width: 24px;
+    margin: 18px 0;
+    position: relative;
+    width: 100%;
+    outline: none;
+}
+.input-group--select .input-group__input, .input-group--select input {
+    cursor: pointer;
+}
+.input-group__input {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 100%;
+    flex: 1 0 100%;
+    min-width: 0;
+    min-height: 30px;
+}
+
+.input-group--focused .menu{
+    position:absolute;
+    margin-top: 8px;
+    margin-left: -20px;
+
+}
+.input-group--focused .menu .menu__content{
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.176) !important;
+}
+.input-group--focused .menu .list{
+    -webkit-padding-start: 0px;
+    padding: 0px;
+
+}
+.input-group--focused .menu .list .list__item{
+
+
+    text-align: center;
+}
+
+/*rango pginas etiqueta*/
+.datatable__actions__pagination {
+    text-align: center;
+    margin: 0 26px 0 32px;
+}
+
+/*boton izquierda*/
+.btn--dark.btn--disabled:not(.btn--loader), .fab--dark.btn--disabled:not(.btn--loader) {
+    border-style: none !important;
+    color: rgba(0,0,0,.3)!important;
+    opacity: 1;
+}
+.btn--flat.btn--dark.btn--disabled, .fab--flat.btn--dark.btn--disabled {
+    color: rgba(0,0,0,.3);
+}
+.btn.btn--disabled:not(.btn--loader), .fab.btn--disabled:not(.btn--loader) {
+    color: rgba(0,0,0,.3);
+}
+.datatable__actions .btn {
+    color: inherit;
+    border-style: none !important;
+    border-width: 0px !important;
+    border-style: none !important;
+    border-color: transparent !important;
+}
+.btn--icon.btn--disabled, .fab--icon.btn--disabled {
+    background-color: transparent!important;
+    color: hsla(0,0%,100%,.26)!important;
+    pointer-events: none;
+}
+.btn.btn--disabled, .fab.btn--disabled {
+    box-shadow: none!important;
+    pointer-events: none;
+    opacity: .4;
+}
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button;
+}
+.btn--dark, .fab--dark {
+    color: rgba(0,0,0,.87);
+}
+.btn--icon, .fab--icon {
+    background: transparent;
+    box-shadow: none!important;
+    border-radius: 50%;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 36px;
+    width: 36px;
+    min-width: 0;
+    padding: 0;
+}
+.btn--flat, .fab--flat {
+    background-color: transparent!important;
+    box-shadow: none!important;
+}
+
+/*item de lista */
+.list__item{
+    background-color: transparent !important;
+}
+.list__tile.list__tile--active .list__tile__title{
+    color: #fff;
+    background-color: #20a0ff !important;
+
+}
+.list__tile__title {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.list__tile .list__tile__title:hover {
+    background-color: #e4e8f1 !important;
+}
+.datatable__progress .column {
+    padding: 0px !important;
+}
+.table__overflow>table>tbody>tr:nth-child(odd)>td, .table__overflow>tbody>tr:nth-child(odd)>th {
+    background-color: #f9f9f9;
+}
+.table__overflow td, .table__overflow th.is-leaf {
+    border-bottom: 1px solid #dfe6ec;
+}
+.table__overflow td, .table__overflow th {
+    border-right: 1px solid #dfe6ec;
+}
+.table__overflow th, .table__overflow thead {
+    border-bottom: 1px solid #dfe6ec;
+}
+
+.table__overflow th {
+    overflow: hidden;
+    background-color: #eef1f6;
+    text-align: left;
+}
+.table__overflow {
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    background-color: #fff;
+    border: 1px solid #dfe6ec;
+    font-size: 14px;
+    color: #1f2d3d;
+}
+.datatable.table{
+    margin-bottom: 0px;
+}
+
+
+.material-icons.icon.icon--dark{
+    margin-right: 5px;
+}
+
+.datatable thead th.column.sortable {
+    cursor: pointer;
+}
+
+.input-group--select .input-group__input, .input-group--select input {
+    cursor: pointer;
+}
+
+:focus {
+    outline: -webkit-focus-ring-color auto 0px !important;
+}

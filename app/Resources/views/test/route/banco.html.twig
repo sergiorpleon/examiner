@@ -1,0 +1,32 @@
+
+<div id="habilidad" class="reading row form-panel box box-primary" v-show="visibilidad==8">
+
+    <div class="col-sm-12 container">
+        <p>Bank</p>
+
+            <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
+                <div class="col-sm-4 col-xs-6 col col-editor">
+                    <input class="form-control " type="text" v-model="search" placeholder="Search..."/>
+                </div>
+            </div>
+            <div class="row col-xs-12" style="margin-left: 0px;">
+                <template>
+                    <v-card>
+                        <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
+                            <template slot="items" scope="props">
+                                <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
+                                <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
+                                <td>
+                                    <!-- button class="btn btn-default " v-on:click="verDetalleBancoReading( props.item.id)"><i class="fa fa-check"></i> Select Questions</button -->
+                                    <button class="btn btn-default " v-on:click="addDetalleBancoReading( props.item.id)"><i class="fa fa-plus-circle"></i> Add Section</button>
+                                </td>
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                </template>
+            </div >
+
+    </div>
+    <button class="btn btn-default" v-on:click="regresarReading( )"><i class="fa fa-arrow-left"></i> Return</button>
+
+</div>

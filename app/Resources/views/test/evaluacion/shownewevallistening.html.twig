@@ -1,0 +1,271 @@
+{% extends 'themefrontend.html.twig' %}
+{# src/Acme/TaskBundle/Resources/views/Task/new.html.twig #}
+{# ... #}
+{% block stylesheets %}
+    <!-- Bootstrap core CSS -->
+    {{ parent() }}
+
+<style>
+    html{
+        background: #ddd;
+    }
+    .center{
+        text-align: center;
+    }
+    .ident{
+        padding-left: 20px;
+        line-height: 1.6em;
+    }
+    .toleft{
+        float: left;
+        margin-right: 5px;
+    }
+
+    #tiempo{
+        font-family: Arial;
+        font-size: 25px;
+        color: rgb(238, 238, 238);
+        padding: 10px 50px;
+    }
+</style>
+
+
+{% endblock %}
+
+{% block tiemporestante %}
+
+
+    {% set hora = prueba.idListening.horaComienzo | date('H:i')  %}
+
+    {% set dia = prueba.idListening.fecha  | date('Y-m-d') %}
+    {% set hora = prueba.idListening.horaComienzo | date('H-i') %}
+    {% set fecha = dia~'-'~hora  %}
+    <div id="tiempo" class="tiempo">
+        <strong>Faltan</strong>:{{ fecha | cuenta_atras(90, prueba.deprueba, zonahoraria) }}
+    </div>
+
+
+{% endblock %}
+{% block content %}
+    {% set hora = prueba.idListening.horaComienzo | date('H:i')  %}
+    {%  if ((hora < comienzo and hora > fin) or testeo) %}
+        <div class="hoja">
+            <div class="wrapper site-min-height">
+                <div class="row mt">
+                    <div class="col-lg-12 paginasyle">
+
+
+                        {#  form_start(form) #}
+
+                        <div class="center"><strong>Placement Test</strong></div>
+                        <div class="center"><strong>Listening</strong></div>
+
+                        {# {{ form_widget(form) }} #}
+                        <form method="post" {{ form_enctype(form) }}>
+                            {%  set numitem =  0 %}
+                            {# estudiante.getUsername() #}
+                            <br/>
+                            <div class="prueba">
+                                {{ prueba.textoOrientacion|raw }}
+                                <br/>
+                                <div class="listening">
+
+                                    {{ prueba.idListening.textoInstrucciones|raw }}
+                                    <br/>
+                                    <br/>
+                                    <div class="secciones">
+                                        {% for seccR in prueba.idListening.seccionesListening %}
+                                            {%  set indseccion =  loop.index-1 %}
+
+                                            <div><strong>Section {{ (indseccion+1) }} Questions</strong></div>
+                                            <div><strong>Text {{ (indseccion+1) }}</strong></div>
+                                            {{ seccR.textoInstruccion|raw }}
+                                        <div>
+
+                                            {# audioSeccion[indseccion]|raw #}
+
+                                            {#  seccR.urlAudio #}
+                                        </div>
+                                        <audio  id="audio{{ indseccion }}" src="{{seccR.urlAudio }}" onended="eliminar('audio{{ indseccion }}')"></audio>
+
+                                        <div  onclick="reproducir('audio{{ indseccion }}')">Reproducir el Audio</div>
+                                        <script>
+                                            function reproducir(param){
+                                                {% for seccR in prueba.idListening.seccionesListening %}
+                                                document.getElementById(param).currentTime=0;
+                                                document.getElementById('audio{{ loop.index-1 }}').pause();
+                                                {% endfor %}
+                                                document.getElementById(param).play();
+                                            }
+
+                                            function eliminar(param){
+                                                document.getElementById(param).remove();
+                                            }
+
+                                        </script>
+
+                                        <br/>
+                                            <br/>
+                                            <div class="preguntas">
+                                                {% for questionR in seccR.questionsSeccionListenings %}
+                                                    {%  set indquestion =  loop.index-1 %}
+
+                                                    {% if((numitem+1) != ((numitem)+questionR.totalItem)) %}
+                                                    <div><strong>Questions {{ (numitem+1) }}-{{ ((numitem)+questionR.totalItem) }}</strong></div>
+                                                    {% else %}
+                                                        <div><strong>Question {{ (numitem+1) }}</strong></div>
+                                                    {% endif %}
+
+                                                    {{ questionR.textoPregunta|raw }}
+                                                    <br/>
+                                                    <br/>
+
+                                                    {% if(questionR.tipoPregunta == 1) %}
+                                                        <div class="itemtf">
+                                                            {% for itemSS in questionR.itemsTrueFalse %}
+                                                                {%  set inditem =  loop.index-1 %}
+                                                                <div>
+                                                                    <strong class="toleft">{{ (numitem+1) }}.</strong>
+                                                                    {{ itemSS.textoItem|raw}}
+
+                                                                    {%  set valorSS =  'p_r_s'~indseccion~'_q'~indquestion~'_tf'~inditem %}
+                                                                    {{ form_widget(form[valorSS], {'attr':{'class': 'ident'}}) }}
+                                                                </div>
+                                                                {%  set numitem = numitem+1 %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if(questionR.tipoPregunta == 2) %}
+                                                        <div class="itemss">
+                                                            {% for itemSS in questionR.itemsSimpleSelection %}
+                                                                {%  set inditem =  loop.index-1 %}
+                                                                <div>
+                                                                    <strong class="toleft">{{ (numitem+1) }}.</strong>
+                                                                    {{ itemSS.textoItem|raw}}
+
+                                                                    {%  set valorSS =  'p_r_s'~indseccion~'_q'~indquestion~'_ss'~inditem %}
+                                                                    {{ form_widget(form[valorSS], {'attr':{'class': 'ident'}}) }}
+                                                                </div>
+                                                                <br/>
+                                                                <br/>
+                                                                {%  set numitem = numitem+1 %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if(questionR.tipoPregunta == 3) %}
+                                                        <div class="itemms">
+                                                            {% set totalSM =  0 %}
+                                                            {% for MyitemSM in questionR.incisosMultipleSelection %}
+                                                                {% set totalSM = totalSM + MyitemSM.correctaInciso %}
+                                                            {% endfor %}
+
+                                                            {% for itemSM in questionR.incisosMultipleSelection %}
+                                                                {%  set inditem = loop.index-1 %}
+                                                                <div>
+                                                                    <strong class="toleft">{{ (numitem+1) }}</strong>
+
+                                                                    {%  set valorSM = 'p_r_s'~indseccion~'_q'~indquestion~'_sm'~inditem %}
+                                                                    {{ form_widget(form[valorSM], {'attr':{'class': 'ident'}}) }}
+                                                                </div>
+
+                                                                {%  set numitem = numitem+1 %}
+                                                            {% endfor %}
+
+                                                            <script type="text/javascript">
+
+                                                                jQuery.fn.limitarCheckbox = function(limit) {
+                                                                    var mychecks = jQuery(this);
+                                                                    this.click(function(){
+                                                                        return (mychecks.filter(":checked").length<=limit);
+                                                                    });
+                                                                }
+
+                                                                jQuery(document).ready(function() {
+                                                                    jQuery("div.itemms div.div-radio > input[type='checkbox']").limitarCheckbox({{ totalSM }});
+                                                                });
+                                                            </script>
+
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if(questionR.tipoPregunta == 4) %}
+                                                        <div class="itemls">
+
+
+                                                            {% for itemLS in questionR.itemsListSelection %}
+                                                                {%  set inditem =  loop.index-1 %}
+
+                                                                <div class="ident">
+                                                                    <strong class="toleft">{{ (numitem+1) }}.</strong>
+                                                                    {{ itemLS.textoItem|raw}}
+
+                                                                    {%  set valorLS =  'p_r_s'~indseccion~'_q'~indquestion~'_ls'~inditem %}
+                                                                    {{ form_widget(form[valorLS]) }}
+
+                                                                </div>
+                                                                <br/>
+                                                                {%  set numitem = numitem+1 %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if(questionR.tipoPregunta == 5) %}
+                                                <div class="itemc">
+
+                                                    {#questionR.vistaHtmlCompleta#}
+
+                                                    {% set valores = separarCaracteres(questionR.vistaHtmlCompleta) %}
+                                                    {% set tagAbierto = false %}
+                                                    {% set cuentaTag=0 %}
+
+
+
+                                                    {%- for valor in valores -%}
+                                                        {%- if ((valor!='|') and (not tagAbierto)) -%}
+                                                            {{- valor|raw -}}
+                                                        {%- elseif ((valor=='|') and (not tagAbierto)) -%}
+                                                            {%- set cuentaTag = cuentaTag + 1 -%}
+                                                            {%- set campoTexto=cuentaTag-1 -%}
+
+                                                            {%- set valorC =  'p_r_s'~indseccion~'_q'~indquestion~'_c'~campoTexto -%}
+                                                            {{- form_widget(form[valorC]) -}}
+
+
+                                                            {%- set tagAbierto = true -%}
+                                                        {%- elseif ((valor=='|') and (tagAbierto)) -%}
+                                                            {%- set tagAbierto = false -%}
+                                                        {%- endif -%}
+
+                                                    {%- endfor -%}
+
+
+                                                    {% endif %}
+
+                                                {% endfor %}
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {{   form_rest(form) }}
+                            <!-- input type="submit" value="Crear" class="btn btn-mini btn-primary"/ !-->
+                            </br>
+                            </br>
+
+                            </div>
+                        </form>
+
+                        {# form_end(form) #}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+            {#
+<script src="{{ asset('bundles/app/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+#}
+{#<script src="{{asset('bundles/imagen/vendor/jquery/jquery.min.js')}}"></script>#}

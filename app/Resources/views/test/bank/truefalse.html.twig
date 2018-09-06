@@ -1,0 +1,49 @@
+
+<div id="true-false" class="row form-panel box box-primary" v-show="visibilidad==2">
+    <div class="col-sm-12 container">
+        <h4>Question True False</h4>
+        <div class="col-xs-12 col-editor">
+            <text-ckeditor  nnumber="150" :nhab="habilidad" nname="questiontf" :ntext="questionTF.textoPregunta" @update-text="updateTextTrueFalse" ></text-ckeditor>
+        </div>
+    </div>
+    <ul class="col-sm-12 container">
+        <li class="col-sm-12 borde-item-panel" v-for="(inciso, index) in questionTF.truefalse.incisos" v-on:remove="questionTF.truefalse.incisos.splice(index, 1)">
+            <button class="ss-inciso-btn-cerrar" v-on:click="deleteItemVoF(inciso, index)"><i class="fa fa-times" aria-hidden="true"></i></button>
+           <div class="col-sm-12">
+                <br/>
+            </div>
+
+            <div class="col-sm-1">
+                <button type="button" v-on:click="subirVoF(index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-up"></i></span></button>
+                <button type="button" v-on:click="bajarVoF(index)" class="btn_empty"><span class="btn__content"><i class="fa fa-arrow-circle-o-down"></i></span></button>
+            </div>
+            <label class="col-sm-0" style="visibility: hidden">{{"{{inciso.orden}}"}}</label>
+            <div class="col-sm-2">
+                <div class="col-sm-12">
+                    <label for="l"><input type="radio" v-bind:name="grupo(index)" value="0" v-model="inciso.seleccion"> TRUE</label>
+                </div><div class="col-sm-12">
+                    <label for="l"><input type="radio" v-bind:name="grupo(index)" value="1" v-model="inciso.seleccion">FALSE</label>
+                </div> <div class="col-sm-12">
+                    <label for="l"> <input type="radio" v-bind:name="grupo(index)" value="2" v-model="inciso.seleccion">NOT GIVEN</label>
+                </div>
+            </div>
+            <div class="col-sm-9 col-editor">
+                <text-ckeditor  nnumber="100" :nhab="habilidad" nname="itemtf" :nindex="index" :ntext="inciso.texto" @update-text="updateTextItemTF" ></text-ckeditor>
+            </div>
+
+            <!-- div class="col-sm-1">
+                <button class="btn btn-danger" v-on:click="deleteItemVoF(inciso, index)"><i class="fa fa-minus-circle" aria-hidden="true"></i> Delete</button>
+            </div -->
+        </li>
+    </ul>
+    <div class="row col-sm-12">
+        <button class="btn btn-success" v-on:click="addNewIncisoTF"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add</button>
+    </div>
+
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarQuestion(questionTF)"><i class="fa fa-save"></i> Save</button>
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="continuarQuestion(questionTF)"><i class="fa fa-save"></i> Save and Continue</button>
+    <button class="btn btn-warning" style="margin-top: 20px;" v-on:click="cancelarQuestion(questionTF)"><i class="fa fa-save"></i> Cancel</button>
+
+    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showTrueFalse()"><i class="fa fa-eye"></i> Show</button>
+
+</div>
