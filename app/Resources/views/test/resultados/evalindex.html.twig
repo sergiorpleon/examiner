@@ -241,6 +241,17 @@
         <!-- plantilla componente prueba -->
         <script type="text/x-template" id="test">
             <div>
+
+
+                <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li><a href="#">List Results for Test</a></li>
+                    
+                    <li class="active">Results Test</li>
+                    
+                  </ol>
+                </section>
+
                 <div class="row form-panel box box-primary">
                     {{ '{{ test.id }}' }}
                     {{ '{{ test.texto }}' }}
@@ -287,6 +298,22 @@
         <!-- Resultado de una prueba para un usuario-->
         <script type="text/x-template" id="result">
             <div>
+
+                <section class="content-header">
+                  <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li><a href="#">List Results for Test</a></li>
+                    
+                    <li>
+                        <router-link
+                             v-bind:to="{ name: 'view_test', params: { id: this.results.prueba }}">
+                            Results User
+                        </route-link>
+                    </li>
+                    <li class="active">Result</li>
+                    
+                  </ol>
+                </section>
 
                 <div class="row form-panel box box-primary">
                     <ul class="nav nav-tabs" role="tab-list">
@@ -554,6 +581,15 @@
         <!-- plantilla componente lista prueba -->
         <script type="text/x-template" id="list">
             <div class="list1">
+
+                <section class="content-header">
+                  <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li class="active">List Results for Test</li>
+                    
+                  </ol>
+                </section>
+
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
                         <div class="col-sm-4 col-xs-6 col col-editor">
@@ -702,6 +738,7 @@
                         id: '-1',
 
                         user: '1',
+                        user_id: '1',
                         prueba: '1',
                         readingtext: 'Text instruction...',
                         listeningtext: 'Text instruction...',

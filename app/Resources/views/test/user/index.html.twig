@@ -241,6 +241,16 @@
         <!-- plantilla componente prueba -->
         <script type="text/x-template" id="user">
             <div>
+
+                <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li><a href="#">List Results for User</a></li>
+                    
+                    <li class="active">Results Test</li>
+                    
+                  </ol>
+                </section>
+
                 <div class="row form-panel box box-primary">
                     {{ '{{ user.id }}' }}
                     {{ '{{ user.nombre }}' }}
@@ -287,6 +297,22 @@
         <!-- Resultado de una prueba para un usuario-->
         <script type="text/x-template" id="result">
             <div>
+
+
+                <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li><a href="#">List Results for User</a></li>
+                    <li>
+                    <router-link
+                             v-bind:to="{ name: 'view_user', params: { id: this.results.user_id }}">
+                    Results User                    
+                    </router-link>
+                                           
+                    </li>
+                    <li class="active">Result</li>
+                    
+                  </ol>
+                </section>
 
                 <div class="row form-panel box box-primary">
                     <ul class="nav nav-tabs" role="tab-list">
@@ -554,6 +580,14 @@
         <!-- plantilla componente lista prueba -->
         <script type="text/x-template" id="list">
             <div class="list1">
+
+                <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li class="active">List Results for User</li>
+                    
+                  </ol>
+                </section>
+
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
                         <div class="col-sm-4 col-xs-6 col col-editor">
@@ -692,6 +726,7 @@
                     results: {
                         id: '-1',
 
+                        user_id: '1',
                         user: '1',
                         prueba: '1',
                         readingtext: 'Text instruction...',

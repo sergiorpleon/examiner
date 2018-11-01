@@ -244,6 +244,17 @@
         <script type="text/x-template" id="result">
             <div>
 
+
+                <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li><a href="#">List of Results</a></li>
+                    
+                    <li class="active">Result</li>
+                    
+                  </ol>
+                </section>
+
+
                 <div class="row form-panel box box-primary">
                     <ul class="nav nav-tabs" role="tab-list">
                         <li v-bind:class="{ active: indact==0 }"><a v-on:click="cambiar('reading', 0)">Reading</a></li>
@@ -507,6 +518,14 @@
         <!-- plantilla componente lista prueba -->
         <script type="text/x-template" id="list">
             <div class="list1">
+
+                <section class="content-header">
+                  <ol class="breadcrumb">
+                    <li class="active">List of Results</li>
+                  </ol>
+                </section>
+
+
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
                         <div class="col-sm-4 col-xs-6 col col-editor">

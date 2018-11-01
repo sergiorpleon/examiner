@@ -3257,6 +3257,7 @@ class TestController extends Controller
 
             $rawdataevaluacion['id'] = $evaluacion->getId();
             $rawdataevaluacion['user'] = $evaluacion->getIdEstudiante()->getNombre();
+            $rawdataevaluacion['user_id'] = $evaluacion->getIdEstudiante()->getId();
             $rawdataevaluacion['prueba'] = $evaluacion->getIdTest()->getId();
             $rawdataevaluacion['puntosreading'] = $evaluacion->getPuntosReading();
             $rawdataevaluacion['puntoslistening'] = $evaluacion->getPuntosListening();
