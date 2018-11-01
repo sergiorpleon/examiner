@@ -657,6 +657,8 @@
                 getList: function () {
 
                     if (this.$route.params.id != -1) {
+                        NProgress.start(); 
+                        
                         this.$http.post("{{  path('view_user_json') }}", {
                             id: this.user.id,
                         }, function (data, status, request) {
@@ -665,9 +667,13 @@
                             jQuery('.overlay').css('display', 'none');
 
                             //this.$route.params.id = 2;
+                            NProgress.done(); 
+                        NProgress.remove(); 
                         })
                     } else {
                         jQuery('.overlay').css('display', 'none');
+                        NProgress.done(); 
+                        NProgress.remove(); 
 
                     }
                 },
@@ -893,6 +899,8 @@
 
                 //read question
                 getTest: function () {
+                    NProgress.start(); 
+                       
                     this.$http.post("{{  path('prueba_json') }}", {
                         id: this.results.prueba,
                     }, function (data, status, request) {
@@ -902,12 +910,17 @@
                         jQuery('.overlay').css('display', 'none');
 
                         //this.$route.params.id = 2;
+
+                        NProgress.done(); 
+                        NProgress.remove(); 
                     })
                 },
 
                 getList: function () {
 
                     if (this.$route.params.id != -1) {
+                        NProgress.start(); 
+                        
                         this.$http.post("{{  path('view_result_json') }}", {
                             id: this.results.id,
                         }, function (data, status, request) {
@@ -918,9 +931,13 @@
                             jQuery('.overlay').css('display', 'none');
 
                             //this.$route.params.id = 2;
+                            NProgress.done(); 
+                        NProgress.remove(); 
                         })
                     } else {
                         jQuery('.overlay').css('display', 'none');
+                        NProgress.done(); 
+                        NProgress.remove(); 
 
                     }
                 },
@@ -980,12 +997,18 @@
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {
+                    NProgress.start(); 
+                        
                     this.$http.get("{{  path('list_users_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
                         jQuery('.overlay').css('display', 'none');
+                        NProgress.done(); 
+                        NProgress.remove(); 
                     }).catch(function (data, status, request) {
                         console.log('error');
+                        NProgress.done(); 
+                        NProgress.remove(); 
                     });
                 },
 

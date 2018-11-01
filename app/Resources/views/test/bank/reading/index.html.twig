@@ -1906,6 +1906,8 @@
                         //alert(JSON.stringify(this.readingtmp));
 
                         jQuery('.overlay').css('display','block');
+                        NProgress.start(); 
+                        
                         this.$http.post("{{  path('new_bank_reading') }}", {
                             readingtmp: this.readingtmp,
                         }, function (data, status, request) {
@@ -1913,7 +1915,8 @@
                             this.$route.params.id = this.readingtmp.id;
                             this.getList();
                             window.location.href = '#' + this.readingtmp.id;
-
+                            NProgress.done(); 
+                            NProgress.remove(); 
                         });
                     }
                 },
@@ -1938,6 +1941,7 @@
                         //alert(JSON.stringify(this.readingtmp));
                         jQuery('.overlay').css('display','block');
 
+                        NProgress.start(); 
                         this.$http.post("{{  path('edit_bank_reading') }}", {
                             readingtmp: readingtmp,
                             delQuestion: this.delQuestion,
@@ -1961,6 +1965,8 @@
                             this.delValorLS = [];
                             this.delItemC = [];
                             this.getList();
+                            NProgress.done(); 
+                        NProgress.remove(); 
                         });
                     }
                 },
@@ -1968,6 +1974,8 @@
                 //read question
                 getList: function () {
                     if (this.$route.params.id != -1) {
+                        NProgress.start(); 
+                         
                         this.$http.post("{{  path('bank_reading_json') }}", {
                             id: this.readingtmp.id,
                         }, function (data, status, request) {
@@ -1976,9 +1984,13 @@
                             jQuery('.overlay').css('display','none');
 
                             //this.$route.params.id = 2;
+                            NProgress.done(); 
+                            NProgress.remove(); 
                         })
                     }else{
                         jQuery('.overlay').css('display','none');
+                        NProgress.done(); 
+                        NProgress.remove(); 
                     }
                 },
                 //========================END CRUD==================================
@@ -2036,10 +2048,13 @@
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {
+                    NProgress.start(); 
                     this.$http.get("{{  path('list_bank_reading_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
                         jQuery('.overlay').css('display','none');
+                        NProgress.done(); 
+                        NProgress.remove(); 
                     }).catch(function (data, status, request) {
                         console.log('error');
                     });
@@ -2051,10 +2066,14 @@
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             jQuery('.overlay').css('display','block'); 
+                            NProgress.start(); 
+                        
                             gthis.$http.post("{{  path('delete_bank_reading') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
+                                NProgress.done(); 
+                                NProgress.remove(); 
                             });
                         }
                     });
