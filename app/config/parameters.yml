@@ -10,6 +10,7 @@ parameters:
     mailer_user: sergiop@uclv.cu
     mailer_password: 'spl*5312610'
     secret: ThisTokenIsNotSoSecretChangeIt
-
+    
+    #a post in ralation to the root of your server
     images_location: uploads/images
-    zona_horaria: America/Havana
+    zona_horaria: America/New_York

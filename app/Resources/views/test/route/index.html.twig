@@ -2764,12 +2764,23 @@
                     });
                 },
                 delTest: function( index){
-                    jQuery('.overlay').css('display','block');
-                    this.$http.post("{{  path('delete_prueba') }}", {
-                        id: index,
-                    }, function (data, status, request) {
-                        this.getList();
-                    });
+
+                    var gthis = this;
+                    var gindex = index;
+                        //a = this.readingtmp.secciones;
+                        bootbox.confirm("Are you sure?", function (result) {
+                            if (result) {
+                                jQuery('.overlay').css('display','block'); 
+                                gthis.$http.post("{{  path('delete_prueba') }}", {
+                                    id: gindex,
+                                }, function (data, status, request) {
+                                    gthis.getList();
+                                });
+                            }
+                        });
+
+
+                    
                 },
 
             }
