@@ -271,23 +271,29 @@
                         <h4>Reading</h4>
 
                         <div v-if="this.results.reading">
+                            <div class="col-sm-12">
+                                <div class="col-sm-1">
+                                    Item Number
+                                </div>
+                                <div class="col-sm-2">
+                                    Type Of Question
+                                </div>
+                                <div class="col-sm-4">
+                                    Answer Correct
+                                </div>
+                                <div class="col-sm-4">
+                                    Answer Studient
+                                </div>
+                                <div class="col-sm-1">
+                                    Points
+                                </div>
+                            </div>
                             <div v-for="(seccionx, indexs) in this.results.reading.section">
                                 <div class="col-sm-12">
-                                    <div class="col-sm-1">
-                                        Item Number
+                                    <div class="col-sm-12">
+                                        Seccion {{ '{{ indexs + 1}} '}}
                                     </div>
-                                    <div class="col-sm-2">
-                                        Type Of Question
-                                    </div>
-                                    <div class="col-sm-4">
-                                        Answer Studient
-                                    </div>
-                                    <div class="col-sm-4">
-                                        Answer Correct
-                                    </div>
-                                    <div class="col-sm-1">
-                                        Points
-                                    </div>
+                                    
                                 </div>
                                 <div v-for="(questionx, indexq) in seccionx.question" class="col-sm-12">
 
@@ -380,9 +386,12 @@
                                 </div>
                             </div>
 
-                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i
+                        
+                        </div>
+                        <div class="col-sm-12">
+                            <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i
                                     class="fa fa-eye"></i> Show
-                        </button>
+                            </button>
                         </div>
 
                     </div>
@@ -395,22 +404,27 @@
                         <h4>Listening</h4>
 
                         <div v-if="this.results.listening">
+                            <div class="col-sm-12">
+                                <div class="col-sm-1">
+                                    Item Number
+                                </div>
+                                <div class="col-sm-2">
+                                    Type Of Question
+                                </div>
+                                <div class="col-sm-4">
+                                    Answer Correct 
+                                </div>
+                                <div class="col-sm-4">
+                                    Answer Studient
+                                </div>
+                                <div class="col-sm-1">
+                                    Points
+                                </div>
+                            </div>
                             <div v-for="(seccionx, indexs) in this.results.listening.section">
                                 <div class="col-sm-12">
-                                    <div class="col-sm-1">
-                                        Item Number
-                                    </div>
-                                    <div class="col-sm-2">
-                                        Type Of Question
-                                    </div>
-                                    <div class="col-sm-4">
-                                        Answer Studient
-                                    </div>
-                                    <div class="col-sm-4">
-                                        Answer Correct
-                                    </div>
-                                    <div class="col-sm-1">
-                                        Points
+                                    <div class="col-sm-12">
+                                        Seccion {{'{{ indexs + 1 }}'}}
                                     </div>
                                 </div>
                                 <div v-for="(questionx, indexq) in seccionx.question" class="col-sm-12">
@@ -504,11 +518,13 @@
                                 </div>
                             </div>
 
-                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i
-                                    class="fa fa-eye"></i> Show
-                        </button>
+                        
                         </div>
-
+                        <div class="col-sm-4">
+                            <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i
+                                    class="fa fa-eye"></i> Show
+                            </button>
+                        </div>
                     </div>
 
                 </div>

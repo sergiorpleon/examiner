@@ -3284,7 +3284,21 @@ class TestController extends Controller
                             $indzTF = 0;
                             $rawdataitem = array();
                             foreach ($item_True_False as $objeto) {
-                                $rawdataitem[$indzTF]['textoItem'] = $objeto->getTextoItem();
+
+                                $valrespest = $objeto->getOpcionCorrecta();
+                                $textrespest = '';
+                                if ($valrespest == 0) {
+                                    $textrespest = 'true';
+                                }
+                                if ($valrespest == 1) {
+                                    $textrespest = 'false';
+                                }
+                                if ($valrespest == 2) {
+                                    $textrespest = 'not gitven';
+                                }
+                                $rawdataitem[$indzTF]['textoItem'] = $textrespest;
+
+                                //$rawdataitem[$indzTF]['textoItem'] = $objeto->getTextoItem();
 
                                 $tie = $em->getRepository('AppBundle:Respuesta_True_False')->findOneBy(array('id_estudiante' => $evaluacion->getIdEstudiante()->getId(), 'idItem' => $objeto->getId()));
                                 $valrespest = $tie->getRespuesta();
@@ -3315,12 +3329,21 @@ class TestController extends Controller
                             foreach ($item_Simple_Selection as $objeto) {
                                 $inciso_Simple_Selection = $objeto->getIncisosSimpleSelection();
                                 $arrayValoresSS = array();
+
+                                $respuestaOk = $objeto->getOpcionCorrecta();
+                                $valRexpuetaOk = '';
+
                                 $indxSS = 0;
                                 foreach ($inciso_Simple_Selection as $v) {
-                                    $arrayValoresSS[$v->getOrdenInciso()] = $v->getTextoOpcion();
+                                    //$arrayValoresSS[$v->getOrdenInciso()] = $v->getTextoOpcion();
+                                    if( $respuestaOk == $v->getOrdenInciso()){
+                                        $valRexpuetaOk =  $v->getTextoOpcion();
+                                    }
                                     $indxSS++;
                                 }
-                                $rawdataitem[$indzSS]['textoItem'] = $objeto->getTextoItem();
+                                $rawdataitem[$indzSS]['textoItem'] = $valRexpuetaOk;
+
+                                //$rawdataitem[$indzSS]['textoItem'] = $objeto->getTextoItem();
 
                                 $tie = $em->getRepository('AppBundle:Respuesta_Simple_Selection')->findOneBy(array('id_estudiante' => $evaluacion->getIdEstudiante()->getId(), 'id_item_simple_selection' => $objeto->getId()));
                                 $tie2 = $em->getRepository('AppBundle:Inciso_Simple_Selection')->findOneBy(array('ordenInciso' => $tie->getRespuestaEstudiante()));
@@ -3476,11 +3499,20 @@ class TestController extends Controller
                             foreach ($item_Simple_Selection as $objeto) {
                                 $inciso_Simple_Selection = $objeto->getIncisosSimpleSelection();
                                 $arrayValoresSS = array();
+                                
+                                $respuestaOk = $objeto->getOpcionCorrecta();
+                                $valRexpuetaOk = '';
+
                                 $indxSS = 0;
                                 foreach ($inciso_Simple_Selection as $v) {
-                                    $arrayValoresSS[$v->getOrdenInciso()] = $v->getTextoOpcion();
+                                    //$arrayValoresSS[$v->getOrdenInciso()] = $v->getTextoOpcion();
+                                    if( $respuestaOk == $v->getOrdenInciso()){
+                                        $valRexpuetaOk =  $v->getTextoOpcion();
+                                    }
                                     $indxSS++;
                                 }
+                                //$rawdataitem[$indzSS]['textoItem'] = $valRexpuetaOk;
+
                                 $rawdataitem[$indzSS]['textoItem'] = $objeto->getTextoItem();
 
                                 $tie = $em->getRepository('AppBundle:Respuesta_Simple_Selection')->findOneBy(array('id_estudiante' => $evaluacion->getIdEstudiante()->getId(), 'id_item_simple_selection' => $objeto->getId()));

@@ -897,8 +897,8 @@ class EvaluacionesController extends Controller
                         foreach ($item_Complete as $objeto) {
                             $textoC = 'p' . '_r' . '_s' . $j . '_q' . $k . '_c' . $indzC;
                             $puntos = 0;
-                            if (Funciones_Completa::Completa_Comprueba_Respuesta($objeto->getRespuestaCorrecta(),$data[$textoC])){
-                                //if ($objeto->getRespuestaCorrecta() == $data[$textoC]) {
+                            //if (Funciones_Completa::Completa_Comprueba_Respuesta($objeto->getRespuestaCorrecta(),$data[$textoC])){
+                            if ($objeto->getRespuestaCorrecta() == $data[$textoC]) {
                                 $puntos = 1;
                             }
                             $totalPuntos += $puntos;
