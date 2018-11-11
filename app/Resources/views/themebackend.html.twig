@@ -36,9 +36,44 @@
             <a href="{{ path('homepage') }}" class="logo"><b>ENGLISH TEST</b></a>
             <!--logo end-->
           <div class="top-menu">
-              <ul class="nav pull-right top-menu">
+              <ul class="nav pull-right top-menu" style="margin-top: 15px">
                   {% if is_granted('ROLE_ADMIN') %}
-                      <li><a class="logout" href={{ path('fos_user_security_logout') }}>Logout</a></li>
+                      <!-- li><a class="logout" href={{ path('fos_user_security_logout') }}>Logout</a></li -->
+
+                        <li class="dropdown user user-menu logout">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="margin-right: 100px;">
+                            
+                            <span class="hidden-xs">{{ app.user.nombre }} </span>
+                          <div class="ripple-container"></div></a>
+                          <ul class="dropdown-menu" style="padding: 10px">
+                            <!-- User image -->
+                            <li class="user-header">
+                              
+                              <p>
+                                <h4>{{ app.user.nombre }}</h4>
+                              </p>
+                              <p>
+                                <small>Member since Nov. 2012</small>
+                              </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                              <div class="row">
+                                <div class="col-xs-12 text-center">
+                                  <a href="{{ path('fos_user_profile_show') }}"  class="btn btn-default btn-flat" style="width: 100%">Profile</a>
+                                </div>
+                                <!-- div class="col-xs-12 text-center">
+                                  <a href="#" class="btn btn-default btn-flat" style="width: 100%">Change Password</a>
+                                </div -->
+                                <div class="col-xs-12 text-center">
+                                  <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default btn-flat" style="width: 100%">Logout</a>
+                                </div>
+                              </div>
+                              <!-- /.row -->
+                            </li>
+                            
+                          </ul>
+                        </li>
                   {% else %}
                       <li><a class="logout login" href={{ path('fos_user_security_login') }}>Login</a></li>
                   {% endif %}

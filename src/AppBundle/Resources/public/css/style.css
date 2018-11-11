@@ -76,7 +76,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus { border: 1px solid #f1f1
 .nicescroll-rails{left: 237px !important;}
 
 .en-barra{
-  position: fixed;
+  /*position: fixed;*/
+  float: right;
   z-index: 1050;
   top: -5px;
   right: 120px;

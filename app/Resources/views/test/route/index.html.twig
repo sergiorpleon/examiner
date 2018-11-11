@@ -230,12 +230,12 @@
         <script type="text/x-template" id="test">
             <div>
                 <div class="en-barra" v-show="this.prueba.id==-1">
-                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postNewTest(prueba)"><i
+                    <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i
                                 class="fa fa-save"></i> Create
                     </button>
                 </div>
                 <div class="en-barra" v-show="this.prueba.id!=-1">
-                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
+                    <button class="btn btn-info" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
                     </button>
                 </div>
 
@@ -375,6 +375,18 @@
                                 </button>
                             </div>
                     </div>
+
+                    <br/>
+                    <br/>
+                    <div class="en-barra" v-show="this.prueba.id==-1">
+                    <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                </div>
+                <div class="en-barra" v-show="this.prueba.id!=-1">
+                    <button class="btn btn-info" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
+                    </button>
+                </div>
 
                 </div>
                 {{ include('test/route/seccion.html.twig') }}
