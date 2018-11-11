@@ -229,6 +229,11 @@
             padding: 80px;
         }
 
+        .results > div > div > div.col-sm-12 {
+            background-color: #eee;
+
+        }
+
     </style>
 {% endblock %}
 
@@ -252,8 +257,24 @@
                 </section>
 
                 <div class="row form-panel box box-primary">
-                    {{ '{{ user.id }}' }}
-                    {{ '{{ user.nombre }}' }}
+                    <div class='col-sm-12'>
+                    <h5><strong>Id:</strong> {{ '{{ user.id }}' }}</h5>
+                    </div>
+                    <div class='col-sm-5'>
+                    <h5><strong>Username:</strong> {{ '{{ user.username }}' }}</h5>
+                    </div>
+                    <div class='col-sm-7'>
+                    <h5><strong>Name:</strong> {{ '{{ user.nombre }}' }}</h5>
+                    </div>
+                    <div class='col-sm-5'>
+                    <h5><strong>Email:</strong> {{ '{{ user.email }}' }}</h5>
+                    </div>
+                    <div class='col-sm-7'>
+                    <h5><strong>Year:</strong> {{ '{{ user.annocurso }}' }}</h5>
+                    </div>
+                    <div class='col-sm-12'>
+                    <hr/>
+                    </div>
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
                         <div class="col-sm-4 col-xs-6 col col-editor">
                             <input class="form-control " type="text" v-model="searchu" placeholder="Search..."/>
@@ -314,25 +335,43 @@
                   </ol>
                 </section>
 
-                <div class="row form-panel box box-primary">
+                <div class="row form-panel box box-primary results">
                     <ul class="nav nav-tabs" role="tab-list">
-                        <li v-bind:class="{ active: indact==0 }"><a v-on:click="cambiar('reading', 0)">Reading</a></li>
-                        <li v-bind:class="{ active: indact==1 }"><a v-on:click="cambiar('listening', 1)">Listening</a>
+                        <li v-bind:class="{ active: indact==0 }"><a v-on:click="cambiar('reading', 0)"><h4>Reading</h4></a></li>
+                        <li v-bind:class="{ active: indact==1 }"><a v-on:click="cambiar('listening', 1)"><h4>Listening</h4></a>
                         </li>
                     </ul>
                     <div v-if="this.hability=='reading'">
 
-                        <h4>
-                            User: {{ '{{ results.user }}' }}
-                            Test: {{ '{{ results.prueba }}' }}
-                            Points: {{ '{{ results.puntosreading }}' }}
-                        </h4>
-                        <h4>Reading</h4>
+                        <div class="col-sm-12">
+                                <h5>
+                                    Test: {{ '{{ results.prueba }}' }}
+                                </h5>
+                            </div>
+                            <div class="col-sm-8">
+                                <h5> 
+                                    User: {{ '{{ results.user }}' }}
+                                </h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5>
+                                    Level: {{ '{{ results.levelreading }}' }}
+                                </h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5>
+                                    Points: {{ '{{ results.puntosreading }}' }}
+                                </h5>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <h4>Reading</h4>
+                            </div>
 
                         <div v-if="this.results.reading">
                             <div class="col-sm-12">
                                 <div class="col-sm-1">
-                                    Item Number
+                                    Item
                                 </div>
                                 <div class="col-sm-2">
                                     Type Of Question
@@ -350,7 +389,7 @@
                             <div v-for="(seccionx, indexs) in this.results.reading.section">
                                 <div class="col-sm-12">
                                     <div class="col-sm-1">
-                                        Seccion {{ ' {{ indexs + 1 }} ' }}
+                                        Sec. {{ ' {{ indexs + 1 }} ' }}
                                     </div>
                                 </div>
 
@@ -457,17 +496,35 @@
 
                         </div>
                         <div v-if="this.hability=='listening'">
-                            <h4>
-                                User: {{ '{{ results.user }}' }}
-                                Test: {{ '{{ results.prueba }}' }}
-                                Points: {{ '{{ results.puntoslistening }}' }}
-                            </h4>
+                            <div class="col-sm-12">
+                                <h5>
+                                    Test: {{ '{{ results.prueba }}' }}
+                                </h5>
+                            </div>
+                            <div class="col-sm-8">
+                                <h5> 
+                                    User: {{ '{{ results.user }}' }}
+                                </h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5>
+                                    Level: {{ '{{ results.levellistening }}' }}
+                                </h5>
+                            </div>
+                            <div class="col-sm-2">
+                                <h5>
+                                    Points: {{ '{{ results.puntoslistening }}' }}
+                                </h5>
+                            </div>
+
+                            <div class="col-sm-12">
                             <h4>Listening</h4>
+                            </div>
 
                             <div v-if="this.results.listening">
                                 <div class="col-sm-12">
                                     <div class="col-sm-1">
-                                        Item Number
+                                        Item
                                     </div>
                                     <div class="col-sm-2">
                                         Type Of Question
@@ -485,7 +542,7 @@
                                 <div v-for="(seccionx, indexs) in this.results.listening.section">
                                     <div class="col-sm-12">
                                         <div class="col-sm-1">
-                                            Seccion {{ ' {{ indexs + 1 }} ' }}
+                                            Sec. {{ ' {{ indexs + 1 }} ' }}
                                         </div>
                                     </div>
                                     <div v-for="(questionx, indexq) in seccionx.question" class="col-sm-12">
@@ -624,8 +681,21 @@
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
 
                                         <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.username"></div>
+                                        </td>
+                                        <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.email"></div>
+                                        </td>
+                                        <td class="text-xs-right">
                                             <div class="limit-height" v-html=" props.item.nombre"></div>
                                         </td>
+                                        <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.annocurso"></div>
+                                        </td>
+                                        <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.total"></div>
+                                        </td>
+                                        
                                         <td>
                                             <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
                                             <router-link class="btn btn-default btn-70w"
@@ -664,7 +734,7 @@
 
                     user: {
                         id: '-1',
-                        nombre: '1',
+                        nombre: '',
                         evaluaciones: [],
 
                     },
@@ -781,11 +851,12 @@
 
 
                 showSection: function () {
+                    this.getTest();
                     if (this.hability == 'reading') {
-                        this.readingtmp = this.prueba.reading;
+                        this.readingtmp = this.theprueba.reading;
                     }
                     if (this.hability == 'listening') {
-                        this.readingtmp = this.prueba.listening;
+                        this.readingtmp = this.theprueba.listening;
                     }
 
                     var htmlsections = "<div><p>" + this.readingtmp.textoInstrucciones + "</p>";
@@ -953,9 +1024,9 @@
                     NProgress.start(); 
                        
                     this.$http.post("{{  path('prueba_json') }}", {
-                        id: this.results.prueba,
+                        id: this.results.prueba_id,
                     }, function (data, status, request) {
-                        this.prueba = data;
+                        this.theprueba = data;
 
                         //alert(JSON.stringify(this.prueba));
                         jQuery('.overlay').css('display', 'none');
@@ -1013,14 +1084,22 @@
                             value: 'id'
                         },
                         //{text: 'Fecha', value: 'fecha'},
-                        {text: 'Nombre', value: 'nombre'},
+                        {text: 'Username', value: 'username'},
+                        {text: 'Email', value: 'email'},
+                        {text: 'Name', value: 'nombre'},
+                        {text: 'Year', value: 'annocurso'},
+                        {text: 'Test evals', value: 'total'},
                         {text: 'Action', sortable: false,},
                     ],
                     items: [
                         {
                             id: -1,
                             //fecha: 'fecha',
-                            nombre: 'KitKat',
+                            username: '',
+                            email: '',
+                            nombre: '',
+                            annocurso: '',
+                            total: '',
 
                         },
                     ],
@@ -1089,7 +1168,7 @@
 
         }).$mount('#app');
 
-        jQuery('.config').addClass('active');
-        jQuery('.config > a').addClass('active');
+        jQuery('.result').addClass('active');
+        jQuery('.result > a').addClass('active');
     </script>
 {% endblock %}

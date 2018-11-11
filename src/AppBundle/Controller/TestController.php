@@ -3258,7 +3258,8 @@ class TestController extends Controller
             $rawdataevaluacion['id'] = $evaluacion->getId();
             $rawdataevaluacion['user'] = $evaluacion->getIdEstudiante()->getNombre();
             $rawdataevaluacion['user_id'] = $evaluacion->getIdEstudiante()->getId();
-            $rawdataevaluacion['prueba'] = $evaluacion->getIdTest()->getId();
+            $rawdataevaluacion['prueba_id'] = $evaluacion->getIdTest()->getId();
+            $rawdataevaluacion['prueba'] = $evaluacion->getIdTest()->getTextoOrientacion();
             $rawdataevaluacion['puntosreading'] = $evaluacion->getPuntosReading();
             $rawdataevaluacion['puntoslistening'] = $evaluacion->getPuntosListening();
 
@@ -3664,8 +3665,12 @@ class TestController extends Controller
             $i = 0;
             foreach ($usuarios as $u) {
                 $arrayU[$i]['id'] = $u->getId();
+                $arrayU[$i]['username'] = $u->getUsername();
+                $arrayU[$i]['email'] = $u->getEmail();
                 $arrayU[$i]['nombre'] = $u->getNombre();
-
+                $arrayU[$i]['annocurso'] = $u->getAnnoCurso();
+                $evals = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_estudiante' => $u->getId()));
+                $arrayU[$i]['total'] = count($evals);
                 $i++;
             };
             $response = new Response();
@@ -3702,6 +3707,9 @@ class TestController extends Controller
 
             $rawdatausuario['id'] = $usuario->getId();
             $rawdatausuario['nombre'] = $usuario->getNombre();
+            $rawdatausuario['username'] = $usuario->getUsername();
+            $rawdatausuario['email'] = $usuario->getEmail();
+            $rawdatausuario['annocurso'] = $usuario->getAnnoCurso();
 
             $em = $this->getDoctrine()->getManager();
             $evaluaciones = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_estudiante' => $usuario->getId()));
@@ -3811,6 +3819,8 @@ class TestController extends Controller
                     }
                     $arrayE[$i]['listening'] = $sfl;
 
+                    $evals = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_test' => $t->getId()));
+                    $arrayE[$i]['total'] = count($evals);
 
                 $i++;
                 }
