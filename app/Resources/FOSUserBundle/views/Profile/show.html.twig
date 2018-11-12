@@ -2,7 +2,10 @@
 {# extends "FOSUserBundle::layout.html.twig" #}
 {% block stylesheets %}
     {{ parent() }}
-<style>
+    <link href="{{ asset('bundles/app/css/material-icons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/app/css/vuetifytable.css') }}" rel="stylesheet">
+
+    <style>
     .wrapper {
         padding: 50px;
     }
@@ -18,9 +21,14 @@
     .profileevaluaciones{
         margin: 50px 0px;
     }
+    table.datatable.table tr > td,
+    table.datatable.table tr > th {
+        padding: 2px 8px !important;
+    }
 </style>
 {% endblock stylesheets %}
 {% block content %}
+<div id="app">
     <div class="wrapper site-min-height">
     <div class="row col-sm-6">
         <div class="col-sm-12">
@@ -57,15 +65,176 @@
             Evaluations Test
             </h4>
 
-            <div class="col-sm-4">Test</div>
-            <div class="col-sm-4">Hability</div>
-            <div class="col-sm-4">Points</div>
 
- {% for eval in user.evaluaciones %}
-    <div class="celda col-sm-4">{{  eval.idTest.id  }}</div>
-     <div class="celda col-sm-4">{{  eval.idTest.id  }}</div>
-     <div class="celda col-sm-4">{{  eval.idTest.id  }}</div>
- {% endfor %}
+</div>
+
+        <div class="row col-xs-12" >
+            <router-view></router-view>
+        </div>
+        <div class="row col-xs-12" >
+            <script type="text/x-template" id="list">
+            <div class="row col-xs-12">
+                <v-card>
+                    <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
+                        <template slot="items" scope="props">
+                            <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
+
+                            <td class="text-xs-right">
+                                <div class="limit-height" v-html=" props.item.deprueba"></div>
+                            </td>
+                            <td class="text-xs-right">
+                                <div class="limit-height" v-html=" props.item.prueba"></div>
+                            </td>
+                            <td class="text-xs-right">
+                                <div class="limit-height" v-html=" props.item.fecha_reading"></div>
+                            </td>
+
+                            <td class="text-xs-right">
+                                <div class="limit-height" v-html=" props.item.puntos_reading"></div>
+                            </td>
+                            <td class="text-xs-right">
+                                <div class="limit-height" v-html=" props.item.fecha_listening"></div>
+                            </td>
+
+                            <td class="text-xs-right">
+                                <div class="limit-height" v-html=" props.item.puntos_listening"></div>
+                            </td>
+
+
+                            <!-- td>
+                                <router-link class="btn btn-default btn-70w"
+                                             v-bind:to="{ name: 'view_user', params: { id: props.item.id }}">
+                                    <i class="fa fa-pencil"></i> View
+                                </router-link>
+                            </td -->
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </div>
+
+            </script>
+        </div>
 </div>
 </div>
 {% endblock content %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/vue.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-resource.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vue-router.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/vuetify.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">
+
+        // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter and then call `Vue.use(VueRouter)`.
+        // 1. Define route components.
+        // These can be imported from other files
+        //--->>>>>ruta lista de prueba<<<<<---
+        var List = Vue.extend({
+            template: '#list',
+            data: function () {
+                return {
+                    eval: {
+                        evaluaciones: [],
+
+                    },
+                    isActive: false,
+                    search: '',
+                    pagination: {},
+                    headers: [
+                        {
+                            text: 'Id',
+                            left: true,
+                            sortable: false,
+                            value: 'id'
+                        },
+                        //{text: 'Fecha', value: 'fecha'},
+                        {text: 'Practice', value: 'deprueba'},
+                        {text: 'Test', value: 'prueba'},
+                        {text: 'Reading Date', value: 'fecha_reading'},
+                        {text: 'Reading Point', value: 'puntos_reading'},
+                        {text: 'Listening Date', value: 'fecha_listening'},
+                        {text: 'Listening Point', value: 'puntos_listening'}
+
+                        //{text: 'Action', sortable: false,},
+                    ],
+                    items: [
+                        {
+                            id: -1,
+                            //fecha: 'fecha',
+                            deprueba: '',
+                            prueba: '',
+                            fecha_reading: '',
+                            puntos_reading: '',
+                            fecha_listening: '',
+                            puntos_listening: '',
+                        },
+                    ],
+                    startDate: '25-04-2010',
+                }
+            },
+            created: function () {
+                jQuery('.overlay').css('display', 'block');
+                this.getList();
+                //this.inicializar();
+            },
+
+            methods: {
+                enrutar: function (id) {
+                    return "/" + id;
+                },
+
+                ocultar: function () {
+                    this.isActive = false;
+                },
+
+                mostrar: function () {
+                    this.isActive = true;
+                },
+                //--------------------------------------BEGIN-CRUD---------------------------------------------
+                //read question
+                getList: function () {
+                    //NProgress.start();
+
+                    this.$http.post("{{  path('eval_list_json') }}", {
+                            id: "{{ app.user.id }}",
+                        }, function (data, status, request) {
+                        this.items = data.evaluaciones;
+                        this.loading = true;
+                        //jQuery('.overlay').css('display', 'none');
+                        //NProgress.done();
+                        //NProgress.remove();
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        //NProgress.done();
+                        //NProgress.remove();
+                    });
+                },
+
+            }
+        });
+
+        // 2. Define some routes
+        const routes = [
+            {path: '/', name: 'eval_list', component: List},
+        ]
+
+        // 3. Create the router instance and pass the `routes` option
+        const router = new VueRouter({
+            routes: routes, // short for `routes: routes`
+        })
+
+        // 4. Create and mount the root instance.
+        const app = new Vue({
+            router: router,
+            delimiters: ['${', '}'],
+            data: {
+                msg: 'Sergio',
+            },
+
+        }).$mount('#app');
+
+    </script>
+{% endblock %}

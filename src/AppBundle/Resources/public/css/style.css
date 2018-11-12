@@ -82,3 +82,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus { border: 1px solid #f1f1
   top: -5px;
   right: 120px;
 }
+
+.form-panel table.datatable.table tr > td,
+.form-panel table.datatable.table tr > th {
+  padding: 2px 8px !important;
+}

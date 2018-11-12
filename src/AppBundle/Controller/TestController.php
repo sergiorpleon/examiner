@@ -4175,4 +4175,126 @@ class TestController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+
+/*************************************************************************************************************
+ * *************************************LIST USER*********************************************************
+************************************************************************************************************* */
+    /**
+     * Lists all EVALS FOR USER PROFILE
+     *
+     * @Route("/eval_list/json/", name="eval_list_json")
+     * @Method({"GET", "POST"})
+     */
+    public function jsonevallistAction(Request $request)
+    {
+        //listar json de una pregunta
+        $em = $this->getDoctrine()->getManager();
+        $x = json_decode($request->getContent());
+        $usuario = $em->getRepository('AppBundle:User')->find($x->id);
+
+        try {
+            $rawdatausuario = array();
+
+
+
+            $em = $this->getDoctrine()->getManager();
+            $evaluaciones = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_estudiante' => $usuario->getId()));
+
+            $arrayE = array();
+            $i = 0;
+            foreach ($evaluaciones as $e) {
+                $arrayE[$i]['id'] = $e->getId();
+                $arrayE[$i]['deprueba'] = $e->getIdTest()->getDeprueba();
+                $arrayE[$i]['prueba'] = $e->getIdTest()->getId();
+
+                $sfr = '-';
+                if ($e->getIdTest()->getIdReading()) {
+                    $fr = $e->getIdTest()->getIdReading()->getFecha();
+                    if ($fr) {
+                        $sfr = $fr->format("d-m-Y");
+                    }
+                }
+                $arrayE[$i]['fecha_reading'] = $sfr;
+                $arrayE[$i]['puntos_reading'] = $e->getPuntosReading();
+
+                $sfl = '-';
+                if ($fl = $e->getIdTest()->getIdListening()) {
+                    $fl = $e->getIdTest()->getIdListening()->getFecha();
+                    if ($fl) {
+                        $sfl = $fl->format("d-m-Y");
+                    }
+                }
+                $arrayE[$i]['fecha_listening'] = $sfl;
+                $arrayE[$i]['puntos_listening'] = $e->getPuntosListening();
+
+                $i++;
+            };
+
+            $rawdatausuario['evaluaciones'] = $arrayE;
+
+
+            $response = new Response();
+            $response->setContent(json_encode($rawdatausuario));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        } catch (Exception $e) {
+            $error = '{"error":{"text":' . $e->getMessage() . '}}';
+            $response = new Response();
+            $response->setContent(json_encode($error));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+    }
+
+
+    /**
+    * Lists all User entities.
+    *
+    * @Route("/user/list", name="userlist")
+    * @Method("GET")
+    */
+    public function userlistAction()
+    {
+
+        return $this->render('test/user/list.html.twig');
+    }
+
+    /**
+     * Lists all Test entities.
+     *
+     * @Route("/user/listjson/", name="user_list_json")
+     * @Method("GET")
+     */
+    public function jsonuserlistAction(Request $r)
+    {
+        //listar json de u//na pregunta
+        $em = $this->getDoctrine()->getManager();
+        $usuarios = $em->getRepository('AppBundle:User')->findAll();
+        try {
+            $arrayU = array();
+            $i = 0;
+            foreach ($usuarios as $u) {
+                $arrayU[$i]['id'] = $u->getId();
+                $arrayU[$i]['username'] = $u->getUsername();
+                $arrayU[$i]['email'] = $u->getEmail();
+                $arrayU[$i]['nombre'] = $u->getNombre();
+                //$arrayU[$i]['annocurso'] = $u->getAnnoCurso();
+                //$evals = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_estudiante' => $u->getId()));
+                //$arrayU[$i]['total'] = count($evals);
+                $i++;
+            };
+            $response = new Response();
+            $response->setContent(json_encode($arrayU));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        } catch (Exception $e) {
+            $error = '{"error":{"text":' . $e->getMessage() . '}}';
+            $response = new Response();
+            $response->setContent(json_encode($error));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+    }
+
 }
