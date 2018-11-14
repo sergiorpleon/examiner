@@ -269,7 +269,7 @@
 
                         <div class="col-sm-12">
                                 <h5>
-                                    Test: {{ '{{ results.prueba }}' }}
+                                    Test: <div v-html="results.prueba"></div>
                                 </h5>
                             </div>
                             <div class="col-sm-8">
@@ -421,7 +421,7 @@
                     <div v-if="this.hability=='listening'">
                         <div class="col-sm-12">
                                 <h5>
-                                    Test: {{ '{{ results.prueba }}' }}
+                                    Test: <div v-html="results.prueba"></div>
                                 </h5>
                             </div>
                             <div class="col-sm-8">
@@ -665,16 +665,16 @@
                     indact: 0,
                     hability: 'reading',
                     results: {
-                        id: '-1',
+                        id: '',
 
-                        user: '1',
-                        prueba: '1',
+                        user: '',
+                        prueba: '',
                         readingtext: 'Text instruction...',
                         listeningtext: 'Text instruction...',
                         reading: {
                             section: [
                                 {
-                                    sec: 'eee'
+                                    sec: ''
                                 },
                             ],
                         },
@@ -952,12 +952,12 @@
                         {
                             id: -1,
                             //fecha: 'fecha',
-                            user: 'KitKat',
-                            prueba: 'Lolo',
+                            user: '',
+                            prueba: '',
                             fecha_reading: '',
-                            puntos_reading: 20,
+                            puntos_reading: 0,
                             fecha_listening: '',
-                            puntos_listening: 20,
+                            puntos_listening: 0,
                         },
                     ],
                     startDate: '25-04-2010',

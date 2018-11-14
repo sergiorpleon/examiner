@@ -293,7 +293,7 @@
                                     <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
                                     <td class="text-xs-right">{{ "{{ props.item.user}}" }}</td>
                                     <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.prueba}}" }}</td>
+                                    <td class="text-xs-right limit-height"><div v-html="props.item.prueba"></div></td>
                                     <td class="text-xs-right">{{ "{{ props.item.fecha_reading}}" }}</td>
                                     <td class="text-xs-right">{{ "{{ props.item.puntos_reading}}" }}</td>
                                     <td class="text-xs-right">{{ "{{ props.item.fecha_listening}}" }}</td>
@@ -345,7 +345,7 @@
 
                         <div class="col-sm-12">
                                 <h5>
-                                    Test: {{ '{{ results.prueba }}' }}
+                                    Test: <div v-html="results.prueba"></div>
                                 </h5>
                             </div>
                             <div class="col-sm-8">
@@ -498,7 +498,7 @@
                         <div v-if="this.hability=='listening'">
                             <div class="col-sm-12">
                                 <h5>
-                                    Test: {{ '{{ results.prueba }}' }}
+                                    Test: <div v-html="results.prueba"></div>
                                 </h5>
                             </div>
                             <div class="col-sm-8">
@@ -733,7 +733,7 @@
                 return {
 
                     user: {
-                        id: '-1',
+                        id: '',
                         nombre: '',
                         evaluaciones: [],
 
@@ -810,17 +810,17 @@
                     indact: 0,
                     hability: 'reading',
                     results: {
-                        id: '-1',
+                        id: '',
 
-                        user_id: '1',
-                        user: '1',
-                        prueba: '1',
+                        user_id: '',
+                        user: '',
+                        prueba: '',
                         readingtext: 'Text instruction...',
                         listeningtext: 'Text instruction...',
                         reading: {
                             section: [
                                 {
-                                    sec: 'eee'
+                                    sec: ''
                                 },
                             ],
                         },

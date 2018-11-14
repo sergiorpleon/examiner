@@ -44,20 +44,8 @@ class TestController extends Controller
         ));
     }
 
-    /**
-     * Lists all Test entities.
-     *
-     * @Route("/", name="test_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
 
-        $tests = $em->getRepository('AppBundle:Test')->findAll();
-
-        return $this->render('test/index.html.twig');
-    }
+    
 
     /**
      * Lists all Test entities.
@@ -3261,8 +3249,93 @@ class TestController extends Controller
             $rawdataevaluacion['prueba_id'] = $evaluacion->getIdTest()->getId();
             $rawdataevaluacion['prueba'] = $evaluacion->getIdTest()->getTextoOrientacion();
             $rawdataevaluacion['puntosreading'] = $evaluacion->getPuntosReading();
+
+            $puntRead9 = floor( ($evaluacion->getPuntosReading()/40)*16 + 2);
+            $bandareading = '';
+            switch($puntRead9){
+                case 2:
+                case 3:
+                $bandareading = 'Below A1';
+                    break;
+                case 4:
+                case 5:
+                $bandareading = 'A1';
+                    break;
+                case 6:
+                case 7:
+                $bandareading = 'A2';
+                    break;
+                case 8:
+                case 9:
+                $bandareading = 'B1';
+                    break;
+                case 10:
+                $bandareading = 'B1+';
+                break;
+
+                case 11:
+                case 12:
+                $bandareading = 'B2';
+                    break;
+                case 13:
+                case 14:
+                case 15:
+                $bandareading = 'C1';
+                    break;
+                case 16:
+                case 17:
+                case 18:
+                $bandareading = 'C2';
+                    break;
+            }
+
+
+            $rawdataevaluacion['levelreading'] = $bandareading;
+
+
             $rawdataevaluacion['puntoslistening'] = $evaluacion->getPuntosListening();
 
+            $puntList9 = floor( ($evaluacion->getPuntosListening()/40)*16 + 2);
+            $bandalistening = '';
+            switch($puntRead9){
+                case 2:
+                case 3:
+                $bandalistening = 'Below A1';
+                    break;
+                case 4:
+                case 5:
+                $bandalistening = 'A1';
+                    break;
+                case 6:
+                case 7:
+                $bandalistening = 'A2';
+                    break;
+                case 8:
+                case 9:
+                $bandalistening = 'B1';
+                    break;
+                case 10:
+                    $bandalistening = 'B1+';
+                    break;
+
+                case 11:
+                case 12:
+                $bandalistening = 'B2';
+                    break;
+                case 13:
+                case 14:
+                case 15:
+                $bandalistening = 'C1';
+                    break;
+                case 16:
+                case 17:
+                case 18:
+                $bandalistening = 'C2';
+                    break;
+            }
+
+
+            $rawdataevaluacion['levellistening'] = $bandalistening;
 
             $r = $evaluacion->getIdTest()->getIdReading();
             if($r) {

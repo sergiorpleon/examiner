@@ -58,7 +58,7 @@ class Listening
 
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Test" , mappedBy="id_listening")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Test" , mappedBy="id_listening",  cascade={"all"}, orphanRemoval=true)
      */
     private $tests;
 

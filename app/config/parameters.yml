@@ -12,5 +12,6 @@ parameters:
     secret: ThisTokenIsNotSoSecretChangeIt
     
     #a post in ralation to the root of your server
+    audio_directory: uploads/audio
     images_location: uploads/images
     zona_horaria: America/New_York

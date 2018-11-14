@@ -91,6 +91,20 @@ class User extends UserFOS
      */
     private $id_estudia;
 
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+        $this->addRole('ROLE_USER');
+        $this->setEnabled(true);
+        //$this->locked = false;
+        //$this->expired = false;
+        //$this->roles = array();
+        //$this->credentialsExpired = false;
+
+    }
+
     /**
      * Get id
      *
@@ -99,13 +113,6 @@ class User extends UserFOS
     public function getId()
     {
         return $this->id;
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-        $this->addRole('ROLE_USER');
     }
 
     /**

@@ -725,29 +725,7 @@
                         num: '1',
                         textoInstruccion: 'Text instruction...',
                         preguntas: [
-                            {
-                                id: '-1',
-                                ordenPregunta: '11',
-                                textoPregunta: 'Text question...',
-                                tipoPregunta: 4,
-                                totalItem: 0,
-                                listselection: {
-                                    valores: [
-                                        {
-                                            id: '-1',
-                                            texto: 'empty'
-                                        }
-                                    ],
-                                    itemsList: [
-                                        {
-                                            id: '-1',
-                                            orden: '1',
-                                            texto: 'Text option...',
-                                            correcta: '1'
-                                        },
-                                    ]
-                                }
-                            },
+
                         ],
                     },
 
@@ -912,29 +890,7 @@
                                 //textoReading: 'texto reading 1',
 
                                 preguntas: [
-                                    {
-                                        id: '-1',
-                                        ordenPregunta: '11',
-                                        textoPregunta: 'Text question...',
-                                        tipoPregunta: 4,
-                                        totalItem: 0,
-                                        listselection: {
-                                            valores: [
-                                                {
-                                                    id: '-1',
-                                                    texto: 'empty'
-                                                }
-                                            ],
-                                            itemsList: [
-                                                {
-                                                    id: '-1',
-                                                    orden: '2',
-                                                    texto: 'Text option...',
-                                                    correcta: 'a'
-                                                },
-                                            ]
-                                        }
-                                    },
+
                                 ],
                             },
                         ]
@@ -961,29 +917,7 @@
                                     num: '1',
                                     textoInstruccion: 'Text instruction...',
                                     preguntas: [
-                                        {
-                                            id: '-1',
-                                            ordenPregunta: '11',
-                                            textoPregunta: 'Text question...',
-                                            tipoPregunta: 4,
-                                            totalItem: 0,
-                                            listselection: {
-                                                valores: [
-                                                    {
-                                                        id: '-1',
-                                                        texto: 'empty'
-                                                    }
-                                                ],
-                                                itemsList: [
-                                                    {
-                                                        id: '-1',
-                                                        orden: '1',
-                                                        texto: 'Text option...',
-                                                        correcta: '1'
-                                                    },
-                                                ]
-                                            }
-                                        },
+
                                     ],
                                 },
                             ]
@@ -1003,29 +937,7 @@
                                     textoInstruccion: 'Text instruction...',
                                     urlAudio: 'http://#',
                                     preguntas: [
-                                        {
-                                            id: '-1',
-                                            ordenPregunta: '11',
-                                            textoPregunta: 'Text question...',
-                                            tipoPregunta: 4,
-                                            totalItem: 0,
-                                            listselection: {
-                                                valores: [
-                                                    {
-                                                        id: '-1',
-                                                        texto: 'empty'
-                                                    }
-                                                ],
-                                                itemsList: [
-                                                    {
-                                                        id: '-1',
-                                                        orden: '1',
-                                                        texto: 'Text option...',
-                                                        correcta: '1'
-                                                    },
-                                                ]
-                                            }
-                                        },
+
                                     ],
                                 },
                             ]
@@ -1169,29 +1081,7 @@
                                 //textoReading: 'texto reading 1',
 
                                 preguntas: [
-                                    {
-                                        id: '-1',
-                                        ordenPregunta: '11',
-                                        textoPregunta: 'Text question...',
-                                        tipoPregunta: 4,
-                                        totalItem: 0,
-                                        listselection: {
-                                            valores: [
-                                                {
-                                                    id: '-1',
-                                                    texto: 'empty'
-                                                }
-                                            ],
-                                            itemsList: [
-                                                {
-                                                    id: '-1',
-                                                    orden: '2',
-                                                    texto: 'Text option...',
-                                                    correcta: 'a'
-                                                },
-                                            ]
-                                        }
-                                    },
+
                                 ],
                             },
                         ]
@@ -1245,29 +1135,7 @@
                                 //textoReading: 'texto reading 1',
 
                                 preguntas: [
-                                    {
-                                        id: '-1',
-                                        ordenPregunta: '11',
-                                        textoPregunta: 'Text question...',
-                                        tipoPregunta: 4,
-                                        totalItem: 0,
-                                        listselection: {
-                                            valores: [
-                                                {
-                                                    id: '-1',
-                                                    texto: 'empty'
-                                                }
-                                            ],
-                                            itemsList: [
-                                                {
-                                                    id: '-1',
-                                                    orden: '2',
-                                                    texto: 'Text option...',
-                                                    correcta: 'a'
-                                                },
-                                            ]
-                                        }
-                                    },
+
                                 ],
                             },
                         ]
@@ -1549,7 +1417,7 @@
                 },
                 newSimpleSeleccion: function () {
                     var neworden = this.obtenerOrden();
-                    ;
+
                     this.questionSS = {
                         id: '-1',
                         ordenPregunta: '12',
@@ -2692,6 +2560,29 @@
                         });
 
                     } else {
+
+                        if(this.visibilidad == 2){
+                            this.continuarQuestion(this.questionTF);
+                        }
+                        if(this.visibilidad == 3){
+                            this.continuarQuestion(this.questionSS);
+                        }
+                        if(this.visibilidad == 4){
+                            this.continuarQuestion(this.questionMS);
+                        }
+                        if(this.visibilidad == 5){
+                            this.continuarQuestion(this.questionLS);
+                        }
+                        if(this.visibilidad == 6){
+                            this.continuarQuestion(this.questionC);
+                        }
+
+                        if(this.visibilidad == 1){
+                            this.prueba.reading = this.readingtmp;
+                            this.contarItemReading();
+                            this.visibilidad = 0;
+                        }
+
                         //alert(JSON.stringify(this.prueba));
                         jQuery('.overlay').css('display','block');
                         NProgress.start(); 

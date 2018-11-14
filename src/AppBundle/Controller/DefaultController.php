@@ -153,10 +153,11 @@ class DefaultController extends Controller
      */
     public function loadAction(Request $r)
     {
+
         //$uploaddir = '/var/www/uploads/';
         $uploaddir = $this->getParameter('audio_directory').'/';
         $curr = current($_FILES);
-        $uploadfile = $uploaddir . basename($curr['name']);
+        $uploadfile = $uploaddir. basename($curr['name']);
 
         $val = 'lolo';
         if (move_uploaded_file($curr['tmp_name'], $uploadfile)) {
@@ -171,7 +172,7 @@ class DefaultController extends Controller
             header("HTTP/1.0 500 Server");
         }
         //return $this->render('AppBundle:Default:product/ko.html.twig',array('nombre' => $curr['name']));
-        return new Response('KO'.$val);
+        return new Response('KO'.$uploadfile);
 
     }
 

@@ -60,7 +60,7 @@ class Reading
     private $totalItem;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Test" , mappedBy="id_reading")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Test" , mappedBy="id_reading",  cascade={"all"}, orphanRemoval=true)
      */
     private $tests;
 
