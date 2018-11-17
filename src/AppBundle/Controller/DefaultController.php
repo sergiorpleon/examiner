@@ -148,31 +148,44 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/loadAudio/", name="loadaudio")
+     * @Route("/loadAudio/{id}", name="loadaudio")
      *     @Method({"GET", "POST"})
      */
-    public function loadAction(Request $r)
+    public function loadAction(Request $r, $id)
     {
 
         //$uploaddir = '/var/www/uploads/';
-        $uploaddir = $this->getParameter('audio_directory').'/';
+        $uploaddir = $this->getParameter('audio_directory').'/'.$id.'/';
         $curr = current($_FILES);
         $uploadfile = $uploaddir. basename($curr['name']);
 
         $val = 'lolo';
-        if (move_uploaded_file($curr['tmp_name'], $uploadfile)) {
-            // return $this->render('AppBundle:Default:product/ok.html.twig');
-            $audioUrl=$r->getBasePath()."/uploads/audio/";
-            $audiourl="http://".$_SERVER['HTTP_HOST'].$audioUrl.$curr['name'];
-            return new Response($audiourl);
-        } else{
+        $tipo_archivo = $curr['type'];
+        $tamano_archivo = $curr['size'];
+        if(! is_dir ( $uploaddir) ){
+            if (!mkdir($uploaddir, 0777, true)) {
+                return new Response("Error, creación del directorio ".$uploaddir." no permitido");
+            }
+        }
 
-            // Notify editor that the upload failed
-            $mens = 1;
-            header("HTTP/1.0 500 Server");
+        if($tamano_archivo < 100000000) {
+
+                if (move_uploaded_file($curr['tmp_name'], $uploadfile)) {
+                    // return $this->render('AppBundle:Default:product/ok.html.twig');
+                    $audioUrl = $r->getBasePath() . "/uploads/audio/".$id."/";
+                    $audiourl = "http://" . $_SERVER['HTTP_HOST'] . $audioUrl . $curr['name'];
+                    return new Response($audiourl);
+                } else {
+
+                    // Notify editor that the upload failed
+                    $message = "No fue posible mover el archivo a la siguiente ruta " . $uploadfile;
+                }
+
+        }else{
+            $message = "El archivo excede el tamaño de archivo máximo permitido que es de 10 Mb";
         }
         //return $this->render('AppBundle:Default:product/ko.html.twig',array('nombre' => $curr['name']));
-        return new Response('KO'.$uploadfile);
+        return new Response($message);
 
     }
 

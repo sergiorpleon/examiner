@@ -94,7 +94,7 @@ class User extends UserFOS
 
     public function __construct()
     {
-        parent::__construct();
+        //parent::__construct();
         // your own logic
         $this->addRole('ROLE_USER');
         $this->setEnabled(true);

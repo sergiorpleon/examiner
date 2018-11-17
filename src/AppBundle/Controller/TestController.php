@@ -19,14 +19,14 @@ use Symfony\Component\Validator\Constraints\DateTime;
 /**
  * Test controller.
  *
- * @Route("/test")
+ * @Route("/admin")
  */
 class TestController extends Controller
 {
     /**
      * Lists all Test entities.
      *
-     * @Route("/route", name="test_route")
+     * @Route("/test", name="test_route")
      * @Method("GET")
      */
     public function routeAction()
@@ -45,7 +45,7 @@ class TestController extends Controller
     }
 
 
-    
+
 
     /**
      * Lists all Test entities.
@@ -1622,6 +1622,14 @@ class TestController extends Controller
         if ($t != null) {
             $em->remove($t);
             $em->flush();
+        }
+
+        $uploaddir = $this->getParameter('audio_directory').'/'.$id.'/';
+        if(is_dir ( $uploaddir) ){
+
+            //if (!rmdir($uploaddir)) {
+            //    return new Response("Error, eliminación del directorio ".$uploaddir." no permitido");
+            //}
         }
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';
@@ -4350,11 +4358,13 @@ class TestController extends Controller
             foreach ($usuarios as $u) {
                 $arrayU[$i]['id'] = $u->getId();
                 $arrayU[$i]['username'] = $u->getUsername();
+                $arrayU[$i]['enabled'] = $u->isEnabled();
                 $arrayU[$i]['email'] = $u->getEmail();
                 $arrayU[$i]['nombre'] = $u->getNombre();
-                //$arrayU[$i]['annocurso'] = $u->getAnnoCurso();
-                //$evals = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_estudiante' => $u->getId()));
-                //$arrayU[$i]['total'] = count($evals);
+                $arrayU[$i]['expired'] = $u->isExpired();
+                $arrayU[$i]['locked'] = $u->isLocked();
+                $arrayU[$i]['roles'] = $u->getRoles();
+
                 $i++;
             };
             $response = new Response();
@@ -4368,6 +4378,150 @@ class TestController extends Controller
             $response->headers->set('Content-Type', 'application/json');
             return $response;
         }
+    }
+
+    /**
+     * Edit a User
+     *
+     * @Route("/edituser/json", name="edit_user")
+     * @Method({"GET", "POST"})
+     */
+    public function editUserAction(Request $request)
+    {
+        //-------------------------------------------------------------------------------------
+        //--------------------eliminar json de usuario------------------------------------
+        //-------------------------------------------------------------------------------------
+
+        $em = $this->getDoctrine()->getManager();
+
+        $x = json_decode($request->getContent());
+        $id = $x->id;
+
+        $u = $em->getRepository('AppBundle:User')->find($id);
+
+        try {
+            $arrayU = array();
+            $i = 0;
+
+            $arrayU['id'] = $u->getId();
+            $arrayU['username'] = $u->getUsername();
+            $arrayU['enabled'] = $u->isEnabled();
+            $arrayU['email'] = $u->getEmail();
+            $arrayU['nombre'] = $u->getNombre();
+            $arrayU['expired'] = $u->isExpired();
+            $arrayU['locked'] = $u->isLocked();
+
+
+
+            $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
+            // sintaxis dentro de un controlador:
+            // $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
+            $roles = array_keys($roleHierarchy);
+            $theRoles = array();
+
+            $i = 0;
+            foreach ($roles as $role) {
+                $theRoles[$role] = $u->hasRole($role);
+                $i++;
+            }
+            $arrayU['roles'] = $theRoles;
+
+            $i = 0;
+            foreach ($roles as $role) {
+                $theRoles[$role] = $role;
+                $i++;
+            }
+            $arrayU['arrayroles'] = $theRoles;
+
+
+
+            $response = new Response();
+            $response->setContent(json_encode($arrayU));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        } catch (Exception $e) {
+            $error = '{"error":{"text":' . $e->getMessage() . '}}';
+            $response = new Response();
+            $response->setContent(json_encode($error));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+    }
+
+    /**
+     * Edit a User
+     *
+     * @Route("/updateuser/json", name="update_user")
+     * @Method({"GET", "POST"})
+     */
+    public function updateUserAction(Request $request)
+    {
+        //-------------------------------------------------------------------------------------
+        //--------------------eliminar json de usuario------------------------------------
+        //-------------------------------------------------------------------------------------
+
+        $em = $this->getDoctrine()->getManager();
+
+        $x = json_decode($request->getContent());
+        $id = $x->id;
+
+        $u = $em->getRepository('AppBundle:User')->find($id);
+
+        $u->setNombre($x->nombre);
+        $u->setUsername($x->username);
+        $u->setEmail($x->email);
+        $u->setEnabled($x->enabled);
+        $u->setLocked($x->locked);
+        $u->setExpired($x->expired);
+
+
+        $em->persist($u);
+        $em->flush();
+
+
+        //redirigir ojoooo
+        //$error = '{"error":{"text":'. $e->getMessage() .'}}';
+        $error = '{ "update" : '.$x->nombre.'}';
+        $response = new Response();
+        $response->setContent(json_encode($error));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+
+
+
+    /**
+     * Delete a User
+     *
+     * @Route("/deleteuser/json", name="delete_user")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteUserAction(Request $request)
+    {
+        //-------------------------------------------------------------------------------------
+        //--------------------eliminar json de usuario------------------------------------
+        //-------------------------------------------------------------------------------------
+
+        $em = $this->getDoctrine()->getManager();
+
+        $x = json_decode($request->getContent());
+        $id = $x->id;
+
+        $u = $em->getRepository('AppBundle:User')->find($id);
+        $r = $u->getIdReading();
+
+        if ($u != null) {
+            $em->remove($u);
+            $em->flush();
+        }
+        //redirigir ojoooo
+        //$error = '{"error":{"text":'. $e->getMessage() .'}}';
+        $error = '{ "elimiado" : "true"}';
+        $response = new Response();
+        $response->setContent(json_encode($error));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
 }

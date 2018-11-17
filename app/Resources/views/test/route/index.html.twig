@@ -488,6 +488,7 @@
             mounted : function () {
                 //this.valor = "." + this.nid;
                 var self = this ;
+
                 tinymce.init({
                     mode: "specific_textareas",
                     selector: self.valor,
@@ -1313,25 +1314,49 @@
                 var gthis = this;
                 var secx = seccionx;
                 var gindex = index;
-                var formData = new FormData(document.getElementById("form_"+gindex));
-                formData.append("dato", "valor");
-                //formData.append(f.attr("name"), $(this)[0].files[0]);
-                jQuery.ajax({
-                            url: "{{ path('loadaudio') }}",
-                            type: "post",
-                            dataType: "html",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false
-                        })
-                        .done(function(res){
-                            //alert(res);
-                            //alert(gthis.readingtmp.secciones[gindex].urlAudio);
-                            gthis.readingtmp.secciones[gindex].urlAudio=res;
-                            //seccionx.urlAudio=res;
-                            //alert(gthis.readingtmp.secciones[gindex].urlAudio);
-                        });
+
+                if(gthis.prueba.id == -1){
+                    bootbox.dialog({
+                        message: "Antes de cargar algun audio, debe haber creado antes la prueba",
+                        className: '',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+
+                }else{
+
+                    var formData = new FormData(document.getElementById("form_"+gindex));
+                    formData.append("dato", "valor");
+                    //formData.append(f.attr("name"), $(this)[0].files[0]);
+                    var rutaphp = "{{ path('loadaudio',
+                    { 'id': '***' }) }}";
+                    var ruta = rutaphp.replace('***',gthis.prueba.id);
+                    jQuery.ajax({
+                                url: ruta,
+                                type: "post",
+                                dataType: "html",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false
+                            })
+                            .done(function(res){
+                                //alert(res);
+                                //alert(gthis.readingtmp.secciones[gindex].urlAudio);
+                                gthis.readingtmp.secciones[gindex].urlAudio=res;
+                                //seccionx.urlAudio=res;
+                                //alert(gthis.readingtmp.secciones[gindex].urlAudio);
+                            });
+                }
+
+
             },
 
 
@@ -1444,7 +1469,7 @@
                 },
                 newMultipleSeleccion: function () {
                     var neworden = this.obtenerOrden();
-                    ;
+
                     this.questionMS = {
                         id: '-1',
                         ordenPregunta: '12',

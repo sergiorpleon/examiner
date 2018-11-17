@@ -243,412 +243,6 @@
         <!-- component matched by the route will render here -->
         <router-view></router-view>
 
-        <!-- plantilla componente prueba -->
-        <script type="text/x-template" id="user">
-            <div>
-
-                <section class="content-header">
-                    <ol class="breadcrumb">
-                        <li><a href="#">List User</a></li>
-
-                        <li class="active">Results Test</li>
-
-                    </ol>
-                </section>
-
-                <div class="row form-panel box box-primary">
-                    <div class='col-sm-12'>
-                        <h5><strong>Id:</strong> {{ '{{ user.id }}' }}</h5>
-                    </div>
-                    <div class='col-sm-5'>
-                        <h5><strong>Username:</strong> {{ '{{ user.username }}' }}</h5>
-                    </div>
-                    <div class='col-sm-7'>
-                        <h5><strong>Name:</strong> {{ '{{ user.nombre }}' }}</h5>
-                    </div>
-                    <div class='col-sm-5'>
-                        <h5><strong>Email:</strong> {{ '{{ user.email }}' }}</h5>
-                    </div>
-                    <div class='col-sm-7'>
-                        <h5><strong>Year:</strong> {{ '{{ user.annocurso }}' }}</h5>
-                    </div>
-                    <div class='col-sm-12'>
-                        <hr/>
-                    </div>
-                    <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
-                        <div class="col-sm-4 col-xs-6 col col-editor">
-                            <input class="form-control " type="text" v-model="searchu" placeholder="Search..."/>
-                        </div>
-                        <div class="col-sm-8 col-xs-6">
-                            <!-- router-link v-bind:to="enrutar(-1)" class="btn btn-default btn-70w" style="float: right" -->
-                            <!-- router-link v-bind:to="{ name: 'new_prueba', params: { id: -1 }}" class="btn btn-default btn-70w" style="float: right">
-                                <i class="fa fa-plus-circle"></i>  Add
-                            </router-link -->
-                        </div>
-                    </div>
-                    <template>
-                        <v-card  class="col-xs-12">
-                            <v-data-table v-bind:headers="headersu" v-bind:items="user.evaluaciones" v-bind:search="searchu">
-                                <template slot="items" scope="props">
-                                    <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.user}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.prueba}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.fecha_reading}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.puntos_reading}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.fecha_listening}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.puntos_listening}}" }}</td>
-
-                                    <td>
-                                        <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
-                                        <router-link class="btn btn-default btn-70w"
-                                                     v-bind:to="{ name: 'view_result', params: { hability: 'reading' , id: props.item.id }}">
-                                            <i class="fa fa-pencil"></i> View
-                                        </router-link>
-                                        <!-- button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button -->
-                                    </td>
-                                </template>
-                            </v-data-table>
-                        </v-card>
-                    </template>
-                </div>
-            </div>
-        </script>
-
-        <!-- Resultado de una prueba para un usuario-->
-        <script type="text/x-template" id="result">
-            <div>
-
-
-                <section class="content-header">
-                    <ol class="breadcrumb">
-                        <li><a href="#">List User</a></li>
-                        <li>
-                            <router-link
-                                    v-bind:to="{ name: 'view_user', params: { id: this.results.user_id }}">
-                                Results User
-                            </router-link>
-
-                        </li>
-                        <li class="active">Result</li>
-
-                    </ol>
-                </section>
-
-                <div class="row form-panel box box-primary results">
-                    <ul class="nav nav-tabs" role="tab-list">
-                        <li v-bind:class="{ active: indact==0 }"><a v-on:click="cambiar('reading', 0)"><h4>Reading</h4></a></li>
-                        <li v-bind:class="{ active: indact==1 }"><a v-on:click="cambiar('listening', 1)"><h4>Listening</h4></a>
-                        </li>
-                    </ul>
-                    <div v-if="this.hability=='reading'">
-
-                        <div class="col-sm-12">
-                            <h5>
-                                Test: {{ '{{ results.prueba }}' }}
-                            </h5>
-                        </div>
-                        <div class="col-sm-8">
-                            <h5>
-                                User: {{ '{{ results.user }}' }}
-                            </h5>
-                        </div>
-                        <div class="col-sm-2">
-                            <h5>
-                                Level: {{ '{{ results.levelreading }}' }}
-                            </h5>
-                        </div>
-                        <div class="col-sm-2">
-                            <h5>
-                                Points: {{ '{{ results.puntosreading }}' }}
-                            </h5>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <h4>Reading</h4>
-                        </div>
-
-                        <div v-if="this.results.reading">
-                            <div class="col-sm-12">
-                                <div class="col-sm-1">
-                                    Item
-                                </div>
-                                <div class="col-sm-2">
-                                    Type Of Question
-                                </div>
-                                <div class="col-sm-4">
-                                    Answer Correct
-                                </div>
-                                <div class="col-sm-4">
-                                    Answer Studient
-                                </div>
-                                <div class="col-sm-1">
-                                    Points
-                                </div>
-                            </div>
-                            <div v-for="(seccionx, indexs) in this.results.reading.section">
-                                <div class="col-sm-12">
-                                    <div class="col-sm-1">
-                                        Sec. {{ ' {{ indexs + 1 }} ' }}
-                                    </div>
-                                </div>
-
-                                <div v-for="(questionx, indexq) in seccionx.question" class="col-sm-12">
-
-                                    <div v-if="questionx.tipoPregunta==1">
-                                        <div v-for="(itemx, indexi) in questionx.truefalse" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">true false
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==2">
-                                        <div v-for="(itemx, indexi) in questionx.simpleselection" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">simple selection
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==3">
-                                        <div v-for="(itemx, indexi) in questionx.multipleselection"
-                                             class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">multiple selection
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==4">
-                                        <div v-for="(itemx, indexi) in questionx.listselection" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">list selection
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==5">
-                                        <div v-for="(itemx, indexi) in questionx.complete" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">complete
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-                            </div>
-                            <div clas="col-sm-4">
-                                <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i
-                                            class="fa fa-eye"></i> Show
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div v-if="this.hability=='listening'">
-                        <div class="col-sm-12">
-                            <h5>
-                                Test: {{ '{{ results.prueba }}' }}
-                            </h5>
-                        </div>
-                        <div class="col-sm-8">
-                            <h5>
-                                User: {{ '{{ results.user }}' }}
-                            </h5>
-                        </div>
-                        <div class="col-sm-2">
-                            <h5>
-                                Level: {{ '{{ results.levellistening }}' }}
-                            </h5>
-                        </div>
-                        <div class="col-sm-2">
-                            <h5>
-                                Points: {{ '{{ results.puntoslistening }}' }}
-                            </h5>
-                        </div>
-
-                        <div class="col-sm-12">
-                            <h4>Listening</h4>
-                        </div>
-
-                        <div v-if="this.results.listening">
-                            <div class="col-sm-12">
-                                <div class="col-sm-1">
-                                    Item
-                                </div>
-                                <div class="col-sm-2">
-                                    Type Of Question
-                                </div>
-                                <div class="col-sm-4">
-                                    Answer Correct
-                                </div>
-                                <div class="col-sm-4">
-                                    Answer Studient
-                                </div>
-                                <div class="col-sm-1">
-                                    Points
-                                </div>
-                            </div>
-                            <div v-for="(seccionx, indexs) in this.results.listening.section">
-                                <div class="col-sm-12">
-                                    <div class="col-sm-1">
-                                        Sec. {{ ' {{ indexs + 1 }} ' }}
-                                    </div>
-                                </div>
-                                <div v-for="(questionx, indexq) in seccionx.question" class="col-sm-12">
-
-                                    <div v-if="questionx.tipoPregunta==1">
-                                        <div v-for="(itemx, indexi) in questionx.truefalse" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">true false
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==2">
-                                        <div v-for="(itemx, indexi) in questionx.simpleselection" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">simple selection
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==3">
-                                        <div v-for="(itemx, indexi) in questionx.multipleselection"
-                                             class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">multiple selection
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==4">
-                                        <div v-for="(itemx, indexi) in questionx.listselection" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">list selection
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="questionx.tipoPregunta==5">
-                                        <div v-for="(itemx, indexi) in questionx.complete" class="col-sm-12">
-                                            <div class="col-sm-1">{{ '{{ itemx.item+1 }}' }}
-                                            </div>
-                                            <div class="col-sm-2">complete
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItem"></span>
-                                            </div>
-                                            <div class="col-sm-4"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemE"></span>
-                                            </div>
-                                            <div class="col-sm-1"><span style="display: inline-block;"
-                                                                        v-html="itemx.textoItemP"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-                            <div class="col-sm-12">
-                                <button class="btn btn-info" style="margin-top: 20px;" v-on:click="showSection()"><i
-                                            class="fa fa-eye"></i> Show
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </script>
 
         <!-- plantilla componente lista prueba -->
         <script type="text/x-template" id="list">
@@ -679,25 +273,38 @@
                                 <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
                                     <template slot="items" scope="props">
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
-
                                         <td class="text-xs-right">
                                             <div class="limit-height" v-html=" props.item.username"></div>
                                         </td>
                                         <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.enabled"></div>
+                                        </td><td class="text-xs-right">
                                             <div class="limit-height" v-html=" props.item.email"></div>
                                         </td>
                                         <td class="text-xs-right">
                                             <div class="limit-height" v-html=" props.item.nombre"></div>
                                         </td>
+                                        <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.expired"></div>
+                                        </td>
+                                        <td class="text-xs-right">
+                                            <div class="limit-height">
+                                                <div v-for="(rol, index) in props.item.roles">
+                                                    {{"{{rol}}"}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.locked"></div>
+                                        </td>
                                         
 
                                         <td>
                                             <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
-                                            <router-link class="btn btn-default btn-70w"
-                                                         v-bind:to="{ name: 'view_user', params: { id: props.item.id }}">
-                                                <i class="fa fa-pencil"></i> View
+                                            <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'user_edit', params: { id: props.item.id }}">
+                                                <i class="fa fa-pencil"></i> Edit
                                             </router-link>
-                                            <!-- button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button -->
+                                            <button class="btn btn-default btn-70w" v-on:click="delUser( props.item.id)"><i class="fa fa-times"></i> Delete</button >
                                         </td>
                                     </template>
                                 </v-data-table>
@@ -707,6 +314,115 @@
                 </div>
             </div>
         </script>
+
+
+        <!-- Resultado de una prueba para un usuario-->
+        <script type="text/x-template" id="user">
+            <div>
+
+                <section class="content-header">
+                    <section class="content-header">
+                        <ol class="breadcrumb">
+                            <li>
+                                <router-link
+                                        v-bind:to="{ name: 'user_list'}">
+                                    Users
+                                </route-link>
+                            </li>
+                            <li class="active">Edit</li>
+
+                        </ol>
+                    </section>
+
+                    <div class="row form-panel box box-primary results">
+
+                        <div class="col-sm-2">
+
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="col-sm-12">
+                                <h4>
+                                    Edit User
+                                </h4>
+                                <hr/>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <h5>
+                                  Name
+                                </h5>
+                                <input class="col-sm-12" v-model="user.nombre">
+                            </div>
+                            <div class="col-sm-12">
+                            <br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <h5>
+                                    Username
+                                </h5>
+                                <input class="col-sm-12" v-model="user.username">
+                            </div>
+                            <div class="col-sm-12">
+                                <br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <h5>
+                                    Email
+                                </h5>
+                                <input class="col-sm-12" v-model="user.email">
+                            </div>
+                            <div class="col-sm-12">
+                                <br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="checkbox" v-model="user.enabled"> <label> Enabled</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="checkbox" v-model="user.locaked"> <label> Locked</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="checkbox" v-model="user.expired"> <label> Expired</label>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <br/>
+                            </div>
+                            <div class="col-sm-12">
+                                <h5>
+                                    Roles
+                                </h5>
+
+                            </div>
+                            <div class="col-sm-12" v-for="(rol, index) in user.roles">
+                                <input type="checkbox" v-model="user.roles[index]"> <label> {{ '{{ user.arrayroles[index] }}' }}</label>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-12">
+                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarUser()"><i class="fa fa-save"></i> Save</button>
+                        <!-- button class="btn btn-info" style="margin-top: 20px;" v-on:click="continuarUser()"><i class="fa fa-save"></i> Save and Continue</button -->
+                        <router-link class="btn btn-warning" style="margin-top: 20px;"  v-bind:to="{ name: 'user_list'}">
+                            <i class="fa fa-save"></i> Cancel
+                        </router-link>
+                        </div>
+                    </div>
+
+
+                </section>
+            </div>
+        </script>
+
     </div>
 {% endblock %}
 
@@ -719,9 +435,115 @@
     <script src="{{ asset('bundles/app/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript">
 
-        // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter and then call `Vue.use(VueRouter)`.
-        // 1. Define route components.
-        // These can be imported from other files
+
+        //--->>>>>ruta lista de prueba<<<<<---
+        var List = Vue.extend({
+            template: '#list',
+            data: function () {
+                return {
+                    isActive: false,
+                    search: '',
+                    pagination: {},
+                    headers: [
+                        {
+                            text: 'Id',
+                            left: true,
+                            sortable: false,
+                            value: 'id'
+                        },
+                        //{text: 'Fecha', value: 'fecha'},
+                        {text: 'Username', value: 'username'},
+                        {text: 'Enabled', value: 'enabled'},
+                        {text: 'Email', value: 'email'},
+                        {text: 'Name', value: 'nombre'},
+                        {text: 'Expired', value: 'expired'},
+                        {text: 'Locked', value: 'locked'},
+                        {text: 'Roles', sortable: false,},
+                        {text: 'Action', sortable: false,},
+                    ],
+                    items: [
+                        {
+                            id: -1,
+                            //fecha: 'fecha',
+                            enabled: '',
+                            username: '',
+                            email: '',
+                            nombre: '',
+                            total: '',
+                            roles: '',
+
+                        },
+                    ],
+                    startDate: '25-04-2010',
+                }
+            },
+            created: function () {
+                jQuery('.overlay').css('display', 'block');
+                this.getList();
+                //this.inicializar();
+                window.scrollTo(0, 0);
+                jQuery('.breadcrumb').animate({ scrollTop: 0 }, 'slow');
+            },
+
+            methods: {
+                enrutar: function (id) {
+                    return "/" + id;
+                },
+
+                ocultar: function () {
+                    this.isActive = false;
+                },
+
+                mostrar: function () {
+                    this.isActive = true;
+                },
+
+                editUser: function(id){
+
+                },
+
+                delUser: function(index){
+                    var gthis = this;
+                    var gindex = index;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            jQuery('.overlay').css('display','block');
+                            NProgress.start();
+                            gthis.$http.post("{{  path('delete_user') }}", {
+                                id: gindex,
+                            }, function (data, status, request) {
+                                gthis.getList();
+                                NProgress.done();
+                                NProgress.remove();
+                            });
+                        }
+                    });
+                },
+
+
+                //--------------------------------------BEGIN-CRUD---------------------------------------------
+                //read question
+                getList: function () {
+                    NProgress.start();
+
+                    this.$http.get("{{  path('user_list_json') }}", function (data, status, request) {
+                        this.items = data;
+                        this.loading = true;
+                        jQuery('.overlay').css('display', 'none');
+                        NProgress.done();
+                        NProgress.remove();
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        NProgress.done();
+                        NProgress.remove();
+                    });
+                },
+
+            }
+        });
+
+        //-----------------Result user x prueba x
         var User = Vue.extend({
             template: '#user',
             data: function () {
@@ -730,51 +552,72 @@
                     user: {
                         id: '-1',
                         nombre: '',
-                        evaluaciones: [],
-
+                        username: '',
+                        email: '',
+                        enabled: '',
+                        locaked: '',
+                        expired: '',
                     },
-
-
-                    searchu: '',
-                    paginationu: {},
-                    headersu: [
-                        {
-                            text: 'Id',
-                            left: true,
-                            sortable: false,
-                            value: 'id'
-                        },
-                        //{text: 'Fecha', value: 'fecha'},
-                        {text: 'User', value: 'user'},
-                        {text: 'Testeo', value: 'testeo'},
-                        {text: 'Prueba', value: 'prueba'},
-                        {text: 'Fecha Reading', value: 'fecha_reading'},
-                        {text: 'Puntos Reading', value: 'puntos_reading'},
-                        {text: 'Fecha Listening', value: 'fecha_listening'},
-                        {text: 'Puntos Listening', value: 'puntos_leading'},
-                        {text: 'Action', sortable: false,},
-                    ],
 
                 };
             },
             created: function () {
                 jQuery('.overlay').css('display', 'block');
                 this.user.id = (this.$route.params.id);
-                this.getList();
+                this.getUser();
+
                 window.scrollTo(0, 0);
             },
 
             methods: {
 
+                boxScrollTop: function(){
+                    jQuery('.bootbox').animate({ scrollTop: 0 }, 'slow');
+                },
+
+                guardarUser: function(){
+                    this.getEdit();
+                },
+
+                continuarUser: function(){
+                    this.getEdit();
+                },
+
+
+
                 //============================BEGIN CRUD==================================
 
                 //read question
-                getList: function () {
+                getEdit: function () {
+                    NProgress.start();
+
+                    this.$http.post("{{  path('update_user') }}", {
+                        id: this.user.id,
+                        nombre: this.user.nombre,
+                        username: this.user.username,
+                        email: this.user.email,
+                        enabled: this.user.enabled,
+                        locked: this.user.locked,
+                        expired: this.user.expired,
+                    }, function (data, status, request) {
+                        //alert(JSON.stringify(data));
+                        this.getUser();
+
+                        jQuery('.overlay').css('display', 'none');
+
+                        //this.$route.params.id = 2;
+
+                        NProgress.done();
+                        NProgress.remove();
+                    })
+                },
+
+                getUser: function () {
 
                     if (this.$route.params.id != -1) {
                         NProgress.start();
 
-                        this.$http.post("{{  path('view_user_json') }}", {
+                        this.$http.post("{{  path('edit_user') }}", {
                             id: this.user.id,
                         }, function (data, status, request) {
                             this.user = data;
@@ -797,353 +640,9 @@
             },
         });
 
-        //-----------------Result user x prueba x
-        var Result = Vue.extend({
-            template: '#result',
-            data: function () {
-                return {
-                    indact: 0,
-                    hability: 'reading',
-                    results: {
-                        id: '-1',
-
-                        user_id: '1',
-                        user: '1',
-                        prueba: '1',
-                        readingtext: 'Text instruction...',
-                        listeningtext: 'Text instruction...',
-                        reading: {
-                            section: [
-                                {
-                                    sec: 'eee'
-                                },
-                            ],
-                        },
-
-                    },
-
-                };
-            },
-            created: function () {
-                jQuery('.overlay').css('display', 'block');
-                this.results.id = (this.$route.params.id);
-                this.hability = (this.$route.params.hability);
-                this.getList();
-
-                window.scrollTo(0, 0);
-            },
-
-            methods: {
-
-                cambiar: function (hab, ind) {
-                    this.hability = hab;
-                    this.indact = ind;
-                },
-
-                boxScrollTop: function(){
-                    jQuery('.bootbox').animate({ scrollTop: 0 }, 'slow');
-                },
-
-
-                showSection: function () {
-                    this.getTest();
-                    if (this.hability == 'reading') {
-                        this.readingtmp = this.theprueba.reading;
-                    }
-                    if (this.hability == 'listening') {
-                        this.readingtmp = this.theprueba.listening;
-                    }
-
-                    var htmlsections = "<div><p>" + this.readingtmp.textoInstrucciones + "</p>";
-                    for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
-
-                        htmlsections += "<div class='secciones'><p>" + this.readingtmp.secciones[indes].textoInstruccion + "</p>";
-                        if (this.hability == 'listening') {
-                            htmlsections += "<audio src='" + this.readingtmp.secciones[indes].urlAudio + "' controls='controls'></audio>";
-                        }
-                        for (var indeq = 0; indeq < this.readingtmp.secciones[indes].preguntas.length; indeq++) {
-                            htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].textoPregunta + "</p>";
-
-                            switch (this.readingtmp.secciones[indes].preguntas[indeq].tipoPregunta) {
-                                case 1:
-
-                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].truefalse.incisos.length; index++) {
-                                        htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].truefalse.incisos[index].texto + "</p><div class='ident'>";
-                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1' name='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += "TRUE";
-                                        htmlsections += "</p></label></div>";
-                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_2' name='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += "FALSE";
-                                        htmlsections += "</p></label></div>";
-                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_3' name='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += "NOT GIVEN";
-                                        htmlsections += "</p></label></div>";
-                                        htmlsections += "</div></div>";
-
-                                    }
-
-                                    break;
-                                case 2:
-                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple.length; index++) {
-                                        htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
-                                        for (var indi = 0; indi < this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
-                                            htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_" + indi + "' name='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                            htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].incisos[indi].texto;
-                                            htmlsections += "</p></label></div>";
-                                        }
-                                        htmlsections += "</div></div>";
-
-                                    }
-
-
-                                    break;
-                                case 3:
-
-                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].selectionmultiple.incisos.length; index++) {
-                                        htmlsections += "<div><div class='ident'>";
-                                        htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1' name='form_p_r_s" + indes + "_q" + indeq + "_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].selectionmultiple.incisos[index].texto;
-                                        htmlsections += "</p></label></div>";
-                                        htmlsections += "</div></div>";
-
-                                    }
-                                    break;
-                                case 4:
-                                    var htmlvalores = "<select>";
-
-                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].listselection.valores.length; index++) {
-                                        htmlvalores += "<option>";
-                                        htmlvalores += this.readingtmp.secciones[indes].preguntas[indeq].listselection.valores[index].texto;
-                                        htmlvalores += "</option>";
-
-                                    }
-                                    htmlvalores += "</select>";
-
-
-                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].listselection.itemsList.length; index++) {
-                                        htmlsections += "<div class='itemls'><div class='ident'>";
-                                        //htmllistselection += "<p>";
-                                        htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].listselection.itemsList[index].texto;
-                                        htmlsections += htmlvalores;
-                                        //htmllistselection += "</p>";
-                                        htmlsections += "</div></div>";
-
-                                    }
-
-                                    break;
-                                case 5:
-                                    //this.questionC.completa.vistaHtml = this.readingtmp.secciones[indes].preguntas[indeq].completa.vistaHtml;
-                                    htmlsections += this.previewPregunta(indes, indeq);
-
-                                    break;
-                            }
-                            htmlsections += "</div>";
-                        }
-                        htmlsections += "</div>";
-                    }
-
-
-                    bootbox.dialog({
-                        message: htmlsections,
-                        className: 'show-preview',
-                        buttons: {
-                            "click": {
-                                "label": "Aceptar",
-                                "className": "btn-sm btn-primary",
-                                "callback": function () {
-                                    //Example.show("Primary button");
-                                }
-                            },
-                        },
-                    });
-
-                    this.boxScrollTop();
-
-                },
-
-                previewPregunta: function (indes, indeq) {
-                    //construye html de la pregunta
-                    var ins = 7;
-                    //var val = this.questionC.completa.vistaHtml;
-                    var val = this.readingtmp.secciones[indes].preguntas[indeq].completa.vistaHtml;
-
-                    var caracteres = val;
-                    var temp = "";
-                    caracteres = caracteres.split("");
-                    var estexto = true;
-
-                    if (caracteres[0] == "|") {
-                        temp = "" + val;
-                    } else {
-                        temp = val;
-                    }
-
-                    var valoresk = [];
-                    var cuentaPalabras = 0;
-
-                    //this.question.completa.itemsComplete = [{}];
-                    valoresk = temp.split("|");
-                    var resultado = "";
-
-                    for (var i = 0; i < valoresk.length; i++) {
-
-                        if (estexto) {
-                            resultado += valoresk[i];
-                            //estexto = false;
-                        }
-                        else {
-                            //hay que crear un objeto item nuevo y hacerle push al arreglo de itemsComplete
-                            cuentaPalabras++;
-
-                            var itemC = new Object();
-                            itemC.id = '-1';
-                            itemC.orden = cuentaPalabras;//en contexto de otras preguntas debera ser, IndiceDeInicio+cuentaPalabras
-                            itemC.texto = valoresk[i];
-                            //alert(itemC.texto + " - " + i);
-                            //-----
-                            //this.question.completa.itemsComplete.push(itemC);
-                            resultado += " [" + cuentaPalabras + "]" + "<input v-on:input='alerta($event.target.value)' type='text' id='ins_" + ins + "_pal_" + cuentaPalabras + "' /> ";
-                        }
-                        estexto = !estexto;
-                    }
-
-                    var final = resultado; //.replace(/\n/g,"</br>");
-                    return final;
-
-                    //return "final";
-                },
-                //============================BEGIN CRUD==================================
-
-                //read question
-                getTest: function () {
-                    NProgress.start();
-
-                    this.$http.post("{{  path('prueba_json') }}", {
-                        id: this.results.prueba_id,
-                    }, function (data, status, request) {
-                        this.theprueba = data;
-
-                        //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display', 'none');
-
-                        //this.$route.params.id = 2;
-
-                        NProgress.done();
-                        NProgress.remove();
-                    })
-                },
-
-                getList: function () {
-
-                    if (this.$route.params.id != -1) {
-                        NProgress.start();
-
-                        this.$http.post("{{  path('view_result_json') }}", {
-                            id: this.results.id,
-                        }, function (data, status, request) {
-                            this.results = data;
-                            this.getTest();
-
-                            //alert(JSON.stringify(this.prueba));
-                            jQuery('.overlay').css('display', 'none');
-
-                            //this.$route.params.id = 2;
-                            NProgress.done();
-                            NProgress.remove();
-                        })
-                    } else {
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done();
-                        NProgress.remove();
-
-                    }
-                },
-                //========================END CRUD==================================
-
-            },
-        });
-
-        //--->>>>>ruta lista de prueba<<<<<---
-        var List = Vue.extend({
-            template: '#list',
-            data: function () {
-                return {
-                    isActive: false,
-                    search: '',
-                    pagination: {},
-                    headers: [
-                        {
-                            text: 'Id',
-                            left: true,
-                            sortable: false,
-                            value: 'id'
-                        },
-                        //{text: 'Fecha', value: 'fecha'},
-                        {text: 'Username', value: 'username'},
-                        {text: 'Email', value: 'email'},
-                        {text: 'Name', value: 'nombre'},
-                        
-                        {text: 'Action', sortable: false,},
-                    ],
-                    items: [
-                        {
-                            id: -1,
-                            //fecha: 'fecha',
-                            username: '',
-                            email: '',
-                            nombre: '',
-                            
-                            total: '',
-
-                        },
-                    ],
-                    startDate: '25-04-2010',
-                }
-            },
-            created: function () {
-                jQuery('.overlay').css('display', 'block');
-                this.getList();
-                //this.inicializar();
-            },
-
-            methods: {
-                enrutar: function (id) {
-                    return "/" + id;
-                },
-
-                ocultar: function () {
-                    this.isActive = false;
-                },
-
-                mostrar: function () {
-                    this.isActive = true;
-                },
-                //--------------------------------------BEGIN-CRUD---------------------------------------------
-                //read question
-                getList: function () {
-                    NProgress.start();
-
-                    this.$http.get("{{  path('user_list_json') }}", function (data, status, request) {
-                        this.items = data;
-                        this.loading = true;
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done();
-                        NProgress.remove();
-                    }).catch(function (data, status, request) {
-                        console.log('error');
-                        NProgress.done();
-                        NProgress.remove();
-                    });
-                },
-
-            }
-        });
-
         // 2. Define some routes
         const routes = [
-            {path: '/:id', name: 'view_user', component: User},
-            {path: '/:hability/:id', name: 'view_result', component: Result},
-            {path: '/:hability/:id', name: 'view_result', component: Result},
+            {path: '/:id', name: 'user_edit', component: User},
             {path: '/', name: 'user_list', component: List},
         ]
 

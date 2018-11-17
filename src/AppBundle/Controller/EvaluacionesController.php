@@ -430,18 +430,18 @@ class EvaluacionesController extends Controller
             }
 
             $evaluacionTest = $em->getRepository('AppBundle:Evaluaciones')->findOneBy(array('id_test' => $test, 'id_estudiante' => $user));
-            if($evaluacionTest){
-                $evaluacionTest->setPuntosReading($totalPuntos);
-                $em->persist($evaluacionTest);
-                $em->flush();
-            }else{
+            //if($evaluacionTest){
+            //    $evaluacionTest->setPuntosReading($totalPuntos);
+            //    $em->persist($evaluacionTest);
+            //    $em->flush();
+            //}else{
                 $evaluacionTest = new Evaluaciones();
                 $evaluacionTest->setIdEstudiante($user);
                 $evaluacionTest->setIdTest($test);
                 $evaluacionTest->setPuntosReading($totalPuntos);
                 $em->persist($evaluacionTest);
                 $em->flush();
-            }
+            //}
 
 
             //return new Response("OK");
@@ -928,18 +928,18 @@ class EvaluacionesController extends Controller
 
 
             $evaluacionTest = $em->getRepository('AppBundle:Evaluaciones')->findOneBy(array('id_test' => $test, 'id_estudiante' => $user));
-            if($evaluacionTest){
-                $evaluacionTest->setPuntosListening($puntos);
-                $em->persist($evaluacionTest);
-                $em->flush();
-            }else{
+            //if($evaluacionTest){
+            //    $evaluacionTest->setPuntosListening($puntos);
+            //    $em->persist($evaluacionTest);
+            //    $em->flush();
+            //}else{
                 $evaluacionTest = new Evaluaciones();
                 $evaluacionTest->setIdEstudiante($user);
                 $evaluacionTest->setIdTest($test);
                 $evaluacionTest->setPuntosListening($puntos);
                 $em->persist($evaluacionTest);
                 $em->flush();
-            }
+            //}
 
 
 

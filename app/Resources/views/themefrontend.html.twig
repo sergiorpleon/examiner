@@ -69,18 +69,18 @@
                         <li class="dropdown user user-menu logout">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="margin-right: 100px;">
                             
-                            <span class="hidden-xs">{{ app.user.nombre }} </span>
+                            <span class="hidden-xs">{{ app.user.username }} </span>
                           <div class="ripple-container"></div></a>
                           <ul class="dropdown-menu" style="padding: 10px">
                             <!-- User image -->
                             <li class="user-header">
-                              
-                              <p>
-                                <h4>{{ app.user.nombre }}</h4>
-                              </p>
-                              <p>
-                                <small>Member since Nov. 2012</small>
-                              </p>
+
+                                <p>
+                                <h5>{{ app.user.roles[0] }}</h5>
+                                </p>
+                                <p>
+                                    <small>{{ app.user.nombre }}</small>
+                                </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">

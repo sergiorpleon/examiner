@@ -8,6 +8,7 @@
 
     <link href="{{ asset('bundles/app/css/bootstrap.min.css') }}" rel="stylesheet">
 <style>
+
     body {
         background: #367fa9 no-repeat center center fixed;
         -webkit-background-size: cover;
@@ -18,24 +19,28 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-    body::before {
+
+    body::before{
         z-index: -1;
         content: '';
+        position: fixed;
         top: 0;
         left: 0;
-        background: #2ecc71;
-        /* IE Fallback */
-        background: rgba(46, 204, 113, 0.8);
         width: 100%;
         height: 100%;
     }
 
     .form {
+        position: absolute;
+        top: 40%;
+        left: 50%;
         background: rgba(242, 242, 242,0.8);
-        /*margin: -140px 0 0 -182px;*/
+        width: 365px;
+        margin: -140px 0 0 -182px;
         padding: 40px;
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     }
+
     .form h2 {
         width: 100%;
         text-align: center;
@@ -101,7 +106,7 @@
         width: 100%;
     }
 
-    .cregister{
+    .cregisterx{
 
         width: 400px;
         margin: auto;
@@ -136,8 +141,8 @@
     <div class='contenedor-text'>
         <h2>English Test</h2>
     </div>
-    <div class='contenedor-text' >
-<div class='form animated flipInX cregister'>
+
+<div class='form animated flipInX'>
     <h2>Person Date</h2>
 
     <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST"
@@ -193,7 +198,7 @@
                     class="fa fa-sign-in"></span></button>
 
     </form>
-</div>
+
 </div>
 
 <!-- script src="{# asset('bundles/imagen/vendor/jquery/jquery.min.js') #}"></script -->
