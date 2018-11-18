@@ -46,7 +46,28 @@ class TestController extends Controller
         ));
     }
 
+    /**
+     * Lists all Test entities.
+     *
+     * @Route("/effectuate", name="test_effectuate")
+     * @Method("GET")
+     */
+    public function effectuateAction()
+    {
+        //$em = $this->getDoctrine()->getManager();
 
+        // $tests = $em->getRepository('AppBundle:Test')->findAll();
+
+
+        $fechaaactual = new \DateTime();
+        $fechaaactual->setTimezone(new \DateTimeZone('America/Caracas'));
+        $stringfechaaactual = $fechaaactual->format('d-m-Y');
+
+        return $this->render('test/route/effectuate.html.twig', array(
+            'fechaaactual' => $stringfechaaactual,
+
+        ));
+    }
 
 
     /**
@@ -64,41 +85,45 @@ class TestController extends Controller
             $arrayP = array();
             $i = 0;
             foreach ($pruebas as $p) {
-                $arrayP[$i]['id'] = $p->getId();
-                $arrayP[$i]['deprueba'] = $p->getDeprueba();
-                $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
-                try{
-                    $textreading = "null";
-                    if($p->getIdReading() == null ) {
-                    }else{
-                        $textreading = $p->getIdReading()->getFecha()->format("d-m-Y");
+                $eval = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_test'=>$p->getId()));
+
+                if( $eval == null){
+                    $arrayP[$i]['id'] = $p->getId();
+                    $arrayP[$i]['deprueba'] = $p->getDeprueba();
+                    $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
+                    try{
+                        $textreading = "null";
+                        if($p->getIdReading() == null ) {
+                        }else{
+                            $textreading = $p->getIdReading()->getFecha()->format("d-m-Y");
+                        }
+
+                    }catch (Exception $e){
+                        $textreading = "null";
+                    }
+                    try{
+                        $textlistening = "null";
+                        if($p->getIdListening() == null ) {
+                        }else{
+                            $textlistening = $p->getIdListening()->getFecha()->format("d-m-Y");
+                        }
+
+                    }catch (Exception $e){
+                        $textlistening = "null";
                     }
 
-                }catch (Exception $e){
-                    $textreading = "null";
+                    $arrayP[$i]['reading'] = $textreading;
+                    $arrayP[$i]['listening'] = $textlistening;
+
+                    //$arrayP[$i]['fecha'] = $p->getFecha();
+                    //$carpeta=$this->container->getParameter('images_location');
+                    //$imageUrl=$r->getBasePath()."/".$carpeta."/";
+                    //$imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.'blobid1510017394189.jpg';
+                    //$arrayP[$i]['texto'] = $_SERVER["HTTP_HOST"].'-'.$imagenurl.'-'.$r->getBasePath();
+                    $arrayP[$i]['texto'] = $p->getTextoOrientacion();
+
+                    $i++;
                 }
-                try{
-                    $textlistening = "null";
-                    if($p->getIdListening() == null ) {
-                    }else{
-                        $textlistening = $p->getIdListening()->getFecha()->format("d-m-Y");
-                    }
-
-                }catch (Exception $e){
-                    $textlistening = "null";
-                }
-
-                $arrayP[$i]['reading'] = $textreading;
-                $arrayP[$i]['listening'] = $textlistening;
-
-                //$arrayP[$i]['fecha'] = $p->getFecha();
-                //$carpeta=$this->container->getParameter('images_location');
-                //$imageUrl=$r->getBasePath()."/".$carpeta."/";
-                //$imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.'blobid1510017394189.jpg';
-                //$arrayP[$i]['texto'] = $_SERVER["HTTP_HOST"].'-'.$imagenurl.'-'.$r->getBasePath();
-                $arrayP[$i]['texto'] = $p->getTextoOrientacion();
-
-                $i++;
             };
             $response = new Response();
             $response->setContent(json_encode($arrayP));
@@ -118,6 +143,80 @@ class TestController extends Controller
         ));*/
     }
 
+
+    /**
+     * Lists all Test entities.
+     *
+     * @Route("/effec_json/", name="effectuate_json")
+     * @Method("GET")
+     */
+    public function effectautejsonAction(Request $r)
+    {
+        //listar json de u//na pregunta
+        $em = $this->getDoctrine()->getManager();
+        $pruebas = $em->getRepository('AppBundle:Test')->findAll();
+        try {
+            $arrayP = array();
+            $i = 0;
+            foreach ($pruebas as $p) {
+                $eval = $em->getRepository('AppBundle:Evaluaciones')->findOneBy(array('id_test'=>$p->getId()));
+
+                if( $eval == null) {
+                }else{
+                    $arrayP[$i]['id'] = $p->getId();
+                    $arrayP[$i]['deprueba'] = $p->getDeprueba();
+                    $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
+                    try{
+                        $textreading = "null";
+                        if($p->getIdReading() == null ) {
+                        }else{
+                            $textreading = $p->getIdReading()->getFecha()->format("d-m-Y");
+                        }
+
+                    }catch (Exception $e){
+                        $textreading = "null";
+                    }
+                    try{
+                        $textlistening = "null";
+                        if($p->getIdListening() == null ) {
+                        }else{
+                            $textlistening = $p->getIdListening()->getFecha()->format("d-m-Y");
+                        }
+
+                    }catch (Exception $e){
+                        $textlistening = "null";
+                    }
+
+                    $arrayP[$i]['reading'] = $textreading;
+                    $arrayP[$i]['listening'] = $textlistening;
+
+                    //$arrayP[$i]['fecha'] = $p->getFecha();
+                    //$carpeta=$this->container->getParameter('images_location');
+                    //$imageUrl=$r->getBasePath()."/".$carpeta."/";
+                    //$imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.'blobid1510017394189.jpg';
+                    //$arrayP[$i]['texto'] = $_SERVER["HTTP_HOST"].'-'.$imagenurl.'-'.$r->getBasePath();
+                    $arrayP[$i]['texto'] = $p->getTextoOrientacion();
+
+                    $i++;
+                }
+            };
+            $response = new Response();
+            $response->setContent(json_encode($arrayP));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        } catch (Exception $e) {
+            $error = '{"error":{"text":' . $e->getMessage() . '}}';
+            $response = new Response();
+            $response->setContent(json_encode($error));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+
+        /*
+        return $this->render('item_list_selection/index.html.twig', array(
+            'item_List_Selections' => $item_List_Selections,
+        ));*/
+    }
     /**
      * JSON de una prueba.
      *
@@ -434,21 +533,6 @@ class TestController extends Controller
     }
 
 
-
-    /**
-     * Finds and displays a Test entity.
-     *
-     * @Route("/{id}", name="test_show")
-     * @Method("GET")
-
-    public function showAction(Test $test)
-     * {
-     *
-     * return $this->render('test/show.html.twig', array(
-     * 'test' => $test,
-     * ));
-     * }
-     */
 
 
     //POST OBTENER PRUEBA
@@ -3256,6 +3340,39 @@ class TestController extends Controller
     }
 
     /**
+     * Delete evalaucion
+     *
+     * @Route("/deleteeval/json", name="delete_eval")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteevalAction(Request $request)
+    {
+        //-------------------------------------------------------------------------------------
+        //--------------------eliminar json de prueba------------------------------------
+        //-------------------------------------------------------------------------------------
+
+        $em = $this->getDoctrine()->getManager();
+
+        $x = json_decode($request->getContent());
+        $id = $x->id;
+
+        $t = $em->getRepository('AppBundle:Evaluaciones')->find($id);
+
+        if ($t != null) {
+            $em->remove($t);
+            $em->flush();
+        }
+
+        //redirigir ojoooo
+        //$error = '{"error":{"text":'. $e->getMessage() .'}}';
+        $error = '{ "elimiado" : "true"}';
+        $response = new Response();
+        $response->setContent(json_encode($error));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
      * Lists one Reading and Listening entities.
      *
      * @Route("/view_result/json", name="view_result_json")
@@ -3276,6 +3393,7 @@ class TestController extends Controller
 
             $rawdataevaluacion['id'] = $evaluacion->getId();
             $rawdataevaluacion['user'] = $evaluacion->getIdEstudiante()->getNombre();
+            $rawdataevaluacion['profesor'] = $evaluacion->getIdTest()->getIdProfesor();
             $rawdataevaluacion['user_id'] = $evaluacion->getIdEstudiante()->getId();
             $rawdataevaluacion['prueba_id'] = $evaluacion->getIdTest()->getId();
             $rawdataevaluacion['prueba'] = $evaluacion->getIdTest()->getTextoOrientacion();

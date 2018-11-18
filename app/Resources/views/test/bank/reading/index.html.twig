@@ -311,6 +311,8 @@
                                         <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
                                         <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.profesor"></div></td>
                                         <td>
+                                            <a  class="btn btn-default btn-70w" v-on:click="showSection( props.item.id)"><i class="fa fa-eye"></i> Show</a></li>
+
                                             {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
                                                 <div v-show="'{{ app.user.username }}' == props.item.profesor">
                                                     {%  endif  %}
@@ -2029,6 +2031,7 @@
             template: '#list',
             data: function () {
                 return {
+                    readingtmp: '',
                     isActive: false,
                     search: '',
                     pagination: {},
@@ -2072,6 +2075,125 @@
                 mostrar: function () {
                     this.isActive = true;
                 },
+                showSection: function(index){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+
+                    this.$http.post("{{  path('bank_reading_json') }}", {
+                        id: index,
+                    }, function (data, status, request) {
+                        this.readingtmp = data;
+                        //alert(JSON.stringify(this.readingtmp));
+
+                    //var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
+                    var htmlsections = "<div>";
+                    //for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
+
+                    htmlsections += "<div class='secciones'><p>" + this.readingtmp.textoInstruccion + "</p>";
+                    //htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
+                    for (var indeq = 0; indeq < this.readingtmp.preguntas.length; indeq++) {
+                        htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].textoPregunta + "</p>";
+
+                        switch (this.readingtmp.preguntas[indeq].tipoPregunta){
+                            case 1:
+
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].truefalse.incisos.length; index++) {
+                                    htmlsections += "<div><p>"+this.readingtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
+                                    htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                    htmlsections += "TRUE";
+                                    htmlsections += "</p></label></div>";
+                                    htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_2' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                    htmlsections += "FALSE";
+                                    htmlsections += "</p></label></div>";
+                                    htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_3' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                    htmlsections += "NOT GIVEN";
+                                    htmlsections += "</p></label></div>";
+                                    htmlsections += "</div></div>";
+
+                                }
+
+                                break;
+                            case 2:
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].itemsSimple.length; index++) {
+                                    htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
+                                    for (var indi = 0; indi < this.readingtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
+                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_" + indi + "' name='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                        htmlsections += this.readingtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
+                                        htmlsections += "</p></label></div>";
+                                    }
+                                    htmlsections += "</div></div>";
+
+                                }
+
+
+                                break;
+                            case 3:
+
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
+                                    htmlsections += "<div><div class='ident'>";
+                                    htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
+                                    htmlsections += this.readingtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
+                                    htmlsections += "</p></label></div>";
+                                    htmlsections += "</div></div>";
+
+                                }
+                                break;
+                            case 4:
+                                var htmlvalores = "<select>";
+
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].listselection.valores.length; index++) {
+                                    htmlvalores += "<option>";
+                                    htmlvalores += this.readingtmp.preguntas[indeq].listselection.valores[index].texto;
+                                    htmlvalores += "</option>";
+
+                                }
+                                htmlvalores += "</select>";
+
+
+
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].listselection.itemsList.length; index++) {
+                                    htmlsections += "<div class='itemls'><div class='ident'>";
+                                    //htmllistselection += "<p>";
+                                    htmlsections += this.readingtmp.preguntas[indeq].listselection.itemsList[index].texto;
+                                    htmlsections += htmlvalores;
+                                    //htmllistselection += "</p>";
+                                    htmlsections += "</div></div>";
+
+                                }
+
+                                break;
+                            case 5:
+                                this.questionC.completa.vistaHtml = this.readingtmp.preguntas[indeq].completa.vistaHtml;
+                                htmlsections += this.previewPregunta();
+
+                                break;
+                        }
+                        htmlsections += "</div>";
+                    }
+                    htmlsections += "</div>";
+                    //}
+
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+
+                    bootbox.dialog({
+                        message: htmlsections,
+                        className: 'show-preview',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+
+                    })
+
+                },
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {
@@ -2105,6 +2227,7 @@
                         }
                     });
                 },
+
             }
         });
 

@@ -34,25 +34,25 @@
             border-collapse: collapse;
         }
 
-        .listening .nav-tabs-left {
+        .reading .nav-tabs-left {
             margin-right: -1px;
             padding-right: 0px;
             border-right: 1px solid #ddd;
         }
 
-        .listening .nav-left > li > a {
+        .reading .nav-left > li > a {
             margin-right: 2px;
             line-height: 1.42857143;
             border: 1px solid transparent;
             border-radius: 4px 0px 0px 4px;
         }
 
-        .listening .nav-left > li > a {
+        .reading .nav-left > li > a {
             padding-right: 0px;
             margin-right: -1px;
         }
 
-        .listening .nav-left > li.active > a, .nav-left > li.active > a:focus, .nav-left > li.active > a:hover {
+        .reading .nav-left > li.active > a, .nav-left > li.active > a:focus, .nav-left > li.active > a:hover {
             color: #555;
             cursor: default;
             background-color: #fff;
@@ -60,12 +60,12 @@
             border-right-color: transparent;
         }
 
-        .listening .tab-content {
+        .reading .tab-content {
             border-top: 1px solid #ddd;
 
         }
 
-        .listening .btn_empty {
+        .reading .btn_empty {
             background-color: transparent;
             border-color: transparent;
             padding: 0px;
@@ -126,12 +126,7 @@
         }
 
 
-        .en-barra{
-            /* position: fixed; */
-            /* z-index: 1050; */
-            top: -5px;
-            right: 120px;
-        }
+
         @media (max-width: 768px){
             .en-barra{
                 position: absolute;
@@ -200,7 +195,7 @@
         }
 
         .limit-height{
-            max-height: 25px;
+            max-height: 35px;
             overflow-y: hidden;
 
         }
@@ -209,7 +204,7 @@
             display:none;
         }
 
-        .bank > ul{
+        .test > ul{
             display: block;
         }
 
@@ -232,45 +227,170 @@
         <router-view></router-view>
 
         <!-- plantilla componente prueba -->
-        <script type="text/x-template" id="listening">
+
+        <script type="text/x-template" id="test">
             <div>
-                <div class="en-barra" v-show="this.listeningtmp.id==-1">
-                    <button class="btn btn-info" style="" v-on:click="postNewTest(listeningtmp)"><i
+                <div class="en-barra" v-show="this.prueba.id==-1">
+                    <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i
                                 class="fa fa-save"></i> Create
                     </button>
                 </div>
-                <div class="en-barra" v-show="this.listeningtmp.id!=-1">
-                    <button class="btn btn-info" style="" v-on:click="postEditTest(listeningtmp)"><i
-                                class="fa fa-save"></i> Save
+                <div class="en-barra" v-show="this.prueba.id!=-1">
+                    <button class="btn btn-info" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
                     </button>
                 </div>
 
+
                 <section class="content-header">
                   <ol class="breadcrumb">
-                    <li><a href="#">Bank of Listening</a></li>
-                    <li href="" v-show="visibilidad>1"><a v-on:click="breadcrumbReturn(0)" >Listening</a></li>
+                    <li><a href="#">List of Effectuate Test</a></li>
+                    <li href="" v-show="visibilidad>0"><a v-on:click="breadcrumbReturn(0)" >Test</a></li>
+                    <li href="" v-show="visibilidad>1 & habilidad==1"><a v-on:click="breadcrumbReturn(1)">Reading</a></li>
+                    <li href="" v-show="visibilidad>1 & habilidad==2"><a v-on:click="breadcrumbReturn(1)">Listening</a></li>
                     
-                    <li v-show="visibilidad==1" class="active">Listening</li>
-                    
-                    
+                    <li v-show="visibilidad==0" class="active">Test</li>
+                    <li v-show="visibilidad==1 & habilidad==1" class="active">Reading</li>
+                    <li v-show="visibilidad==1 & habilidad==2" class="active">Listening</li>
                     <li v-show="visibilidad==2"  class="active">Question True or False</li>
                     <li v-show="visibilidad==3" class="active">Question Simple Selection</li>
                     <li v-show="visibilidad==4" class="active">Question Multiple Selection</li>
                     <li v-show="visibilidad==5" class="active">Question List Selection</li>
                     <li v-show="visibilidad==6" class="active">Question Complete</li>
+                    <li v-show="visibilidad==7" class="active">Bank Section</li>
                   </ol>
                 </section>
-
+                
                 <div class="prueba row form-panel box box-primary" v-show="visibilidad==0">
+                    <div class="col-xs-12 col-editor">
+                        <text-ckeditor  nnumber="150" :nhab="0" nname="prueba" :nindex="1" :ntext="prueba.textoOrientacion" @update-text="updateTextPrueba" ></text-ckeditor>
+                    </div>
+                    <div class="row col-sm-12">
+                        <!-- p>
+                            <br/>
+                            <input class="col-sm-1" type="checkbox" v-model="prueba.deprueba"> It proves for studients practices
+                            {{ "{{ prueba.activeReading }}" }}
+                            {{ "{{ prueba.reading.fecha }}" }}
+                            {{ "{{ prueba.reading.horaComienzo }}" }}
+                        </p -->
+                    </div>
+                    <div class="row col-sm-12">
+                        <div class="row col-sm-12">
 
+                            <h4>Hability Reading</h4>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="row col-sm-12" v-if="prueba.activeReading==false">
+                    <div class="row col-sm-2">
+                        <!-- button class="btn btn-primary" v-on:click="crearReading()">
+                            Create
+                        </button -->
+                    </div>
+                    </div>
+                    <div class="row col-sm-12" v-if="prueba.activeReading==true">
+
+                        <div class="row col-sm-4">
+                            Date
+                        </div>
+                        <div class="row col-sm-4">
+                            Time
+                        </div>
+                        <div class="row col-sm-2">
+                            Items
+                        </div>
+                        <div class="row col-sm-2">
+
+                        </div>
+
+                        <div class="row col-sm-4">
+                            <date-picker idd="dater" class="col-xs-8" :date="prueba.reading.fecha"  @update-date="updateDateR" ></date-picker>
+                        </div>
+                        <div class="row col-sm-4">
+                        <time-picker idt="timer" class="col-xs-8" :time="prueba.reading.horaComienzo" @update-time="updateTimeR" ></time-picker>
+                        </div>
+                        <div class="row col-sm-2">
+                            <div class="">
+                                    {{ "{{ prueba.reading.totalItem }}" }}
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-2" >
+                        <!-- button class="btn btn-primary" v-on:click="mostrarReading()">
+                            Reading
+                        </button -->
+                            <!-- button class="btn btn-primary" v-on:click="eliminarReading()">
+                                Delete
+                            </button -->
+                        </div>
+
+                    </div>
+
+                    <div class="row col-sm-12">
+                        <div class="row col-sm-12">
+
+                            <h4>Hability Listening</h4>
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" v-if="prueba.activeListening==false">
+                    <div class="row col-sm-2">
+                        <!-- button class="btn btn-primary" v-on:click="crearListening()">
+                            Create
+                        </button -->
+                    </div>
+                    </div>
+                    <div class="row col-sm-12" v-if="prueba.activeListening==true">
+                        <div class="row col-sm-4">
+                            Date
+                        </div>
+                        <div class="row col-sm-4">
+                            Time
+                        </div>
+                        <div class="row col-sm-2">
+                            Items
+                        </div>
+                        <div class="row col-sm-2">
+
+                        </div>
+
+
+                        <div class="row col-sm-4">
+                            <date-picker idd="datel" class="col-xs-8" :date="prueba.listening.fecha"  @update-date="updateDateL" ></date-picker>
+                        </div>
+                        <div class="row col-sm-4">
+                            <time-picker idt="timel" class="col-xs-8" :time="prueba.listening.horaComienzo" @update-time="updateTimeL" ></time-picker>
+                        </div>
+                        <div class="row col-sm-2">
+                            <div class="">
+                                {{ "{{prueba.listening.totalItem}}" }}
+                            </div>
+                        </div>
+
+                            <div class="row col-sm-2" >
+                                <!-- button class="btn btn-primary" v-on:click="mostrarListening()">
+                                    Listening
+                                </button -->
+                                <!-- button class="btn btn-primary" v-on:click="eliminarListening()">
+                                    Delete
+                                </button -->
+                            </div>
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <div class="en-barra" v-show="this.prueba.id==-1">
+                    <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                </div>
+                <div class="en-barra" v-show="this.prueba.id!=-1">
+                    <button class="btn btn-info" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
+                    </button>
                 </div>
 
-                {{ include('test/bank/listening/seccion.html.twig') }}
-                {{ include('test/bank/listselection.html.twig') }}
-                {{ include('test/bank/selectionsimple.html.twig') }}
-                {{ include('test/bank/truefalse.html.twig') }}
-                {{ include('test/bank/selectionmultiple.html.twig') }}
-                {{ include('test/bank/completa.html.twig') }}
+                </div>
 
             </div>
 
@@ -280,12 +400,12 @@
         <script type="text/x-template" id="list">
             <div class="list1">
 
-            
                 <section class="content-header">
                   <ol class="breadcrumb">
-                    <li class="active">Bank of Listening</li>
+                    <li class="active">List of Test</li>
                   </ol>
                 </section>
+
 
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
@@ -293,9 +413,10 @@
                             <input class="form-control " type="text" v-model="search" placeholder="Search..."/>
                         </div>
                         <div class="col-sm-8 col-xs-6">
-                            <router-link v-bind:to="{ name: 'new_listening', params: { id: -1 }}" class="btn btn-default btn-70w" style="float: right">
+                            <!-- router-link v-bind:to="enrutar(-1)" class="btn btn-default btn-70w" style="float: right" -->
+                            <!-- router-link v-bind:to="{ name: 'new_prueba', params: { id: -1 }}" class="btn btn-default btn-70w" style="float: right">
                                 <i class="fa fa-plus-circle"></i>  Add
-                            </router-link>
+                            </router-link -->
                         </div>
                     </div>
                     <div class="row col-xs-12" style="margin-left: 0px;">
@@ -304,31 +425,36 @@
                                 <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
                                     <template slot="items" scope="props">
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
-                                        <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
-                                        <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.profesor"></div></td>
-                                        <td>
-                                            <a  class="btn btn-default btn-70w" v-on:click="showSection( props.item.id)"><i class="fa fa-eye"></i> Show</a></li>
+                                        <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
 
-                                            {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
+                                        <td class="text-xs-right" ><div class="limit-height" v-html="props.item.texto"></div></td>
+                                        <td class="text-xs-right">{{ "{{ props.item.profesor}}" }}</td>
+
+                                        <td class="text-xs-right">{{ "{{ props.item.reading}}" }}</td>
+                                        <td class="text-xs-right">{{ "{{ props.item.listening}}" }}</td>
+
+                                        <td>
+                                            <a  class="btn btn-default btn-100w" v-bind:href="goTo( props.item.id)"><i class="fa fa-eye"></i> List Results</a></li>
+                                            {%  if (is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR')) %}
 
 
                                                 <div v-show="'{{ app.user.username }}' == props.item.profesor">
-                                                    {%  endif  %}
-                                                <!--router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
-                                                <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'new_listening', params: { id: props.item.id }}">
-                                                    <i class="fa fa-pencil"></i> Edit
-                                                </router-link>
-                                                <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+                                            {%  endif %}
+                                            <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
+                                            <router-link class="btn btn-default btn-100w" v-bind:to="{ name: 'new_prueba', params: { id: props.item.id }}">
+                                                <i class="fa fa-pencil"></i> Change
+                                            </router-link>
+                                            <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+                                             {%  if ( is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') ) %}
 
-                                            {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN') and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
                                                 </div>
-                                            {%  endif  %}
+                                            {%  endif %}
                                         </td>
                                     </template>
                                 </v-data-table>
                             </v-card>
                         </template>
-                    </div >
+                    </div>
                 </div>
             </div>
         </script>
@@ -345,7 +471,7 @@
     <script type="text/javascript">
 
         var veditorc = Vue.component( 'text-ckeditor' , {
-            template : '<textarea v-model="ntext" v-bind:id="newid" v-bind:class="newid">{{ '{{ntext}} ' }}</textarea>',
+            template : '<textarea v-model="ntext" v-bind:id="newid" v-bind:class="newid">{{ '{{ntext}}' }}</textarea>',
             props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex' ],
             data: {
                 valor: '',
@@ -526,12 +652,21 @@
                 }).timepicker("setTime", self.time).on('focus', function() {
                     jQuery(self.$el).timepicker('showWidget').on('change', function( time ){
                         var ghour = jQuery(self.$el).data()['timepicker'].hour;
+
                         var gminute = jQuery(self.$el).data()['timepicker'].minute;
                         //var gsecond = jQuery(self.$el).data()['timepicker'].second;
                         var gmeridian = jQuery(self.$el).data()['timepicker'].meridian;
                         if(gmeridian=="PM"){
                             ghour+=12;
                         }
+
+                        if(ghour < 10){
+                            ghour = "0"+ghour;
+                        }
+                        if(gminute < 10){
+                            gminute = "0"+gminute;
+                        }
+
                         var gtime=ghour+":"+gminute;
                         self.$emit( 'update-time' , gtime );
                     });
@@ -548,19 +683,59 @@
         // 0. If using a module system (e.g. via vue-cli), import Vue and VueRouter and then call `Vue.use(VueRouter)`.
         // 1. Define route components.
         // These can be imported from other files
-        var Reading = Vue.extend({
-            template: '#listening',
+        var Prueba = Vue.extend({
+            template: '#test',
             data: function () {
                 return {
                     numIdUnico: 1,
-                    habilidad: 2,
+                    habilidad: 1,
                     stringfecha : "10-11-2011",
-                    visibilidad: 1, //0-prueba 1-seccion 2-listaseleccion
+                    visibilidad: 0, //0-prueba 1-seccion 2-listaseleccion
                     editPrueba: 0,  //0 new <-> 1 edit
                     editPregunta: 0,
-                    numHabilidad: -1, //1-listening 2-listening
+                    numHabilidad: -1, //1-reading 2-listening
                     numSeccion: 0,
                     numPregunta: -1,
+
+                    //---table
+                    isActive: false,
+                    search: '',
+                    pagination: {},
+                    headers: [
+                        {
+                            text: 'Id',
+                            left: true,
+                            sortable: false,
+                            value: 'id'
+                        },
+                        //{text: 'Fecha', value: 'fecha'},
+                        {text: 'Texto', value: 'texto'},
+                        {text: 'Accion', sortable: false,},
+                    ],
+                    items: [
+                        {
+                            id: -1,
+                            //fecha: 'fecha',
+                            texto: '',
+                        },
+                    ],
+                    check:[
+                        {
+                            opcion: true
+                        },
+                    ],
+
+                    seccionbancox: {
+                        id: '-1',
+                        ordenSeccion: '1',
+                        num: '1',
+                        textoInstruccion: 'Text instruction...',
+                        preguntas: [
+
+                        ],
+                    },
+
+                    //---fin table
                     tipoPregunta: ['','true false','simple selection','multiple selection','list selection','complete'],
                     delSecR: [
                         {
@@ -588,11 +763,6 @@
                         }
                     ],
                     delIncisoSS: [
-                        {
-                            id: '',
-                        }
-                    ],
-                    delItemMS: [
                         {
                             id: '',
                         }
@@ -668,7 +838,6 @@
                                     orden: '2',
                                     texto: 'Text option...',
                                 },
-
                             ]
                         }],
                     },
@@ -709,25 +878,82 @@
                         },
                     },
 
-                    listeningtmp:
-                    {
+                    readingtmp: {
                         id: '-1',
-                        ordenSeccion: '1',
-                        num: '1',
-                        urlAudio: 'http://#',
-                        textoInstruccion: 'Text...',
-                        //textoReading: 'texto listening 1',
-                        preguntas: [
+                        fecha: '{{ fechaaactual }}',
+                        textoInstrucciones: 'Text instruction...',
+                        //textoInformacion: 'Informacion',
+                        horaComienzo: '10:00',
+                        tiempo: '24',
+                        totalItem: 0,
+                        secciones: [
+                            {
+                                id: '-1',
+                                ordenSeccion: '1',
+                                num: '1',
+                                urlAudio: 'http://#',
+                                textoInstruccion: 'Text instruction...',
+                                //textoReading: 'texto reading 1',
 
-                        ],
+                                preguntas: [
+
+                                ],
+                            },
+                        ]
                     },
+                    prueba: {
+                        id: '1',
+                        textoOrientacion: 'Text instruction...',
+                        deprueba: false,
+                        activeReading: false,
+                        activeListening: false,
+                        reading: {
+                            id: '1',
+                            fecha: '10-10-2020',
+                            textoInstrucciones: 'Text instruction...',
+                            urlAudio: 'http://#',
+                            //textoInformacion: 'Informacion',
+                            horaComienzo: '11:11',
+                            tiempo: '1',
+                            totalItem: 0,
+                            secciones: [
+                                {
+                                    id: '-1',
+                                    ordenSeccion: '1',
+                                    num: '1',
+                                    textoInstruccion: 'Text instruction...',
+                                    preguntas: [
 
+                                    ],
+                                },
+                            ]
+                        },
+                        listening: {
+                            id: '-1',
+                            fecha: '{{ fechaaactual }}',
+                            textoInstrucciones: 'Text instruction...',
+                            horaComienzo: '10:00',
+                            tiempo: '24',
+                            totalItem: 0,
+                            secciones: [
+                                {
+                                    id: '-1',
+                                    ordenSeccion: '1',
+                                    num: '1',
+                                    textoInstruccion: 'Text instruction...',
+                                    urlAudio: 'http://#',
+                                    preguntas: [
 
+                                    ],
+                                },
+                            ]
+                        },
+                    },
                 };
             },
             created: function () {
                 jQuery('.overlay').css('display','block');
-                this.listeningtmp.id = (this.$route.params.id);
+                this.prueba.id = (this.$route.params.id);
                 this.numIdUnico = +new Date;
                 this.getList();
                 window.scrollTo(0, 0);
@@ -736,6 +962,10 @@
             methods: {
                 inciopagina: function(){
                     window.scrollTo(0, 0);
+                },
+
+                boxScrollTop: function(){
+                    jQuery('.bootbox').animate({ scrollTop: 0 }, 'slow');
                 },
 
                 updateTextTrueFalse : function ( txt ) {
@@ -779,20 +1009,36 @@
 
 
                 updateTextInstSeccion : function ( txt ) {
-                    this.listeningtmp.textoInstruccion = txt;
+                    this.readingtmp.secciones[this.numSeccion].textoInstruccion = txt;
                 },
 
 
                 updateTextInstReading : function ( txt ) {
-                    this.listeningtmp.textoInstrucciones = txt;
+                    this.readingtmp.textoInstrucciones = txt;
+                },
+
+                updateTextPrueba : function ( txt ) {
+                    this.prueba.textoOrientacion = txt;
                 },
 
 
+                updateDateR : function ( date ) {
+                    this.prueba.reading.fecha=date;
+                },
+
+                updateTimeR : function ( time ) {
+                    this.prueba.reading.horaComienzo=time;
+
+                },
 
 
+                updateDateL : function ( date ) {
+                    this.prueba.listening.fecha=date;
+                },
 
-                enrutar: function (id) {
-                    return "/" + id;
+                updateTimeL : function ( time ) {
+                    this.prueba.listening.horaComienzo=time;
+
                 },
 
                 alertar: function(mensaje){
@@ -800,8 +1046,12 @@
                 },
 
                 breadcrumbReturn: function (num) {
-                    if(num== 0){
+                    if(num == 1){
                         this.visibilidad = 1;
+                    }else 
+                    if(num== 0){
+                        this.contarItemReading();
+                        this.visibilidad = 0;
                         
                     }
                     this.inciopagina();
@@ -813,9 +1063,109 @@
                     return neworden;
                 },
 
+                crearReading: function () {
+                    this.habilidad = 1;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    //this.readingtmp = JSON.parse(JSON.stringify(this.prueba.reading));
 
+                    this.readingtmp = {
+                        id: '-1',
+                        fecha: '{{ fechaaactual }}',
+                        textoInstrucciones: 'Text instruction...',
+                        //textoInformacion: 'Informacion',
+                        horaComienzo: '10:00',
+                        tiempo: '24',
+                        totalItem: 0,
+                        secciones: [
+                            {
+                                id: '-1',
+                                ordenSeccion: '1',
+                                num: '1',
+                                urlAudio: 'http://#',
+                                textoInstruccion: 'Text instruction...',
+                                //textoReading: 'texto reading 1',
 
+                                preguntas: [
 
+                                ],
+                            },
+                        ]
+                    };
+                    this.prueba.reading = this.readingtmp;
+
+                    this.visibilidad = 1;
+                    this.prueba.activeReading= true ;
+                    this.inciopagina();
+                },
+
+                mostrarReading: function () {
+                    this.habilidad = 1;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    this.readingtmp = JSON.parse(JSON.stringify(this.prueba.reading));
+                    this.visibilidad = 1;
+                    this.prueba.activeReading= true ;
+                    this.inciopagina();
+                },
+
+                eliminarReading: function(){
+                    this.prueba.activeReading= false ;
+
+                },
+
+                crearListening: function () {
+                    this.habilidad = 2;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    //this.readingtmp = JSON.parse(JSON.stringify(this.prueba.listening));
+                    //this.prueba.listening.fecha= '10-10-2010';
+                    //this.prueba.listening.horaComienzo= '11:11';
+                    //this.prueba.listening.tiempo= '24';
+                    //this.prueba.listening.totalItem= 0;
+                    this.readingtmp = {
+                        id: '-1',
+                        fecha: '{{ fechaaactual }}',
+                        textoInstrucciones: 'Instrucciones',
+                        //textoInformacion: 'Informacion',
+                        horaComienzo: '10:00',
+                        tiempo: '24',
+                        totalItem: 0,
+                        secciones: [
+                            {
+                                id: '-1',
+                                ordenSeccion: '1',
+                                num: '1',
+                                urlAudio: 'http://#',
+                                textoInstruccion: 'Text intruction...',
+                                //textoReading: 'texto reading 1',
+
+                                preguntas: [
+
+                                ],
+                            },
+                        ]
+                    };
+                    this.prueba.listening = this.readingtmp;
+
+                    this.visibilidad = 1;
+                    this.prueba.activeListening= true ;
+                    this.inciopagina();
+                },
+                mostrarListening: function () {
+                    this.habilidad = 2;
+                    jQuery('.bootstrap-timepicker-widget').hide();
+                    jQuery('.datepicker ').hide();
+                    this.readingtmp = JSON.parse(JSON.stringify(this.prueba.listening));
+                    this.visibilidad = 1;
+                    this.prueba.activeListening= true ;
+                    this.inciopagina();
+                },
+
+                eliminarListening: function(){
+                    this.prueba.activeListening= false ;
+
+                },
 
                 mostrarPregunta: function (tipoPregunta, seccionx, index) {
                     this.numSeccion = seccionx.num-1;
@@ -823,7 +1173,7 @@
                     this.editPregunta = 1;
 
                     //---copy
-                    var question = JSON.parse(JSON.stringify(this.listeningtmp.preguntas[index]));
+                    var question = JSON.parse(JSON.stringify(this.readingtmp.secciones[seccionx.num - 1].preguntas[index]));
                     if (question.tipoPregunta == 5) {
                         this.questionC = question;
                         this.visibilidad = 6;
@@ -844,6 +1194,32 @@
 
                 },
 
+                //==========================BEGIN READING==================================
+                contarItemReading:function(){
+                    var totalItemR = 0;
+                    for(var i=0; i< this.prueba.reading.secciones.length; i++){
+                        for(var j=0; j<this.prueba.reading.secciones[i].preguntas.length; j++){
+                            totalItemR += this.prueba.reading.secciones[i].preguntas[j].totalItem;
+                        }
+                    }
+
+                    this.prueba.reading.totalItem = totalItemR;
+                },
+
+                //===========================END READING===================================
+
+                //==========================BEGIN LISTENING==================================
+                contarItemListening:function(){
+                    var totalItemL = 0;
+                    for(var i=0; i< this.prueba.listening.secciones.length; i++){
+                        for(var j=0; j<this.prueba.listening.secciones[i].preguntas.length; j++){
+                            totalItemL += this.prueba.listening.secciones[i].preguntas[j].totalItem;
+                        }
+                    }
+                    this.prueba.listening.totalItem = totalItemL;
+                },
+                //===========================END LISTENING===================================
+
                 //=========================BEGIN SECCIONES=================================
                 setNumSeccion: function(index){
                     this.numSeccion = index;
@@ -858,47 +1234,130 @@
                 },
 
                 ordenarSeccion: function () {
-                    for (var i = 0; i < this.listeningtmp.length;) {
-                        this.listeningtmp.num = ++i;
+                    for (var i = 0; i < this.readingtmp.secciones.length;) {
+                        this.readingtmp.secciones[i].num = ++i;
+                    }
+                },
+
+                addNewSeccion: function () {
+                    var neworden = this.obtenerOrden();
+                    this.readingtmp.secciones.push({
+                        id: -1,
+                        ordenSeccion: neworden,
+                        num: ((this.readingtmp.secciones.length) - 1),
+                        textoInstruccion: 'Text...',
+                        //textoReading: 'Texto reading vacio',
+                        preguntas: []
+                    });
+                    this.ordenarSeccion();
+                },
+
+                subirSeccion: function (index) {
+                    if (index != 0) {
+                        var tmpNum = this.readingtmp.secciones[index].textoInstruccion;
+                        this.readingtmp.secciones[index].textoInstruccion = this.readingtmp.secciones[index - 1].textoInstruccion;
+                        this.readingtmp.secciones[index - 1].textoInstruccion = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].urlAudio;
+                        this.readingtmp.secciones[index].urlAudio = this.readingtmp.secciones[index - 1].urlAudio;
+                        this.readingtmp.secciones[index - 1].urlAudio = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].preguntas;
+                        this.readingtmp.secciones[index].preguntas = this.readingtmp.secciones[index - 1].preguntas;
+                        this.readingtmp.secciones[index - 1].preguntas = tmpNum;
+                        //this.ordenarSeccion();
+                    }
+                },
+
+                bajarSeccion: function (index) {
+                    if (index != (this.readingtmp.secciones.length - 1)) {
+
+                        var tmpNum = this.readingtmp.secciones[index].textoInstruccion;
+                        this.readingtmp.secciones[index].textoInstruccion = this.readingtmp.secciones[index + 1].textoInstruccion;
+                        this.readingtmp.secciones[index + 1].textoInstruccion = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].urlAudio;
+                        this.readingtmp.secciones[index].urlAudio = this.readingtmp.secciones[index + 1].urlAudio;
+                        this.readingtmp.secciones[index + 1].urlAudio = tmpNum;
+
+                        var tmpNum = this.readingtmp.secciones[index].preguntas;
+                        this.readingtmp.secciones[index].preguntas = this.readingtmp.secciones[index + 1].preguntas;
+                        this.readingtmp.secciones[index + 1].preguntas = tmpNum;
+                        //this.ordenarSeccion();
                     }
                 },
 
                 editSeccion: function (index) {
                 },
 
+                deleteSeccion: function (index) {
+                    var gthis = this;
+                    var gindex = index;
+                        //a = this.readingtmp.secciones;
+                        bootbox.confirm("Are you sure?", function (result) {
+                            if (result) {
+                                if (gthis.readingtmp.secciones[gindex].id != -1) {
+                                    if(this.habilidad==1) {
+                                        gthis.delSecR.push({id: gthis.readingtmp.secciones[gindex].id});
+                                    }
+                                    if(this.habilidad==2) {
+                                        gthis.delSecL.push({id: gthis.readingtmp.secciones[gindex].id});
+                                    }
+                                }
+                                gthis.readingtmp.secciones.splice(gindex, 1);
+                                gthis.ordenarSeccion();
+                            }
+                        });
+                    //this.readingtmp.secciones.splice(index, 1);
+                    //this.ordenarSeccion();
+                },
 
-
-            setIdAudio: function(){
-                return "form_"+0;
+            setIdAudio: function(index){
+                return "form_"+index;
             },
-            cargarAudio: function(seccionx){
-
+            cargarAudio: function(seccionx, index){
                 var gthis = this;
                 var secx = seccionx;
-                var gindex = 0;
-                var formData = new FormData(document.getElementById("form_"+gindex));
-                formData.append("dato", "valor");
-                //formData.append(f.attr("name"), $(this)[0].files[0]);
-                var rutaphp = "{{ path('loadaudio',
+                var gindex = index;
+
+                if(gthis.prueba.id == -1){
+                    bootbox.dialog({
+                        message: "Antes de cargar algun audio, debe haber creado antes la prueba",
+                        className: '',
+                        buttons: {
+                            "click": {
+                                "label": "Aceptar",
+                                "className": "btn-sm btn-primary",
+                                "callback": function () {
+                                    //Example.show("Primary button");
+                                }
+                            },
+                        },
+                    });
+
+                }else{
+
+                    var formData = new FormData(document.getElementById("form_"+gindex));
+                    formData.append("dato", "valor");
+                    //formData.append(f.attr("name"), $(this)[0].files[0]);
+                    var rutaphp = "{{ path('loadaudio',
                     { 'id': '***' }) }}";
-                var ruta = rutaphp.replace('***', "l"+gthis.listeningtmp.id);
-                //alert(ruta);
-                jQuery.ajax({
-                            url: ruta,
-                            type: "post",
-                            dataType: "html",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false
-                        })
-                        .done(function(res){
-                            //alert(res);
-                            //alert(gthis.listeningtmp.urlAudio);
-                            gthis.listeningtmp.urlAudio=res;
-                            //seccionx.urlAudio=res;
-                            //alert(gthis.listeningtmp.urlAudio);
-                        });
+                    var ruta = rutaphp.replace('***', gthis.prueba.id);
+                    jQuery.ajax({
+                                url: ruta,
+                                type: "post",
+                                dataType: "html",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false
+                            })
+                            .done(function(res){
+                                gthis.readingtmp.secciones[gindex].urlAudio=res;
+                            });
+                }
+
+
             },
 
 
@@ -907,30 +1366,30 @@
                     if (indexP != 0) {
                         //cambio propiedad orden
                         var numsecc = seccion.num-1;
-                        var tmpNum = this.listeningtmp.preguntas[indexP].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP].ordenPregunta = this.listeningtmp.preguntas[indexP - 1].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP - 1].ordenPregunta = tmpNum;
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta = this.readingtmp.secciones[numsecc].preguntas[indexP - 1].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP - 1].ordenPregunta = tmpNum;
                         //cambio de preguntas
-                        var tmpNum = this.listeningtmp.preguntas[indexP];
-                        this.listeningtmp.preguntas[indexP] = this.listeningtmp.preguntas[indexP - 1];
-                        this.listeningtmp.preguntas[indexP - 1] = tmpNum;
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP] = this.readingtmp.secciones[numsecc].preguntas[indexP - 1];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP - 1] = tmpNum;
 
                         //this.ordenarPreguntas();
                     }
                 },
 
                 bajarPregunta: function (seccion, indexP) {
-                    if (indexP != (this.listeningtmp.preguntas.length - 1)) {
+                    if (indexP != (this.readingtmp.secciones[seccion.num - 1].preguntas.length - 1)) {
                         //cambio propiedad orden
                         var numsecc = seccion.num-1;
-                        var tmpNum = this.listeningtmp.preguntas[indexP].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP].ordenPregunta = this.listeningtmp.preguntas[indexP + 1].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP + 1].ordenPregunta = tmpNum;
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP].ordenPregunta = this.readingtmp.secciones[numsecc].preguntas[indexP + 1].ordenPregunta;
+                        this.readingtmp.secciones[numsecc].preguntas[indexP + 1].ordenPregunta = tmpNum;
                         //cambio de elementos
 
-                        var tmpNum = this.listeningtmp.preguntas[indexP];
-                        this.listeningtmp.preguntas[indexP] = this.listeningtmp.preguntas[indexP + 1];
-                        this.listeningtmp.preguntas[indexP + 1] = tmpNum;
+                        var tmpNum = this.readingtmp.secciones[numsecc].preguntas[indexP];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP] = this.readingtmp.secciones[numsecc].preguntas[indexP + 1];
+                        this.readingtmp.secciones[numsecc].preguntas[indexP + 1] = tmpNum;
 
                         //this.ordenarPreguntas();
                     }
@@ -943,7 +1402,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gseccion = seccion;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gseccion.preguntas[gindex].id != -1) {
@@ -984,7 +1443,7 @@
                 },
                 newSimpleSeleccion: function () {
                     var neworden = this.obtenerOrden();
-                    ;
+
                     this.questionSS = {
                         id: '-1',
                         ordenPregunta: '12',
@@ -1011,7 +1470,7 @@
                 },
                 newMultipleSeleccion: function () {
                     var neworden = this.obtenerOrden();
-                    ;
+
                     this.questionMS = {
                         id: '-1',
                         ordenPregunta: '12',
@@ -1082,15 +1541,41 @@
                 },
 
                 guardarReading: function () {
+                    this.prueba.reading = this.readingtmp;
+                    this.contarItemReading();
+                    this.visibilidad = 0;
 
+                    this.inciopagina();
                 },
                 continuarReading: function () {
-
+                    this.prueba.reading = this.readingtmp;
+                    this.contarItemReading();
+                    this.editPregunta == 1;
+                    this.inciopagina();
                 },
                 cancelarReading: function () {
-
+                    this.contarItemReading();
+                    this.visibilidad = 0;
+                    this.inciopagina();
                 },
 
+                guardarListening: function () {
+                    this.prueba.listening = this.readingtmp;
+                    this.contarItemListening();
+                    this.visibilidad = 0;
+                    this.inciopagina();
+                },
+                continuarListening: function () {
+                    this.prueba.listening = this.readingtmp;
+                    this.contarItemListening();
+                    this.editPregunta == 1;
+                    this.inciopagina();
+                },
+                cancelarListening: function () {
+                    this.contarItemListening();
+                    this.visibilidad = 0;
+                    this.inciopagina();
+                },
 
 
                 actualizarTotalItem: function(question){
@@ -1121,20 +1606,21 @@
 
                 showSection: function(){
 
-                    //var htmlsections = "<div><p>"+this.listeningtmp.textoInstrucciones+"</p>";
-                    var htmlsections = "<div>";
-                    //for (var indes = 0; indes < this.listeningtmp.secciones.length; indes++) {
+                    var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
+                    for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
 
-                        htmlsections += "<div class='secciones'><p>" + this.listeningtmp.textoInstruccion + "</p>";
-                        htmlsections += "<audio src='"+this.listeningtmp.urlAudio+"' controls='controls'></audio>";
-                        for (var indeq = 0; indeq < this.listeningtmp.preguntas.length; indeq++) {
-                            htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].textoPregunta + "</p>";
+                        htmlsections += "<div class='secciones'><p>" + this.readingtmp.secciones[indes].textoInstruccion + "</p>";
+                        if(this.habilidad==2){
+                        htmlsections += "<audio src='"+this.readingtmp.secciones[indes].urlAudio+"' controls='controls'></audio>";
+                        }
+                        for (var indeq = 0; indeq < this.readingtmp.secciones[indes].preguntas.length; indeq++) {
+                            htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].textoPregunta + "</p>";
 
-                            switch (this.listeningtmp.preguntas[indeq].tipoPregunta){
+                            switch (this.readingtmp.secciones[indes].preguntas[indeq].tipoPregunta){
                                 case 1:
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].truefalse.incisos.length; index++) {
-                                        htmlsections += "<div><p>"+this.listeningtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].truefalse.incisos.length; index++) {
+                                        htmlsections += "<div><p>"+this.readingtmp.secciones[indes].preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
                                         htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
                                         htmlsections += "TRUE";
                                         htmlsections += "</p></label></div>";
@@ -1150,11 +1636,11 @@
 
                                     break;
                                 case 2:
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].itemsSimple.length; index++) {
-                                        htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
-                                        for (var indi = 0; indi < this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple.length; index++) {
+                                        htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
+                                        for (var indi = 0; indi < this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
                                             htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_" + indi + "' name='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                            htmlsections += this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
+                                            htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].itemsSimple[index].incisos[indi].texto;
                                             htmlsections += "</p></label></div>";
                                         }
                                         htmlsections += "</div></div>";
@@ -1165,10 +1651,10 @@
                                     break;
                                 case 3:
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].selectionmultiple.incisos.length; index++) {
                                         htmlsections += "<div><div class='ident'>";
                                         htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += this.listeningtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
+                                        htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].selectionmultiple.incisos[index].texto;
                                         htmlsections += "</p></label></div>";
                                         htmlsections += "</div></div>";
 
@@ -1177,9 +1663,9 @@
                                 case 4:
                                     var htmlvalores = "<select>";
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.valores.length; index++) {
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].listselection.valores.length; index++) {
                                         htmlvalores += "<option>";
-                                        htmlvalores += this.listeningtmp.preguntas[indeq].listselection.valores[index].texto;
+                                        htmlvalores += this.readingtmp.secciones[indes].preguntas[indeq].listselection.valores[index].texto;
                                         htmlvalores += "</option>";
 
                                     }
@@ -1187,10 +1673,10 @@
 
 
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.itemsList.length; index++) {
+                                    for (var index = 0; index < this.readingtmp.secciones[indes].preguntas[indeq].listselection.itemsList.length; index++) {
                                         htmlsections += "<div class='itemls'><div class='ident'>";
                                         //htmllistselection += "<p>";
-                                        htmlsections += this.listeningtmp.preguntas[indeq].listselection.itemsList[index].texto;
+                                        htmlsections += this.readingtmp.secciones[indes].preguntas[indeq].listselection.itemsList[index].texto;
                                         htmlsections += htmlvalores;
                                         //htmllistselection += "</p>";
                                         htmlsections += "</div></div>";
@@ -1199,7 +1685,7 @@
 
                                     break;
                                 case 5:
-                                    this.questionC.completa.vistaHtml = this.listeningtmp.preguntas[indeq].completa.vistaHtml;
+                                    this.questionC.completa.vistaHtml = this.readingtmp.secciones[indes].preguntas[indeq].completa.vistaHtml;
                                     htmlsections += this.previewPregunta();
 
                                     break;
@@ -1207,7 +1693,7 @@
                             htmlsections += "</div>";
                         }
                         htmlsections += "</div>";
-                    //}
+                    }
 
                     bootbox.dialog({
                         message: htmlsections,
@@ -1222,6 +1708,7 @@
                             },
                         },
                     });
+                    this.boxScrollTop();
 
                 },
                 //============================END SECCIONES======================================
@@ -1271,7 +1758,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gitem = item;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionTF.truefalse.incisos[gindex].id != -1) {
@@ -1286,6 +1773,9 @@
                     //this.question.truefalse.incisos.splice(index, 1);
 
                 },
+
+
+
 
                 showTrueFalse: function(){
 
@@ -1320,6 +1810,7 @@
                             },
                         },
                     });
+                    this.boxScrollTop();
                 },
                 //===========================END TRUE-FALSE==================================
 
@@ -1411,7 +1902,7 @@
                             {
                                 id: '-1',
                                 orden: neworden,
-                                texto: 'Text...',
+                                texto: 'a',
                             },
                         ]
                     });
@@ -1439,7 +1930,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gitem = item;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionSS.itemsSimple[gindex].id != -1) {
@@ -1480,6 +1971,7 @@
                             },
                         },
                     });
+                    this.boxScrollTop();
                 },
                 //========================END SELECTION-SIMPLE==================================
 
@@ -1544,7 +2036,7 @@
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionMS.selectionmultiple.incisos[gindex].id != -1) {
-                                gthis.delItemMS.push({id: gthis.questionMS.selectionmultiple.incisos[gindex].id});
+                                gthis.delIncisoMS.push({id: gthis.questionMS.selectionmultiple.incisos[gindex].id});
                             }
                             gthis.questionMS.selectionmultiple.incisos.splice(gindex, 1);
                         }
@@ -1578,6 +2070,7 @@
                             },
                         },
                     });
+                    this.boxScrollTop();
                 },
                 //========================END SELECCION-MULTIPLE==================================
 
@@ -1646,7 +2139,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gval = val;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionLS.listselection.valores[gindex].id != -1) {
@@ -1662,7 +2155,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gitem = item;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionLS.listselection.itemsList[gindex].id != -1) {
@@ -1672,63 +2165,6 @@
                         }
                     });
 
-                },
-
-                guardarQuestion: function (question) {
-
-                    if (this.editPregunta == 1) {
-                        if (question.tipoPregunta == 5) {
-                            this.guardarPalabras();
-                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
-                        }
-                        this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas[this.numPregunta] = question;
-
-                    } else {
-                        question.ordenPregunta = this.obtenerOrden();
-
-                        if (question.tipoPregunta == 5) {
-                            this.guardarPalabras();
-                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
-                        }
-                        this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas.push(question);
-                    }
-                    this.visibilidad = 1;
-                    this.inciopagina();
-                },
-
-                continuarQuestion: function (question) {
-                    /*if (this.editPregunta == 1) {
-                     this.listeningtmp.secciones[this.numSeccion - 1].preguntas[this.numPregunta] = question;
-                     } else {
-                     this.listeningtmp.secciones[this.numSeccion - 1].preguntas.push(question);
-                     }*/
-                    if (this.editPregunta == 1) {
-                        if (question.tipoPregunta == 5) {
-                            this.guardarPalabras();
-                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
-                        }
-
-                        this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas[this.numPregunta] = question;
-
-                    } else {
-                        question.ordenPregunta = this.obtenerOrden();
-
-                        if (question.tipoPregunta == 5) {
-                            this.guardarPalabras();
-                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
-                        }
-                        this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas.push(question);
-                    }
-                    this.editPregunta == 1;
-                },
-
-                cancelarQuestion: function (question) {
-                    this.visibilidad = 1;
-                    this.inciopagina();
                 },
 
                 showListSelection: function(){
@@ -1756,6 +2192,7 @@
                     }
                     htmllistselection += "</div>";
 
+
                     bootbox.dialog({
                         message: htmllistselection,
                         className: 'show-preview',
@@ -1769,7 +2206,9 @@
                             },
                         },
                     });
+                    this.boxScrollTop();
                 },
+
                 //========================END LIST-SELECTION==================================
 
 
@@ -1777,7 +2216,6 @@
                 updateData: function (data) {
                     // sync content to component
                     this.questionC.completa.vistaHtml = data;
-                    //alert("LOLO");
                     //this.html_preview=previewPregunta(data)
                 },
                 fullScreen: function () {
@@ -1910,17 +2348,234 @@
                             },
                         },
                     });
+                    this.boxScrollTop();
                 },
+
                 //==============================END COMPLETA=====================================
 
 
+                //===============================Question============================
+
+                guardarQuestion: function (question) {
+
+                    if (this.editPregunta == 1) {
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas[this.numPregunta] = question;
+
+                    } else {
+                        question.ordenPregunta = this.obtenerOrden();
+
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas.push(question);
+                    }
+                    this.visibilidad = 1;
+                    this.inciopagina();
+                },
+
+                continuarQuestion: function (question) {
+                    /*if (this.editPregunta == 1) {
+                     this.readingtmp.secciones[this.numSeccion - 1].preguntas[this.numPregunta] = question;
+                     } else {
+                     this.readingtmp.secciones[this.numSeccion - 1].preguntas.push(question);
+                     }*/
+                    if (this.editPregunta == 1) {
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas[this.numPregunta] = question;
+
+                    } else {
+                        question.ordenPregunta = this.obtenerOrden();
+
+                        if (question.tipoPregunta == 5) {
+                            this.guardarPalabras();
+                            question.completa.itemsComplete = this.questionC.completa.itemsComplete;
+                        }
+                        this.actualizarTotalItem(question);
+                        this.readingtmp.secciones[this.numSeccion].preguntas.push(question);
+                    }
+                    this.editPregunta == 1;
+                },
+
+                cancelarQuestion: function (question) {
+                    this.visibilidad = 1;
+                    this.inciopagina();
+                },
+
+                //==============================END QUESTION=====================================
+
+
+                //==============================BEGIN BANCO=====================================
+
+                mostrarBanco: function () {
+                    this.getBancoR();
+                },
+
+                regresarBancoReading: function () {
+                    //this.getBancoR();
+                    this.visibilidad=8;
+                    this.inciopagina();
+
+                },
+
+                regresarReading: function () {
+                    //this.getBancoR();
+                    this.visibilidad=1;
+                    this.inciopagina();
+
+                },
+
+                getBancoR: function () {
+                    if(this.habilidad==1){
+                        NProgress.start(); 
+                        this.$http.get("{{  path('list_bank_reading_json') }}", function (data, status, request) {
+                            this.items = data;
+                            if(this.items.length > 0){
+                                var a=[];
+                                for(var i=0; i < this.items.length; i++){
+                                    a.push({opcion:false});
+                                }
+                                this.check = a;
+
+                                this.loading = true;
+                                jQuery('.overlay').css('display','none');
+                                this.visibilidad=8;
+                                this.inciopagina();
+                            }else{
+                                //banco vacio
+                            }
+                            NProgress.done(); 
+                            NProgress.remove(); 
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }else if(this.habilidad==2){
+                        NProgress.start(); 
+                        
+                        this.$http.get("{{  path('list_bank_listening_json') }}", function (data, status, request) {
+                            this.items = data;
+
+                            if(this.items.length > 0){
+                                var a=[];
+                                for(var i=0; i < this.items.length; i++){
+                                    a.push({opcion:false});
+                                }
+                                this.check = a;
+
+                                this.loading = true;
+                                jQuery('.overlay').css('display','none');
+
+                                this.visibilidad=8;
+                                this.inciopagina();
+                            }else{
+                                //banco vacio
+                            }
+                            NProgress.done(); 
+                            NProgress.remove(); 
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }
+                },
+
+                verDetalleBancoReading: function(idbp){
+                    if(this.habilidad==1){
+                        NProgress.start();
+                        this.$http.post("{{  path('bank_reading_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+                            this.visibilidad=9;
+                            this.inciopagina();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                        NProgress.done(); 
+                        NProgress.remove(); 
+                    }else if(this.habilidad==2){
+                        NProgress.start(); 
+                         
+                        this.$http.post("{{  path('bank_listening_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+                            this.visibilidad=9;
+                            this.inciopagina();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                        NProgress.done(); 
+                        NProgress.remove(); 
+                    }
+                },
+
+                addDetalleBancoReading: function(idbp){
+                    if(this.habilidad==1){
+                        NProgress.start(); 
+                        
+                        this.$http.post("{{  path('bank_reading_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+
+                            this.readingtmp.secciones.push(this.seccionbancox);
+
+                            this.visibilidad=1;
+                            this.inciopagina();
+                            NProgress.done(); 
+                        NProgress.remove(); 
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }else if(this.habilidad==2){
+                        NProgress.start(); 
+                        
+                        this.$http.post("{{  path('bank_listening_json') }}", {
+                            id: idbp,
+                        }, function (data, status, request) {
+                            this.seccionbancox = data;
+                            this.loading = true;
+                            jQuery('.overlay').css('display','none');
+
+                            this.readingtmp.secciones.push(this.seccionbancox);
+
+                            this.visibilidad=1;
+                            this.inciopagina();
+                            NProgress.done(); 
+                        NProgress.remove(); 
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                        });
+                    }
+                },
+
+                //===============================END BANCO=====================================
+
+
                 //============================BEGIN CRUD==================================
-                postNewTest: function (listeningtmp) {
-                    //alert(JSON.stringify(this.listeningtmp));
-                    var longcadena = ((JSON.stringify(this.listeningtmp)).split("\"\"")).length;
+                postNewTest: function (prueba) {
+                    //alert(JSON.stringify(this.prueba));
+                    var longcadena = ((JSON.stringify(this.prueba)).split("\"\"")).length;
                     if (longcadena > 1) {
                         bootbox.dialog({
-                            message: "Existen datos nulos en la seccion",
+                            message: "Existen datos nulos en la prueba",
                             buttons: {
                                 "click": {
                                     "label": "Aceptar",
@@ -1931,30 +2586,52 @@
                                 },
                             },
                         });
-                    } else {
-                        //alert(JSON.stringify(this.listeningtmp));
 
+                    } else {
+
+                        if(this.visibilidad == 2){
+                            this.continuarQuestion(this.questionTF);
+                        }
+                        if(this.visibilidad == 3){
+                            this.continuarQuestion(this.questionSS);
+                        }
+                        if(this.visibilidad == 4){
+                            this.continuarQuestion(this.questionMS);
+                        }
+                        if(this.visibilidad == 5){
+                            this.continuarQuestion(this.questionLS);
+                        }
+                        if(this.visibilidad == 6){
+                            this.continuarQuestion(this.questionC);
+                        }
+
+                        if(this.visibilidad == 1){
+                            this.prueba.reading = this.readingtmp;
+                            this.contarItemReading();
+                            this.visibilidad = 0;
+                        }
+
+                        //alert(JSON.stringify(this.prueba));
                         jQuery('.overlay').css('display','block');
                         NProgress.start(); 
-                        
-                        this.$http.post("{{  path('new_bank_listening') }}", {
-                            listeningtmp: this.listeningtmp,
+                        this.$http.post("{{  path('new_prueba') }}", {
+                            prueba: this.prueba,
                         }, function (data, status, request) {
-                            this.listeningtmp.id = data;
-                            this.$route.params.id = this.listeningtmp.id;
+                            this.prueba.id = data;
+                            this.$route.params.id = this.prueba.id;
                             this.getList();
-                            window.location.href = '#' + this.listeningtmp.id;
+                            window.location.href = '#' + this.prueba.id;
                             NProgress.done(); 
                             NProgress.remove(); 
                         });
                     }
                 },
-                postEditTest: function (listeningtmp) {
-                    //alert(JSON.stringify(this.listeningtmp));
-                    var longcadena = ((JSON.stringify(this.listeningtmp)).split("\"\"")).length;
+                postEditTest: function (prueba) {
+                    //alert(JSON.stringify(this.prueba));
+                    var longcadena = ((JSON.stringify(this.prueba)).split("\"\"")).length;
                     if (longcadena > 1) {
                         bootbox.dialog({
-                            message: "Existen datos nulos en la seccion",
+                            message: "Existen datos nulos en la prueba",
                             buttons: {
                                 "click": {
                                     "label": "Aceptar",
@@ -1965,53 +2642,55 @@
                                 },
                             },
                         });
+
                     } else {
-                        //alert(JSON.stringify(this.listeningtmp));
+                        //alert(JSON.stringify(this.prueba));
                         jQuery('.overlay').css('display','block');
 
                         NProgress.start(); 
-                        this.$http.post("{{  path('edit_bank_listening') }}", {
-                            listeningtmp: listeningtmp,
+                        this.$http.post("{{  path('edit_prueba') }}", {
+                            prueba: this.prueba,
+                            delSecR: this.delSecR,
                             delQuestion: this.delQuestion,
                             delItemVoF: this.delItemVoF,
                             delItemSS: this.delItemSS,
                             delIncisoSS: this.delIncisoSS,
-                            delItemMS: this.delItemMS,
                             delIncisoMS: this.delIncisoMS,
                             delItemLS: this.delItemLS,
                             delValorLS: this.delValorLS,
                             delItemC: this.delItemC,
                         }, function (data, status, request) {
-
+                            this.delSecR = [];
                             this.delQuestion = [];
                             this.delItemVoF = [];
                             this.delItemSS = [];
                             this.delIncisoSS = [];
-                            this.delItemMS = [];
                             this.delIncisoMS = [];
                             this.delItemLS = [];
                             this.delValorLS = [];
                             this.delItemC = [];
                             this.getList();
                             NProgress.done(); 
-                            NProgress.remove(); 
+                        NProgress.remove(); 
                         });
                     }
                 },
 
                 //read question
                 getList: function () {
-                    if (this.$route.params.id != -1) {
 
+                    if (this.$route.params.id != -1) {
                         NProgress.start(); 
-                        this.$http.post("{{  path('bank_listening_json') }}", {
-                            id: this.listeningtmp.id,
+                       
+                        this.$http.post("{{  path('prueba_json') }}", {
+                            id: this.prueba.id,
                         }, function (data, status, request) {
-                            this.listeningtmp = data;
-                            //alert(JSON.stringify(this.listeningtmp));
+                            this.prueba = data;
+                            //alert(JSON.stringify(this.prueba));
                             jQuery('.overlay').css('display','none');
 
                             //this.$route.params.id = 2;
+
                             NProgress.done(); 
                             NProgress.remove(); 
                         })
@@ -2042,15 +2721,18 @@
                             value: 'id'
                         },
                         //{text: 'Fecha', value: 'fecha'},
+                        {text: 'Testeo', value: 'testeo'},
                         {text: 'Text', value: 'texto'},
-                        {text: 'Profesor', value: 'profesor'},
+                        {text: 'Teacher', value: 'teacher'},
+                        {text: 'Reading', value: 'Reading'},
+                        {text: 'Listening', value: 'Listening'},
                         {text: 'Action', sortable: false,},
                     ],
                     items: [
                         {
                             id: -1,
                             //fecha: 'fecha',
-                            texto: 'KitKat',
+                            texto: '',
                         },
                     ],
                     startDate: '25-04-2010',
@@ -2074,134 +2756,12 @@
                 mostrar: function () {
                     this.isActive = true;
                 },
-                showSection: function(index){
-
-                    jQuery('.overlay').css('display','block');
-                    NProgress.start();
-
-                    this.$http.post("{{  path('bank_listening_json') }}", {
-                        id: index,
-                    }, function (data, status, request) {
-                        this.listeningtmp = data;
-                        //alert(JSON.stringify(this.listeningtmp));
-
-
-                    //var htmlsections = "<div><p>"+this.listeningtmp.textoInstrucciones+"</p>";
-                    var htmlsections = "<div>";
-                    //for (var indes = 0; indes < this.listeningtmp.secciones.length; indes++) {
-
-                    htmlsections += "<div class='secciones'><p>" + this.listeningtmp.textoInstruccion + "</p>";
-                    htmlsections += "<audio src='"+this.listeningtmp.urlAudio+"' controls='controls'></audio>";
-                    for (var indeq = 0; indeq < this.listeningtmp.preguntas.length; indeq++) {
-                        htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].textoPregunta + "</p>";
-
-                        switch (this.listeningtmp.preguntas[indeq].tipoPregunta){
-                            case 1:
-
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].truefalse.incisos.length; index++) {
-                                    htmlsections += "<div><p>"+this.listeningtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
-                                    htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                    htmlsections += "TRUE";
-                                    htmlsections += "</p></label></div>";
-                                    htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_2' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                    htmlsections += "FALSE";
-                                    htmlsections += "</p></label></div>";
-                                    htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_3' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                    htmlsections += "NOT GIVEN";
-                                    htmlsections += "</p></label></div>";
-                                    htmlsections += "</div></div>";
-
-                                }
-
-                                break;
-                            case 2:
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].itemsSimple.length; index++) {
-                                    htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
-                                    for (var indi = 0; indi < this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
-                                        htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_" + indi + "' name='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
-                                        htmlsections += "</p></label></div>";
-                                    }
-                                    htmlsections += "</div></div>";
-
-                                }
-
-
-                                break;
-                            case 3:
-
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
-                                    htmlsections += "<div><div class='ident'>";
-                                    htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                    htmlsections += this.listeningtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
-                                    htmlsections += "</p></label></div>";
-                                    htmlsections += "</div></div>";
-
-                                }
-                                break;
-                            case 4:
-                                var htmlvalores = "<select>";
-
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.valores.length; index++) {
-                                    htmlvalores += "<option>";
-                                    htmlvalores += this.listeningtmp.preguntas[indeq].listselection.valores[index].texto;
-                                    htmlvalores += "</option>";
-
-                                }
-                                htmlvalores += "</select>";
-
-
-
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.itemsList.length; index++) {
-                                    htmlsections += "<div class='itemls'><div class='ident'>";
-                                    //htmllistselection += "<p>";
-                                    htmlsections += this.listeningtmp.preguntas[indeq].listselection.itemsList[index].texto;
-                                    htmlsections += htmlvalores;
-                                    //htmllistselection += "</p>";
-                                    htmlsections += "</div></div>";
-
-                                }
-
-                                break;
-                            case 5:
-                                this.questionC.completa.vistaHtml = this.listeningtmp.preguntas[indeq].completa.vistaHtml;
-                                htmlsections += this.previewPregunta();
-
-                                break;
-                        }
-                        htmlsections += "</div>";
-                    }
-                    htmlsections += "</div>";
-                    //}
-
-                    jQuery('.overlay').css('display','none');
-
-                    //this.$route.params.id = 2;
-                    NProgress.done();
-                    NProgress.remove();
-
-                    bootbox.dialog({
-                        message: htmlsections,
-                        className: 'show-preview',
-                        buttons: {
-                            "click": {
-                                "label": "Aceptar",
-                                "className": "btn-sm btn-primary",
-                                "callback": function () {
-                                    //Example.show("Primary button");
-                                }
-                            },
-                        },
-                    });
-
-                    })
-
-                },
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {
-                    NProgress.start(); 
-                    this.$http.get("{{  path('list_bank_listening_json') }}", function (data, status, request) {
+                    
+                    NProgress.start();
+                    this.$http.get("{{  path('effectuate_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
                         jQuery('.overlay').css('display','none');
@@ -2217,10 +2777,9 @@
                     //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
-                            jQuery('.overlay').css('display','block'); 
+                            jQuery('.overlay').css('display','block');
                             NProgress.start(); 
-                        
-                            gthis.$http.post("{{  path('delete_bank_listening') }}", {
+                            gthis.$http.post("{{  path('delete_prueba') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
@@ -2228,18 +2787,19 @@
                                 NProgress.remove(); 
                             });
                         }
-                    });
-
-                    
+                    });  
                 },
 
+                goTo: function(index){
+                    return "{{ path('list_evals') }}"+"#/"+index;
+                },
             }
         });
 
         // 2. Define some routes
         const routes = [
-            {path: '/:id', name: 'new_listening', component: Reading},
-            {path: '/', name: 'list_listening', component: List},
+            {path: '/:id', name: 'new_prueba', component: Prueba},
+            {path: '/', name: 'list_prueba', component: List},
         ]
 
         // 3. Create the router instance and pass the `routes` option
@@ -2257,7 +2817,7 @@
 
         }).$mount('#app');
 
-        jQuery('.bank').addClass('active');
-        jQuery('.bank > a').addClass('active');
+        jQuery('.test').addClass('active');
+        jQuery('.test > a').addClass('active');
     </script>
 {% endblock %}

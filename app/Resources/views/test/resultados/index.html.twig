@@ -629,6 +629,16 @@
                                                          v-bind:to="{ name: 'view_result', params: { hability: 'reading' , id: props.item.id }}">
                                                 <i class="fa fa-pencil"></i> View
                                             </router-link>
+
+                                                {%  if (is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR')) %}
+                                                    <div v-show="'{{ app.user.username }}' == props.item.profesor">
+                                                {%  endif %}
+
+                                                <button class="btn btn-default btn-70w" v-on:click="delEval( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+
+                                                {%  if ( is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') ) %}
+                                                    </div>
+                                                {%  endif %}
                                             <!--router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'view_result', params: { hability: 'listening' , id: props.item.id }}">
                                                 <i class="fa fa-pencil"></i> View
                                             </router-link-->
@@ -953,6 +963,7 @@
                             id: -1,
                             //fecha: 'fecha',
                             user: '',
+                            testeo: '',
                             prueba: '',
                             fecha_reading: '',
                             puntos_reading: 0,
@@ -994,6 +1005,25 @@
                         NProgress.remove(); 
                     }).catch(function (data, status, request) {
                         console.log('error');
+                    });
+                },
+
+                delEval: function( index){
+                    var gthis = this;
+                    var gindex = index;
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            jQuery('.overlay').css('display','block');
+                            NProgress.start();
+                            gthis.$http.post("{{  path('delete_eval') }}", {
+                                id: gindex,
+                            }, function (data, status, request) {
+                                gthis.getList();
+                                NProgress.done();
+                                NProgress.remove();
+                            });
+                        }
                     });
                 },
 
