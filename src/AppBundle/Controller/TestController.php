@@ -35,12 +35,14 @@ class TestController extends Controller
 
         // $tests = $em->getRepository('AppBundle:Test')->findAll();
 
+
         $fechaaactual = new \DateTime();
         $fechaaactual->setTimezone(new \DateTimeZone('America/Caracas'));
         $stringfechaaactual = $fechaaactual->format('d-m-Y');
 
         return $this->render('test/route/index.html.twig', array(
             'fechaaactual' => $stringfechaaactual,
+
         ));
     }
 
@@ -64,7 +66,7 @@ class TestController extends Controller
             foreach ($pruebas as $p) {
                 $arrayP[$i]['id'] = $p->getId();
                 $arrayP[$i]['deprueba'] = $p->getDeprueba();
-                $arrayP[$i]['profesor'] = $p->getIdProfesor()->getNombre();
+                $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
                 try{
                     $textreading = "null";
                     if($p->getIdReading() == null ) {
@@ -138,6 +140,7 @@ class TestController extends Controller
             //$arrayP['fecha'] = $q->getFecha();
             $arrayP['textoOrientacion'] = $q->getTextoOrientacion();
             $arrayP['deprueba'] = $q->getDeprueba();
+            $arrayP['profesor'] = $q->getIdProfesor()->getUsername();
 
             $r = $q->getIdReading();
             if ($r == null) {
@@ -1425,7 +1428,12 @@ class TestController extends Controller
                     $r = $em->getRepository('AppBundle:Reading')->find($reading->id);
                     if ($r != null) {
 
-                        $t->setIdReading();
+                        $t->setIdReading(null);
+                        $em->persist($t);
+                        $em->persist($r);
+                        $em->flush();
+
+                        $r = $em->getRepository('AppBundle:Reading')->find($reading->id);
                         $em->remove($r);
                         $em->flush();
                     }
@@ -1445,7 +1453,12 @@ class TestController extends Controller
                 } else {
                     $l = $em->getRepository('AppBundle:Listening')->find($listening->id);
                     if ($l != null) {
-                        $t->setIdListening();
+                        $t->setIdListening(null);
+                        $em->persist($t);
+                        $em->persist($l);
+                        $em->flush();
+
+                        $l = $em->getRepository('AppBundle:Listening')->find($listening->id);
                         $em->remove($l);
                         $em->flush();
                     }
@@ -1682,6 +1695,7 @@ class TestController extends Controller
                 //$imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.'blobid1510017394189.jpg';
                 //$arrayP[$i]['texto'] = $_SERVER["HTTP_HOST"].'-'.$imagenurl.'-'.$r->getBasePath();
                 $arrayP[$i]['texto'] = $p->getTextoInstruccion();
+                $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
 
                 $i++;
             };
@@ -1729,6 +1743,8 @@ class TestController extends Controller
             $rawdatasecciones['num'] = 1;
             $rawdatasecciones['urlAudio'] = "http://#";
             $rawdatasecciones['textoInstruccion'] = $sr->getTextoInstruccion();
+            $rawdatasecciones['profesor'] = $sr->getIdProfesor()->getUsername();
+
             //$rawdatasecciones[$j]['textoReading'] = $sr->getTextoReading();
 
             $questionSeccionReading = $sr->getQuestionsSeccionReadings();
@@ -2000,6 +2016,8 @@ class TestController extends Controller
         }
 
 
+        $user = $this->getUser();
+        $sec->setIdProfesor($user);
         $em->persist($sec);
 
 
@@ -2445,6 +2463,7 @@ class TestController extends Controller
                 //$imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.'blobid1510017394189.jpg';
                 //$arrayP[$i]['texto'] = $_SERVER["HTTP_HOST"].'-'.$imagenurl.'-'.$r->getBasePath();
                 $arrayP[$i]['texto'] = $p->getTextoInstruccion();
+                $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
 
                 $i++;
             };
@@ -2490,6 +2509,8 @@ class TestController extends Controller
             $rawdatasecciones['num'] = 1;
             $rawdatasecciones['urlAudio'] = $sl->getUrlAudio();
             $rawdatasecciones['textoInstruccion'] = $sl->getTextoInstruccion();
+            $rawdatasecciones['profesor'] = $sl->getIdProfesor()->getUsername();
+
             //$rawdatasecciones[$j]['textoReading'] = $sr->getTextoReading();
 
             $questionSeccionReading = $sl->getQuestionsSeccionListenings();
@@ -2756,6 +2777,8 @@ class TestController extends Controller
             }
         }
 
+        $user = $this->getUser();
+        $sec->setIdProfesor($user);
         $em->persist($sec);
 
         $em->flush();
@@ -3120,7 +3143,7 @@ class TestController extends Controller
 
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';
-        $error = '{ "id" : "' . $id . '"}';
+        $error = '{ "id" : "1"}';
         $response = new Response();
         $response->setContent(json_encode($error));
         $response->headers->set('Content-Type', 'application/json');
@@ -4474,6 +4497,25 @@ class TestController extends Controller
         $u->setLocked($x->locked);
         $u->setExpired($x->expired);
 
+        $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
+        // sintaxis dentro de un controlador:
+        // $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
+        $roles = array_keys($roleHierarchy);
+        $theRoles = array();
+        $i = 0;
+        foreach ($roles as $role) {
+            $theRoles[$i] = $role;
+            $i++;
+        }
+
+
+        $i = 0;
+        foreach ($x->roles as $rol) {
+            if($rol == true){
+                $u->addRole($theRoles[$i]);
+            }
+            $i++;
+        }
 
         $em->persist($u);
         $em->flush();

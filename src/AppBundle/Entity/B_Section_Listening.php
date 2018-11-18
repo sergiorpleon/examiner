@@ -49,6 +49,13 @@ class B_Section_Listening
      */
     private $questions_seccion_listenings;
 
+
+    /**
+     *@ORM\ManyToOne(targetEntity="User", inversedBy="blistenig")
+     *@ORM\JoinColumn(name="id_profesor", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     */
+    private $id_profesor;
+
     /**
      * Get id
      *
@@ -166,5 +173,28 @@ class B_Section_Listening
     public function getQuestionsSeccionListenings()
     {
         return $this->questions_seccion_listenings;
+    }
+
+    /**
+     * Set id_profesor
+     *
+     * @param \AppBundle\Entity\User $idProfesor
+     * @return Test
+     */
+    public function setIdProfesor(\AppBundle\Entity\User $idProfesor)
+    {
+        $this->id_profesor = $idProfesor;
+
+        return $this;
+    }
+
+    /**
+     * Get id_profesor
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getIdProfesor()
+    {
+        return $this->id_profesor;
     }
 }

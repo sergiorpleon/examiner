@@ -470,7 +470,7 @@
                             email: '',
                             nombre: '',
                             total: '',
-                            roles: '',
+                            //roles: '',
 
                         },
                     ],
@@ -557,6 +557,7 @@
                         enabled: '',
                         locaked: '',
                         expired: '',
+                        roles: [],
                     },
 
                 };
@@ -599,6 +600,8 @@
                         enabled: this.user.enabled,
                         locked: this.user.locked,
                         expired: this.user.expired,
+                        roles: this.user.roles,
+                        arrayroles: this.user.arrayroles,
                     }, function (data, status, request) {
                         //alert(JSON.stringify(data));
                         this.getUser();

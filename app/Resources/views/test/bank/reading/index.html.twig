@@ -127,8 +127,8 @@
 
 
         .en-barra{
-            position: fixed;
-            z-index: 1050;
+            /* position: fixed; */
+            /* z-index: 1050; */
             top: -5px;
             right: 120px;
         }
@@ -232,15 +232,16 @@
 
         <!-- plantilla componente prueba -->
         <script type="text/x-template" id="prueba">
+
             <div>
 
                 <div class="en-barra" v-show="this.readingtmp.id==-1">
-                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postNewTest(readingtmp)"><i
+                    <button class="btn btn-info" style="" v-on:click="postNewTest(readingtmp)"><i
                                 class="fa fa-save"></i> Create
                     </button>
                 </div>
                 <div class="en-barra" v-show="this.readingtmp.id!=-1">
-                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postEditTest(readingtmp)"><i
+                    <button class="btn btn-info" style="" v-on:click="postEditTest(readingtmp)"><i
                                 class="fa fa-save"></i> Save
                     </button>
                 </div>
@@ -275,7 +276,9 @@
                 {{ include('test/bank/truefalse.html.twig') }}
                 {{ include('test/bank/selectionmultiple.html.twig') }}
                 {{ include('test/bank/completa.html.twig') }}
+
             </div>
+
         </script>
 
         <!-- plantilla componente lista prueba -->
@@ -306,12 +309,20 @@
                                     <template slot="items" scope="props">
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
                                         <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
+                                        <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.profesor"></div></td>
                                         <td>
+                                            {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
+                                                <div v-show="'{{ app.user.username }}' == props.item.profesor">
+                                                    {%  endif  %}
                                             <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
                                             <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'new_reading', params: { id: props.item.id }}">
                                                 <i class="fa fa-pencil"></i> Edit
                                             </router-link>
                                             <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+                                            {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
+
+                                                </div>
+                                            {%  endif  %}
                                         </td>
                                     </template>
                                 </v-data-table>
@@ -706,29 +717,7 @@
                         textoInstruccion: 'Text...',
                         //textoReading: 'texto reading 1',
                         preguntas: [
-                            {
-                                id: '-1',
-                                ordenPregunta: '11',
-                                textoPregunta: 'Text...',
-                                tipoPregunta: 4,
-                                totalItem: 0,
-                                listselection: {
-                                    valores: [
-                                        {
-                                            id: '-1',
-                                            texto: 'empty'
-                                        }
-                                    ],
-                                    itemsList: [
-                                        {
-                                            id: '-1',
-                                            orden: '2',
-                                            texto: 'Text...',
-                                            correcta: 'a'
-                                        },
-                                    ]
-                                }
-                            },
+
                         ],
                     },
 
@@ -888,8 +877,11 @@
                var formData = new FormData(document.getElementById("form_"+gindex));
                 formData.append("dato", "valor");
                 //formData.append(f.attr("name"), $(this)[0].files[0]);
+                var rutaphp = "{{ path('loadaudio',
+                    { 'id': '***' }) }}";
+                var ruta = rutaphp.replace('***', 'r'+gthis.readintmp.id);
                 jQuery.ajax({
-                            url: "{{ path('loadaudio') }}",
+                            url: ruta,
                             type: "post",
                             dataType: "html",
                             data: formData,
@@ -1131,7 +1123,7 @@
                     //for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
 
                         htmlsections += "<div class='secciones'><p>" + this.readingtmp.textoInstruccion + "</p>";
-                        htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
+                        //htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
                         for (var indeq = 0; indeq < this.readingtmp.preguntas.length; indeq++) {
                             htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].textoPregunta + "</p>";
 
@@ -2049,6 +2041,7 @@
                         },
                         //{text: 'Fecha', value: 'fecha'},
                         {text: 'Text', value: 'texto'},
+                        {text: 'Profesor', value: 'profesor'},
                         {text: 'Action', sortable: false,},
                     ],
                     items: [

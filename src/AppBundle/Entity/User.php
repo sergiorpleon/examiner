@@ -80,6 +80,18 @@ class User extends UserFOS
 
     /**
      *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\B_Section_Reading" , mappedBy="id_profesor", cascade={"all"}, orphanRemoval=true)
+     */
+    private $breading;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\B_Section_Listening" , mappedBy="id_profesor", cascade={"all"}, orphanRemoval=true)
+     */
+    private $blistening;
+
+    /**
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Evaluaciones" , mappedBy="id_estudiante", cascade={"persist"}, orphanRemoval=true)
      */
     private $evaluaciones;
@@ -446,5 +458,71 @@ class User extends UserFOS
     public function getIdEstudia()
     {
         return $this->id_estudia;
+    }
+
+    /**
+     * Add breading
+     *
+     * @param \AppBundle\Entity\B_Section_Reading $breading
+     * @return User
+     */
+    public function addBreading(\AppBundle\Entity\B_Section_Reading $breading)
+    {
+        $this->$breading[] = $breading;
+
+        return $this;
+    }
+
+    /**
+     * Remove breading
+     *
+     * @param \AppBundle\Entity\B_Section_Reading $breading
+     */
+    public function removeBreading(\AppBundle\Entity\B_Section_Reading $breading)
+    {
+        $this->breading->removeElement($breading);
+    }
+
+    /**
+     * Get breading
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBreading()
+    {
+        return $this->breading;
+    }
+
+    /**
+     * Add blistening
+     *
+     * @param \AppBundle\Entity\B_Section_Reading $blistening
+     * @return User
+     */
+    public function addBlistening(\AppBundle\Entity\B_Section_Reading $blistening)
+    {
+        $this->$blistening[] = $blistening;
+
+        return $this;
+    }
+
+    /**
+     * Remove blistening
+     *
+     * @param \AppBundle\Entity\B_Section_Reading $blistening
+     */
+    public function removeBListening(\AppBundle\Entity\B_Section_Reading $blistening)
+    {
+        $this->breading->removeElement($blistening);
+    }
+
+    /**
+     * Get blistening
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBlistening()
+    {
+        return $this->blistening;
     }
 }

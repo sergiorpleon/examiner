@@ -127,8 +127,8 @@
 
 
         .en-barra{
-            position: fixed;
-            z-index: 1050;
+            /* position: fixed; */
+            /* z-index: 1050; */
             top: -5px;
             right: 120px;
         }
@@ -235,12 +235,12 @@
         <script type="text/x-template" id="listening">
             <div>
                 <div class="en-barra" v-show="this.listeningtmp.id==-1">
-                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postNewTest(listeningtmp)"><i
+                    <button class="btn btn-info" style="" v-on:click="postNewTest(listeningtmp)"><i
                                 class="fa fa-save"></i> Create
                     </button>
                 </div>
                 <div class="en-barra" v-show="this.listeningtmp.id!=-1">
-                    <button class="btn btn-info" style="margin-top: 20px;" v-on:click="postEditTest(listeningtmp)"><i
+                    <button class="btn btn-info" style="" v-on:click="postEditTest(listeningtmp)"><i
                                 class="fa fa-save"></i> Save
                     </button>
                 </div>
@@ -261,11 +261,7 @@
                   </ol>
                 </section>
 
-
                 <div class="prueba row form-panel box box-primary" v-show="visibilidad==0">
-
-
-
 
                 </div>
 
@@ -275,7 +271,9 @@
                 {{ include('test/bank/truefalse.html.twig') }}
                 {{ include('test/bank/selectionmultiple.html.twig') }}
                 {{ include('test/bank/completa.html.twig') }}
+
             </div>
+
         </script>
 
         <!-- plantilla componente lista prueba -->
@@ -307,12 +305,22 @@
                                     <template slot="items" scope="props">
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
                                         <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
+                                        <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.profesor"></div></td>
                                         <td>
-                                            <!--router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
-                                            <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'new_listening', params: { id: props.item.id }}">
-                                                <i class="fa fa-pencil"></i> Edit
-                                            </router-link>
-                                            <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+                                            {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
+
+
+                                                <div v-show="'{{ app.user.username }}' == props.item.profesor">
+                                                    {%  endif  %}
+                                                <!--router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
+                                                <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'new_listening', params: { id: props.item.id }}">
+                                                    <i class="fa fa-pencil"></i> Edit
+                                                </router-link>
+                                                <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+
+                                            {%  if is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN') and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') %}
+                                                </div>
+                                            {%  endif  %}
                                         </td>
                                     </template>
                                 </v-data-table>
@@ -708,29 +716,7 @@
                         textoInstruccion: 'Text...',
                         //textoReading: 'texto listening 1',
                         preguntas: [
-                            {
-                                id: '-1',
-                                ordenPregunta: '11',
-                                textoPregunta: 'Text...',
-                                tipoPregunta: 4,
-                                totalItem: 0,
-                                listselection: {
-                                    valores: [
-                                        {
-                                            id: '-1',
-                                            texto: 'empty'
-                                        }
-                                    ],
-                                    itemsList: [
-                                        {
-                                            id: '-1',
-                                            orden: '2',
-                                            texto: 'Text...',
-                                            correcta: 'a'
-                                        },
-                                    ]
-                                }
-                            },
+
                         ],
                     },
 
@@ -884,14 +870,19 @@
                 return "form_"+0;
             },
             cargarAudio: function(seccionx){
+
                 var gthis = this;
                 var secx = seccionx;
                 var gindex = 0;
-               var formData = new FormData(document.getElementById("form_"+gindex));
+                var formData = new FormData(document.getElementById("form_"+gindex));
                 formData.append("dato", "valor");
                 //formData.append(f.attr("name"), $(this)[0].files[0]);
+                var rutaphp = "{{ path('loadaudio',
+                    { 'id': '***' }) }}";
+                var ruta = rutaphp.replace('***', "l"+gthis.listeningtmp.id);
+                //alert(ruta);
                 jQuery.ajax({
-                            url: "{{ path('loadaudio') }}",
+                            url: ruta,
                             type: "post",
                             dataType: "html",
                             data: formData,
@@ -2050,6 +2041,7 @@
                         },
                         //{text: 'Fecha', value: 'fecha'},
                         {text: 'Text', value: 'texto'},
+                        {text: 'Profesor', value: 'profesor'},
                         {text: 'Action', sortable: false,},
                     ],
                     items: [

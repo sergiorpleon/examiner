@@ -227,6 +227,7 @@
         <router-view></router-view>
 
         <!-- plantilla componente prueba -->
+
         <script type="text/x-template" id="test">
             <div>
                 <div class="en-barra" v-show="this.prueba.id==-1">
@@ -255,6 +256,7 @@
                     <li v-show="visibilidad==4" class="active">Question Multiple Selection</li>
                     <li v-show="visibilidad==5" class="active">Question List Selection</li>
                     <li v-show="visibilidad==6" class="active">Question Complete</li>
+                    <li v-show="visibilidad==7" class="active">Bank Section</li>
                   </ol>
                 </section>
                 
@@ -398,7 +400,9 @@
 
                 {{ include('test/route/banco.html.twig.') }}
                 {{ include('test/route/detalle_banco.html.twig') }}
+
             </div>
+
         </script>
 
         <!-- plantilla componente lista prueba -->
@@ -439,11 +443,20 @@
                                         <td class="text-xs-right">{{ "{{ props.item.listening}}" }}</td>
 
                                         <td>
+                                            {%  if (is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR')) %}
+
+
+                                                <div v-show="'{{ app.user.username }}' == props.item.profesor">
+                                            {%  endif %}
                                             <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
                                             <router-link class="btn btn-default btn-70w" v-bind:to="{ name: 'new_prueba', params: { id: props.item.id }}">
                                                 <i class="fa fa-pencil"></i> Edit
                                             </router-link>
                                             <button class="btn btn-default btn-70w" v-on:click="delTest( props.item.id)"><i class="fa fa-times"></i> Delete</button>
+                                             {%  if ( is_granted('ROLE_PROFESOR') and not is_granted('ROLE_SUPER_ADMIN')  and not is_granted('ROLE_ADMIN')  and not is_granted('ROLE_GESTOR') ) %}
+
+                                                </div>
+                                            {%  endif %}
                                         </td>
                                     </template>
                                 </v-data-table>
@@ -1337,7 +1350,7 @@
                     //formData.append(f.attr("name"), $(this)[0].files[0]);
                     var rutaphp = "{{ path('loadaudio',
                     { 'id': '***' }) }}";
-                    var ruta = rutaphp.replace('***',gthis.prueba.id);
+                    var ruta = rutaphp.replace('***', gthis.prueba.id);
                     jQuery.ajax({
                                 url: ruta,
                                 type: "post",
@@ -1348,11 +1361,7 @@
                                 processData: false
                             })
                             .done(function(res){
-                                //alert(res);
-                                //alert(gthis.readingtmp.secciones[gindex].urlAudio);
                                 gthis.readingtmp.secciones[gindex].urlAudio=res;
-                                //seccionx.urlAudio=res;
-                                //alert(gthis.readingtmp.secciones[gindex].urlAudio);
                             });
                 }
 
@@ -1609,7 +1618,9 @@
                     for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
 
                         htmlsections += "<div class='secciones'><p>" + this.readingtmp.secciones[indes].textoInstruccion + "</p>";
+                        if(this.habilidad==2){
                         htmlsections += "<audio src='"+this.readingtmp.secciones[indes].urlAudio+"' controls='controls'></audio>";
+                        }
                         for (var indeq = 0; indeq < this.readingtmp.secciones[indes].preguntas.length; indeq++) {
                             htmlsections += "<div><p>" + this.readingtmp.secciones[indes].preguntas[indeq].textoPregunta + "</p>";
 
