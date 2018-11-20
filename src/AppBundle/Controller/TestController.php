@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Funciones\Funciones_Completa;
 use AppBundle\Entity\Carrera;
 use AppBundle\Entity\Estudia;
 use AppBundle\Entity\Inciso_Simple_Selection;
@@ -85,30 +86,30 @@ class TestController extends Controller
             $arrayP = array();
             $i = 0;
             foreach ($pruebas as $p) {
-                $eval = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_test'=>$p->getId()));
+                $eval = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_test' => $p->getId()));
 
-                if( $eval == null){
+                if ($eval == null) {
                     $arrayP[$i]['id'] = $p->getId();
                     $arrayP[$i]['deprueba'] = $p->getDeprueba();
                     $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
-                    try{
+                    try {
                         $textreading = "null";
-                        if($p->getIdReading() == null ) {
-                        }else{
+                        if ($p->getIdReading() == null) {
+                        } else {
                             $textreading = $p->getIdReading()->getFecha()->format("d-m-Y");
                         }
 
-                    }catch (Exception $e){
+                    } catch (Exception $e) {
                         $textreading = "null";
                     }
-                    try{
+                    try {
                         $textlistening = "null";
-                        if($p->getIdListening() == null ) {
-                        }else{
+                        if ($p->getIdListening() == null) {
+                        } else {
                             $textlistening = $p->getIdListening()->getFecha()->format("d-m-Y");
                         }
 
-                    }catch (Exception $e){
+                    } catch (Exception $e) {
                         $textlistening = "null";
                     }
 
@@ -159,31 +160,31 @@ class TestController extends Controller
             $arrayP = array();
             $i = 0;
             foreach ($pruebas as $p) {
-                $eval = $em->getRepository('AppBundle:Evaluaciones')->findOneBy(array('id_test'=>$p->getId()));
+                $eval = $em->getRepository('AppBundle:Evaluaciones')->findOneBy(array('id_test' => $p->getId()));
 
-                if( $eval == null) {
-                }else{
+                if ($eval == null) {
+                } else {
                     $arrayP[$i]['id'] = $p->getId();
                     $arrayP[$i]['deprueba'] = $p->getDeprueba();
                     $arrayP[$i]['profesor'] = $p->getIdProfesor()->getUsername();
-                    try{
+                    try {
                         $textreading = "null";
-                        if($p->getIdReading() == null ) {
-                        }else{
+                        if ($p->getIdReading() == null) {
+                        } else {
                             $textreading = $p->getIdReading()->getFecha()->format("d-m-Y");
                         }
 
-                    }catch (Exception $e){
+                    } catch (Exception $e) {
                         $textreading = "null";
                     }
-                    try{
+                    try {
                         $textlistening = "null";
-                        if($p->getIdListening() == null ) {
-                        }else{
+                        if ($p->getIdListening() == null) {
+                        } else {
                             $textlistening = $p->getIdListening()->getFecha()->format("d-m-Y");
                         }
 
-                    }catch (Exception $e){
+                    } catch (Exception $e) {
                         $textlistening = "null";
                     }
 
@@ -217,6 +218,7 @@ class TestController extends Controller
             'item_List_Selections' => $item_List_Selections,
         ));*/
     }
+
     /**
      * JSON de una prueba.
      *
@@ -1721,12 +1723,15 @@ class TestController extends Controller
             $em->flush();
         }
 
-        $uploaddir = $this->getParameter('audio_directory').'/'.$id.'/';
-        if(is_dir ( $uploaddir) ){
+        $uploaddir = $this->getParameter('audio_directory') . '/' . $id . '';
+        if (is_dir($uploaddir)) {
 
-            //if (!rmdir($uploaddir)) {
-            //    return new Response("Error, eliminación del directorio ".$uploaddir." no permitido");
-            //}
+
+            if (!Funciones_Completa::rmDir_rf($uploaddir)) {
+                return new Response("Error, eliminación del directorio ".$uploaddir." no permitido");
+            }
+
+
         }
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';
@@ -1736,6 +1741,8 @@ class TestController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+
 
 
 
@@ -4287,9 +4294,6 @@ class TestController extends Controller
         };
 
 
-
-
-
         $idsc = $x->delCarrera;
 
         foreach ($idsc as $idc) {
@@ -4417,8 +4421,6 @@ class TestController extends Controller
 
         try {
             $rawdatausuario = array();
-
-
 
             $em = $this->getDoctrine()->getManager();
             $evaluaciones = $em->getRepository('AppBundle:Evaluaciones')->findBy(array('id_estudiante' => $usuario->getId()));
@@ -4552,8 +4554,6 @@ class TestController extends Controller
             $arrayU['expired'] = $u->isExpired();
             $arrayU['locked'] = $u->isLocked();
 
-
-
             $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
             // sintaxis dentro de un controlador:
             // $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
@@ -4573,8 +4573,6 @@ class TestController extends Controller
                 $i++;
             }
             $arrayU['arrayroles'] = $theRoles;
-
-
 
             $response = new Response();
             $response->setContent(json_encode($arrayU));

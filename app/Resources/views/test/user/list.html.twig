@@ -288,16 +288,15 @@
                                             <div class="limit-height" v-html=" props.item.expired"></div>
                                         </td>
                                         <td class="text-xs-right">
+                                            <div class="limit-height" v-html=" props.item.locked"></div>
+                                        </td>
+                                        <td class="text-xs-right">
                                             <div class="limit-height">
                                                 <div v-for="(rol, index) in props.item.roles">
                                                     {{"{{rol}}"}}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-xs-right">
-                                            <div class="limit-height" v-html=" props.item.locked"></div>
-                                        </td>
-                                        
 
                                         <td>
                                             <!-- router-link class="btn btn-default btn-70w" v-bind:to="enrutar(props.item.id)" -->
@@ -465,7 +464,9 @@
                         {
                             id: -1,
                             //fecha: 'fecha',
-                            enabled: '',
+                            enabled: false,
+                            expired: false,
+                            locked: false,
                             username: '',
                             email: '',
                             nombre: '',

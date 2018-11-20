@@ -68,7 +68,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus { border: 1px solid #f1f1
 .notify-arrow-green { border-right-color: transparent; border-left-color: transparent; border-bottom-color: #00a7d0 ! important; border-top-color: #00a7d0 ! important; }
 .sidebar-toggle-box { float: left; padding-right: 15px; margin-top: 20px; }
 .sidebar-toggle-box .fa-bars { cursor: pointer; display: inline-block; font-size: 20px; }
-.form-panel { background: none repeat scroll 0% 0% rgb(255, 255, 255); margin: 10px; padding: 10px; box-shadow: 0px 3px 2px rgb(170, 178, 189); text-align: left; }
+.form-panel { padding: 10px 0px !important; margin-left: 0px !important; background: none repeat scroll 0% 0% rgb(255, 255, 255); margin: 10px; padding: 10px; box-shadow: 0px 3px 2px rgb(170, 178, 189); text-align: left; }
 .site-footer { background: none repeat scroll 0% 0% #00a7d0; color: rgb(255, 255, 255); padding: 10px 0px; }
 .go-top { margin-right: 1%; float: right; background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.5); width: 20px; height: 20px; border-radius: 50%; }
 .go-top i { color: rgb(42, 53, 66); }
@@ -87,3 +87,27 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus { border: 1px solid #f1f1
 .form-panel table.datatable.table tr > th {
   padding: 2px 8px !important;
 }
+
+ul.sidebar-menu, ul.sidebar-menu div div.sub { margin: -2px 0px 0px; padding: 0px; }
+ul.sidebar-menu { margin-top: 75px; }
+#sidebar > ul > li.active > ul.sub, #sidebar > ul > div > div.sub > div > a { display: block; }
+ul.sidebar-menu div div.sub div { background: none repeat scroll 0% 0% #222d32; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; }
+ul.sidebar-menu div div.sub div:last-child { border-radius: 0px 0px 4px 4px; }
+ul.sidebar-menu div div.sub div a { font-size: 14px; padding: 6px 0px; line-height: 28px; height: 28px; transition: all 0.3s ease 0s; color: rgb(174, 178, 183); }
+ul.sidebar-menu div div.sub div a.active { background-color: transparent !important; }
+ul.sidebar-menu div div.sub div a:hover { color: white; background: none repeat scroll 0% 0% transparent; }
+ul.sidebar-menu div div.sub div.active a { color: #00a7d0; transition: all 0.3s ease 0s; display: block; }
+ul.sidebar-menu div { margin-bottom: 5px; margin-left: 10px; margin-right: 10px; }
+ul.sidebar-menu div.sub-menu { line-height: 15px; }
+ul.sidebar-menu div a span { display: inline-block; }
+ul.sidebar-menu div a { color: rgb(174, 178, 183); text-decoration: none; display: block; padding: 15px 0px 15px 10px; font-size: 16px; outline: medium none; transition: all 0.3s ease 0s; }
+ul.sidebar-menu div.sub-menu a.active, ul.sidebar-menu div a:hover, ul.sidebar-menu div a:focus { background: none repeat scroll 0% 0% #00a7d0; color: rgb(255, 255, 255); display: block; transition: all 0.3s ease 0s; }
+ul.sidebar-menu div a i { font-size: 15px; padding-right: 6px; }
+ul.sidebar-menu div a:hover i, ul.sidebar-menu div a:focus i { color: rgb(255, 255, 255); }
+ul.sidebar-menu div a.active i { color: rgb(255, 255, 255); }
+#sidebar { width: 240px; height: 100%; position: fixed; background: none repeat scroll 0% 0% #1a2226; }
+
+#sidebar ul div { position: relative; }
+#sidebar .sub-menu > .sub div { padding-left: 32px; }
+#sidebar .sub-menu > .sub div:last-child { padding-bottom: 10px; }
+

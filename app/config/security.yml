@@ -27,7 +27,7 @@ security:
         - { path:     ^/list_listening/, role:     [ROLE_USER] }
         - { path:     ^/eval_reading/, role:     [ROLE_USER] }
         - { path:     ^/eval_listening/, role:     [ROLE_USER] }
-        - { path:     ^/test/, role:     [ROLE_ADMIN, ROLE_PROFESOR, ROLE_SONATA_ADMIN] }
+        - { path:     ^/admin/, role:     [ROLE_ADMIN, ROLE_PROFESOR, ROLE_SONATA_ADMIN] }
 
     role_hierarchy:
         ROLE_ESTUDIANTE:      ROLE_USER

@@ -411,6 +411,7 @@
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
                         <div class="col-sm-4 col-xs-6 col col-editor">
                             <input class="form-control " type="text" v-model="search" placeholder="Search..."/>
+                            <!-- input class="form-control " type="text" v-model="search2" placeholder="Search..."/ -->
                         </div>
                         <div class="col-sm-8 col-xs-6">
                             <!-- router-link v-bind:to="enrutar(-1)" class="btn btn-default btn-70w" style="float: right" -->
@@ -699,7 +700,8 @@
 
                     //---table
                     isActive: false,
-                    search: '',
+                    search:'',
+                    search2: '',
                     pagination: {},
                     headers: [
                         {
@@ -2712,6 +2714,7 @@
                 return {
                     isActive: false,
                     search: '',
+                    search2: '',
                     pagination: {},
                     headers: [
                         {

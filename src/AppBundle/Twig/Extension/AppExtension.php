@@ -178,7 +178,7 @@ horaster = (fechaExpiracionter.getHours() - dter.getHours());
 minutoster = (fechaExpiracionter.getMinutes() - dter.getMinutes());
 segundoster = (fechaExpiracionter.getSeconds() - dter.getSeconds());
 
-if (horaster < 0 || minutoster<0) {
+if (fechaExpiracionter.getHours()*60+fechaExpiracionter.getMinutes()<dter.getHours()*60+dter.getMinutes()) {
     cuentaAtraster = '-';
 }else
 if (horaster <= 0 && minutoster<=0 && segundoster<=0) {

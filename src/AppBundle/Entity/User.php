@@ -109,7 +109,7 @@ class User extends UserFOS
 
         parent::__construct();
         // your own logic
-        $this->roles = array('ROLE_USER');
+        $this->roles = array('ROLE_ESTUDIATE');
         //$this->addRole('ROLE_USER');
         $this->enabled = true;
         //$this->locked = false;
@@ -464,7 +464,7 @@ class User extends UserFOS
      * Add breading
      *
      * @param \AppBundle\Entity\B_Section_Reading $breading
-     * @return User
+     * @return B_Section_Reading
      */
     public function addBreading(\AppBundle\Entity\B_Section_Reading $breading)
     {
@@ -497,7 +497,7 @@ class User extends UserFOS
      * Add blistening
      *
      * @param \AppBundle\Entity\B_Section_Reading $blistening
-     * @return User
+     * @return B_Section_Reading
      */
     public function addBlistening(\AppBundle\Entity\B_Section_Reading $blistening)
     {
@@ -513,7 +513,7 @@ class User extends UserFOS
      */
     public function removeBListening(\AppBundle\Entity\B_Section_Reading $blistening)
     {
-        $this->breading->removeElement($blistening);
+        $this->$blistening->removeElement($blistening);
     }
 
     /**

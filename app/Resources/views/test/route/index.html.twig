@@ -273,51 +273,53 @@
                             {{ "{{ prueba.reading.horaComienzo }}" }}
                         </p>
                     </div>
-                    <div class="row col-sm-12">
+                    <div class="row col-sm-6">
                         <div class="row col-sm-12">
 
                             <h4>Hability Reading</h4>
 
                         </div>
-                    </div>
-
-
 
                     <div class="row col-sm-12" v-if="prueba.activeReading==false">
                     <div class="row col-sm-2">
                         <button class="btn btn-primary" v-on:click="crearReading()">
-                            Create
+                            Create Reading
                         </button>
                     </div>
                     </div>
                     <div class="row col-sm-12" v-if="prueba.activeReading==true">
 
-                        <div class="row col-sm-4">
-                            Date
-                        </div>
-                        <div class="row col-sm-4">
-                            Time
-                        </div>
-                        <div class="row col-sm-2">
-                            Items
-                        </div>
-                        <div class="row col-sm-2">
 
+
+                        <div class="row col-sm-4">
+                            <p>Items</p>
+                        </div>
+                        <div class="row col-sm-8">
+                            <p>
+                                {{ "{{ prueba.reading.totalItem }}" }}
+                            </p>
                         </div>
 
                         <div class="row col-sm-4">
-                            <date-picker idd="dater" class="col-xs-8" :date="prueba.reading.fecha"  @update-date="updateDateR" ></date-picker>
+                            <p>Date</p>
                         </div>
-                        <div class="row col-sm-4">
-                        <time-picker idt="timer" class="col-xs-8" :time="prueba.reading.horaComienzo" @update-time="updateTimeR" ></time-picker>
-                        </div>
-                        <div class="row col-sm-2">
-                            <div class="">
-                                    {{ "{{ prueba.reading.totalItem }}" }}
-                            </div>
+                        <div class="row col-sm-8">
+                            <p class="row col-sm-12">
+                                <date-picker idd="dater" class="col-xs-8" :date="prueba.reading.fecha"  @update-date="updateDateR" ></date-picker>
+                            </p>
                         </div>
 
-                        <div class="row col-sm-2" >
+                        <div class="row col-sm-4">
+                            <p>Time</p>
+                        </div>
+                        <div class="row col-sm-8">
+                            <p class="row col-sm-12">
+                                <time-picker idt="timer" class="col-xs-8" :time="prueba.reading.horaComienzo" @update-time="updateTimeR" ></time-picker>
+                            </p>
+                        </div>
+
+
+                        <div class="row col-sm-12" >
                         <button class="btn btn-primary" v-on:click="mostrarReading()">
                             Reading
                         </button>
@@ -327,68 +329,76 @@
                         </div>
 
                     </div>
+                    </div>
 
-                    <div class="row col-sm-12">
+                    <div class="row col-sm-6">
                         <div class="row col-sm-12">
 
                             <h4>Hability Listening</h4>
                         </div>
-                    </div>
+
                     <div class="row col-sm-12" v-if="prueba.activeListening==false">
-                    <div class="row col-sm-2">
+                    <div class="row col-sm-12">
                         <button class="btn btn-primary" v-on:click="crearListening()">
-                            Create
+                            Create Listening
                         </button>
                     </div>
                     </div>
                     <div class="row col-sm-12" v-if="prueba.activeListening==true">
-                        <div class="row col-sm-4">
-                            Date
-                        </div>
-                        <div class="row col-sm-4">
-                            Time
-                        </div>
-                        <div class="row col-sm-2">
-                            Items
-                        </div>
-                        <div class="row col-sm-2">
-
-                        </div>
-
 
                         <div class="row col-sm-4">
-                            <date-picker idd="datel" class="col-xs-8" :date="prueba.listening.fecha"  @update-date="updateDateL" ></date-picker>
+                            <p>Items</p>
                         </div>
-                        <div class="row col-sm-4">
-                            <time-picker idt="timel" class="col-xs-8" :time="prueba.listening.horaComienzo" @update-time="updateTimeL" ></time-picker>
-                        </div>
-                        <div class="row col-sm-2">
-                            <div class="">
+                        <div class="row col-sm-8">
+                            <p>
                                 {{ "{{prueba.listening.totalItem}}" }}
-                            </div>
+                            </p>
                         </div>
 
-                            <div class="row col-sm-2" >
-                                <button class="btn btn-primary" v-on:click="mostrarListening()">
-                                    Listening
-                                </button>
-                                <button class="btn btn-primary" v-on:click="eliminarListening()">
-                                    Delete
-                                </button>
-                            </div>
+                        <div class="row col-sm-4">
+                            <p>Date</p>
+                        </div>
+                        <div class="row col-sm-8">
+                            <p class="row col-sm-12">
+                                <date-picker idd="datel" class="col-xs-8" :date="prueba.listening.fecha"  @update-date="updateDateL" ></date-picker>
+                            </p>
+                        </div>
+
+                        <div class="row col-sm-4">
+                            <p>
+                            Time
+                            </p>
+                        </div>
+                        <div class="row col-sm-8">
+                            <p class="row col-sm-12">
+                                <time-picker idt="timel" class="col-xs-8" :time="prueba.listening.horaComienzo" @update-time="updateTimeL" ></time-picker>
+                            </p>
+                        </div>
+
+
+                        <div class="row col-sm-12" >
+                            <button class="btn btn-primary" v-on:click="mostrarListening()">
+                                Listening
+                            </button>
+                            <button class="btn btn-primary" v-on:click="eliminarListening()">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                     </div>
 
                     <br/>
                     <br/>
-                    <div class="en-barra" v-show="this.prueba.id==-1">
-                    <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i
-                                class="fa fa-save"></i> Save
-                    </button>
-                </div>
-                <div class="en-barra" v-show="this.prueba.id!=-1">
-                    <button class="btn btn-info" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
-                    </button>
-                </div>
+                    <div class="col-sm-12">
+                        <div class="en-barra" v-show="this.prueba.id==-1">
+                            <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i class="fa fa-save"></i> Save
+                            </button>
+                        </div>
+                        <div class="en-barra" v-show="this.prueba.id!=-1">
+                            <button class="btn btn-info" v-on:click="postEditTest(prueba)"><i class="fa fa-save"></i> Save
+                            </button>
+                        </div>
+                    </div>
 
                 </div>
                 {{ include('test/route/seccion.html.twig') }}
@@ -2543,6 +2553,9 @@
                             this.loading = true;
                             jQuery('.overlay').css('display','none');
 
+                            this.numSeccion = this.numSeccion + 1;
+                            this.seccionbancox.num = this.numSeccion+1;
+
                             this.readingtmp.secciones.push(this.seccionbancox);
 
                             this.visibilidad=1;
@@ -2562,6 +2575,8 @@
                             this.loading = true;
                             jQuery('.overlay').css('display','none');
 
+                            this.numSeccion = this.numSeccion + 1;
+                            this.seccionbancox.num = this.numSeccion+1;
                             this.readingtmp.secciones.push(this.seccionbancox);
 
                             this.visibilidad=1;

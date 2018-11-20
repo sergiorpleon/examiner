@@ -43,17 +43,24 @@
                         <li class="dropdown user user-menu logout">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="margin-right: 100px;">
                             
-                            <span class="hidden-xs">{{ app.user.username }} </span>
+                            <span class="">
+                            {% if app.user.nombre == "" %}
+                                {{ app.user.username }}
+                                {% else %}
+                                    {{ app.user.nombre }}
+                                {%  endif %}
+
+                            </span><i style="margin-top: .3em" class="fa fa-angle-down pull-right"></i>
                           <div class="ripple-container"></div></a>
                           <ul class="dropdown-menu" style="padding: 10px">
                             <!-- User image -->
                             <li class="user-header">
                               
                               <p>
-                                <h5>{{ app.user.roles[0] }}</h5>
+                                <h5>{{ app.user.roles[app.user.roles|length-1] }}</h5>
                               </p>
                               <p>
-                                <small>{{ app.user.nombre }}</small>
+                                <small>{{ app.user.username }}</small>
                               </p>
                             </li>
                             <!-- Menu Body -->
@@ -89,64 +96,62 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
               
-              	  <p class="centered"><a href="{{ path('fos_user_profile_show') }}"><img src="{{ asset('bundles/app/img/ui-sam.jpg') }}" class="img-circle" width="60"></a></p>
-              	  <h5 class="centered"><a style="color: rgb(242, 242, 242);" href="{{ path('fos_user_profile_show') }}">{{ app.user.nombre }}</a></h5>
+              	  <!-- p class="centered"><a href="{{ path('fos_user_profile_show') }}"><img src="{{ asset('bundles/app/img/ui-sam.jpg') }}" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered"><a style="color: rgb(242, 242, 242);" href="{{ path('fos_user_profile_show') }}">{{ app.user.nombre }}</a></h5 -->
 
-                  <li class="mt">
-                      <a href="{{ path('config') }}">
+                  <li class="mt" >
+                      <a href="{{ path('config') }}" style="padding: 10px 0px 10px 10px;">
                           <i class="fa fa-dashboard"></i>
                           <span>Dashboard</span>
                       </a>
                   </li>
 
-                  <li class="sub-menu bank">
-                      <a href="javascript:;" >
+                  <div class="sub-menu bank active">
+                      <a href="javascript:;" class="active">
                           <i class="fa fa-cogs"></i>
                           <span>Bank of Section</span>
                       </a>
-                      <ul class="sub">
-                          <li><a  href="{{ path('bank_reading_index') }}">Reading Bank</a></li>
-                          <li><a  href="{{ path('bank_listening_index') }}">Listening Bank</a></li>
-                      </ul>
-                  </li>
 
-                  <li class="sub-menu test">
-                      <a class="" href="javascript:;" >
+                      <div class="sub">
+                          <div><a  href="{{ path('bank_reading_index') }}">Reading Bank</a></div>
+                          <div><a  href="{{ path('bank_listening_index') }}">Listening Bank</a></div>
+                      </div>
+                  </div>
+
+                  <div class="sub-menu test active">
+                      <a href="javascript:;"  class="active">
                           <i class="fa fa-book"></i>
                           <span>Tests</span>
                       </a>
-                      <ul class="sub">
-                          <li class=""><a  href="{{ path('test_route') }}#/-1">New Test</a></li>
-                          <li><a  href="{{ path('test_route') }}">List Tests</a></li>
-                          <li><a  href="{{ path('test_effectuate') }}">List Effectuate Tests</a></li>
-                      </ul>
-                  </li>
+                      <div class="sub">
+                          <div><a  href="{{ path('test_route') }}#/-1">New Test</a></div>
+                          <div><a  href="{{ path('test_route') }}">List Tests</a></div>
+                          <div><a  href="{{ path('test_effectuate') }}">List Effectuate Tests</a></div>
+                      </div>
+                  </div>
 
-                  <li class="sub-menu result">
-                      <a href="javascript:;" >
+                  <div class="sub-menu result active">
+                      <a href="javascript:;"  class="active">
                           <i class=" fa fa-bar-chart-o"></i>
                           <span>Results</span>
                       </a>
-                      <ul class="sub">
-                          <li><a  href="{{ path('list_results') }}">List All Results</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li><a  href="{{ path('list_evals') }}">List Results for Test</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li><a  href="{{ path('list_users') }}">List Results for Users</a></li>
-                      </ul>
-                  </li>
+                      <div class="sub">
+                          <div><a  href="{{ path('list_results') }}">List All Results</a></div>
+                          <div><a  href="{{ path('list_evals') }}">List Results for Test</a></div>
+                         <div><a  href="{{ path('list_users') }}">List Results for Users</a></div>
+                      </div>
+                  </div>
 
-                  <li class="sub-menu config">
-                      <a href="#" >
+                  <div class="sub-menu config active">
+                      <a href="#"  class="active">
                           <i class="fa fa-users"></i>
-                          <span>Users</span>
+                          <span>Admin</span>
                       </a>
-                      <ul class="sub">
-                          <li><a  href="{{ path('userlist') }}">List Users</a></li>
-                      </ul>
-                  </li>
+                      <div class="sub">
+                          <div><a  href="{{ path('config') }}">Institution - Career</a></div>
+                          <div><a  href="{{ path('userlist') }}">List Users</a></div>
+                      </div>
+                  </div>
 
                   <!-- li class="sub-menu">
                       <a href="javascript:;" >

@@ -179,7 +179,7 @@ class B_Section_Listening
      * Set id_profesor
      *
      * @param \AppBundle\Entity\User $idProfesor
-     * @return Test
+     * @return User
      */
     public function setIdProfesor(\AppBundle\Entity\User $idProfesor)
     {
