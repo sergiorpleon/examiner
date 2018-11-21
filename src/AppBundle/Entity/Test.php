@@ -25,7 +25,7 @@ class Test
     /**
      * @var string
      *
-     * @ORM\Column(name="texto_orientacion", type="text")
+     * @ORM\Column(name="texto_orientacion", type="text", nullable=true)
      */
     private $textoOrientacion;
 

@@ -101,9 +101,9 @@ ul.sidebar-menu div { margin-bottom: 5px; margin-left: 10px; margin-right: 10px;
 ul.sidebar-menu div.sub-menu { line-height: 15px; }
 ul.sidebar-menu div a span { display: inline-block; }
 ul.sidebar-menu div a { color: rgb(174, 178, 183); text-decoration: none; display: block; padding: 15px 0px 15px 10px; font-size: 16px; outline: medium none; transition: all 0.3s ease 0s; }
-ul.sidebar-menu div.sub-menu a.active, ul.sidebar-menu div a:hover, ul.sidebar-menu div a:focus { background: none repeat scroll 0% 0% #00a7d0; color: rgb(255, 255, 255); display: block; transition: all 0.3s ease 0s; }
+ul.sidebar-menu div.sub-menu a.active, ul.sidebar-menu div a:hover/*. ul.sidebar-menu div a:focus*/ { background: none repeat scroll 0% 0% #00a7d0; color: rgb(255, 255, 255); display: block; transition: all 0.3s ease 0s; }
 ul.sidebar-menu div a i { font-size: 15px; padding-right: 6px; }
-ul.sidebar-menu div a:hover i, ul.sidebar-menu div a:focus i { color: rgb(255, 255, 255); }
+ ul.sidebar-menu div a:hover i  /*, ul.sidebar-menu div a:focus i */{ color: rgb(255, 255, 255); }
 ul.sidebar-menu div a.active i { color: rgb(255, 255, 255); }
 #sidebar { width: 240px; height: 100%; position: fixed; background: none repeat scroll 0% 0% #1a2226; }
 

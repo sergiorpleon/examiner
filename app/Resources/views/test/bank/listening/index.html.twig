@@ -234,13 +234,13 @@
         <!-- plantilla componente prueba -->
         <script type="text/x-template" id="listening">
             <div>
-                <div class="en-barra" v-show="this.listeningtmp.id==-1">
-                    <button class="btn btn-info" style="" v-on:click="postNewTest(listeningtmp)"><i
+                <div class="en-barra" v-show="this.readingtmp.id==-1">
+                    <button class="btn btn-info" style="" v-on:click="postNewTest(readingtmp)"><i
                                 class="fa fa-save"></i> Create
                     </button>
                 </div>
-                <div class="en-barra" v-show="this.listeningtmp.id!=-1">
-                    <button class="btn btn-info" style="" v-on:click="postEditTest(listeningtmp)"><i
+                <div class="en-barra" v-show="this.readingtmp.id!=-1">
+                    <button class="btn btn-info" style="" v-on:click="postEditTest(readingtmp)"><i
                                 class="fa fa-save"></i> Save
                     </button>
                 </div>
@@ -346,7 +346,7 @@
 
         var veditorc = Vue.component( 'text-ckeditor' , {
             template : '<textarea v-model="ntext" v-bind:id="newid" v-bind:class="newid">{{ '{{ntext}} ' }}</textarea>',
-            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex' ],
+            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex', 'nidt' ],
             data: {
                 valor: '',
                 newid: '',
@@ -367,6 +367,11 @@
             mounted : function () {
                 //this.valor = "." + this.nid;
                 var self = this ;
+
+                var rutaphp = "{{ path('postacceptort',
+                    { 'type': '****' , 'id': '***' }) }}";
+                var ruta = rutaphp.replace('****', 'l');
+                ruta = ruta.replace('***', this.nidt);
 
                 tinymce.init({
                     mode: "specific_textareas",
@@ -425,7 +430,7 @@
                     }],
 
                     image_advtab: true,
-                    images_upload_url: "{{ path('postacceptor') }}",
+                    images_upload_url: ruta,
 
                     // enable title field in the Image dialog
                     image_title: true,
@@ -709,7 +714,7 @@
                         },
                     },
 
-                    listeningtmp:
+                    readingtmp:
                     {
                         id: '-1',
                         ordenSeccion: '1',
@@ -727,7 +732,7 @@
             },
             created: function () {
                 jQuery('.overlay').css('display','block');
-                this.listeningtmp.id = (this.$route.params.id);
+                this.readingtmp.id = (this.$route.params.id);
                 this.numIdUnico = +new Date;
                 this.getList();
                 window.scrollTo(0, 0);
@@ -779,12 +784,12 @@
 
 
                 updateTextInstSeccion : function ( txt ) {
-                    this.listeningtmp.textoInstruccion = txt;
+                    this.readingtmp.textoInstruccion = txt;
                 },
 
 
                 updateTextInstReading : function ( txt ) {
-                    this.listeningtmp.textoInstrucciones = txt;
+                    this.readingtmp.textoInstrucciones = txt;
                 },
 
 
@@ -823,7 +828,7 @@
                     this.editPregunta = 1;
 
                     //---copy
-                    var question = JSON.parse(JSON.stringify(this.listeningtmp.preguntas[index]));
+                    var question = JSON.parse(JSON.stringify(this.readingtmp.preguntas[index]));
                     if (question.tipoPregunta == 5) {
                         this.questionC = question;
                         this.visibilidad = 6;
@@ -858,8 +863,8 @@
                 },
 
                 ordenarSeccion: function () {
-                    for (var i = 0; i < this.listeningtmp.length;) {
-                        this.listeningtmp.num = ++i;
+                    for (var i = 0; i < this.readingtmp.length;) {
+                        this.readingtmp.num = ++i;
                     }
                 },
 
@@ -879,12 +884,14 @@
                 var formData = new FormData(document.getElementById("form_"+gindex));
                 formData.append("dato", "valor");
                 //formData.append(f.attr("name"), $(this)[0].files[0]);
+
                 var rutaphp = "{{ path('loadaudio',
-                    { 'id': '***' }) }}";
-                var ruta = rutaphp.replace('***', "l"+gthis.listeningtmp.id);
-                //alert(ruta);
+                    { 'type': '****' , 'id': '***' }) }}";
+                var ruta = rutaphp.replace('****', 'l');
+                ruta = ruta.replace('***', gthis.readingtmp.id);
+
                 jQuery.ajax({
-                            url: ruta,
+                            url: "{{ path('loadaudio' ))",
                             type: "post",
                             dataType: "html",
                             data: formData,
@@ -894,10 +901,10 @@
                         })
                         .done(function(res){
                             //alert(res);
-                            //alert(gthis.listeningtmp.urlAudio);
-                            gthis.listeningtmp.urlAudio=res;
+                            //alert(gthis.readingtmp.urlAudio);
+                            gthis.readingtmp.urlAudio=res;
                             //seccionx.urlAudio=res;
-                            //alert(gthis.listeningtmp.urlAudio);
+                            //alert(gthis.readingtmp.urlAudio);
                         });
             },
 
@@ -907,30 +914,30 @@
                     if (indexP != 0) {
                         //cambio propiedad orden
                         var numsecc = seccion.num-1;
-                        var tmpNum = this.listeningtmp.preguntas[indexP].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP].ordenPregunta = this.listeningtmp.preguntas[indexP - 1].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP - 1].ordenPregunta = tmpNum;
+                        var tmpNum = this.readingtmp.preguntas[indexP].ordenPregunta;
+                        this.readingtmp.preguntas[indexP].ordenPregunta = this.readingtmp.preguntas[indexP - 1].ordenPregunta;
+                        this.readingtmp.preguntas[indexP - 1].ordenPregunta = tmpNum;
                         //cambio de preguntas
-                        var tmpNum = this.listeningtmp.preguntas[indexP];
-                        this.listeningtmp.preguntas[indexP] = this.listeningtmp.preguntas[indexP - 1];
-                        this.listeningtmp.preguntas[indexP - 1] = tmpNum;
+                        var tmpNum = this.readingtmp.preguntas[indexP];
+                        this.readingtmp.preguntas[indexP] = this.readingtmp.preguntas[indexP - 1];
+                        this.readingtmp.preguntas[indexP - 1] = tmpNum;
 
                         //this.ordenarPreguntas();
                     }
                 },
 
                 bajarPregunta: function (seccion, indexP) {
-                    if (indexP != (this.listeningtmp.preguntas.length - 1)) {
+                    if (indexP != (this.readingtmp.preguntas.length - 1)) {
                         //cambio propiedad orden
                         var numsecc = seccion.num-1;
-                        var tmpNum = this.listeningtmp.preguntas[indexP].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP].ordenPregunta = this.listeningtmp.preguntas[indexP + 1].ordenPregunta;
-                        this.listeningtmp.preguntas[indexP + 1].ordenPregunta = tmpNum;
+                        var tmpNum = this.readingtmp.preguntas[indexP].ordenPregunta;
+                        this.readingtmp.preguntas[indexP].ordenPregunta = this.readingtmp.preguntas[indexP + 1].ordenPregunta;
+                        this.readingtmp.preguntas[indexP + 1].ordenPregunta = tmpNum;
                         //cambio de elementos
 
-                        var tmpNum = this.listeningtmp.preguntas[indexP];
-                        this.listeningtmp.preguntas[indexP] = this.listeningtmp.preguntas[indexP + 1];
-                        this.listeningtmp.preguntas[indexP + 1] = tmpNum;
+                        var tmpNum = this.readingtmp.preguntas[indexP];
+                        this.readingtmp.preguntas[indexP] = this.readingtmp.preguntas[indexP + 1];
+                        this.readingtmp.preguntas[indexP + 1] = tmpNum;
 
                         //this.ordenarPreguntas();
                     }
@@ -943,7 +950,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gseccion = seccion;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gseccion.preguntas[gindex].id != -1) {
@@ -1121,20 +1128,20 @@
 
                 showSection: function(){
 
-                    //var htmlsections = "<div><p>"+this.listeningtmp.textoInstrucciones+"</p>";
+                    //var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
                     var htmlsections = "<div>";
-                    //for (var indes = 0; indes < this.listeningtmp.secciones.length; indes++) {
+                    //for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
 
-                        htmlsections += "<div class='secciones'><p>" + this.listeningtmp.textoInstruccion + "</p>";
-                        htmlsections += "<audio src='"+this.listeningtmp.urlAudio+"' controls='controls'></audio>";
-                        for (var indeq = 0; indeq < this.listeningtmp.preguntas.length; indeq++) {
-                            htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].textoPregunta + "</p>";
+                        htmlsections += "<div class='secciones'><p>" + this.readingtmp.textoInstruccion + "</p>";
+                        htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
+                        for (var indeq = 0; indeq < this.readingtmp.preguntas.length; indeq++) {
+                            htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].textoPregunta + "</p>";
 
-                            switch (this.listeningtmp.preguntas[indeq].tipoPregunta){
+                            switch (this.readingtmp.preguntas[indeq].tipoPregunta){
                                 case 1:
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].truefalse.incisos.length; index++) {
-                                        htmlsections += "<div><p>"+this.listeningtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
+                                    for (var index = 0; index < this.readingtmp.preguntas[indeq].truefalse.incisos.length; index++) {
+                                        htmlsections += "<div><p>"+this.readingtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
                                         htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
                                         htmlsections += "TRUE";
                                         htmlsections += "</p></label></div>";
@@ -1150,11 +1157,11 @@
 
                                     break;
                                 case 2:
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].itemsSimple.length; index++) {
-                                        htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
-                                        for (var indi = 0; indi < this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
+                                    for (var index = 0; index < this.readingtmp.preguntas[indeq].itemsSimple.length; index++) {
+                                        htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
+                                        for (var indi = 0; indi < this.readingtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
                                             htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_" + indi + "' name='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                            htmlsections += this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
+                                            htmlsections += this.readingtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
                                             htmlsections += "</p></label></div>";
                                         }
                                         htmlsections += "</div></div>";
@@ -1165,10 +1172,10 @@
                                     break;
                                 case 3:
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
+                                    for (var index = 0; index < this.readingtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
                                         htmlsections += "<div><div class='ident'>";
                                         htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += this.listeningtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
+                                        htmlsections += this.readingtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
                                         htmlsections += "</p></label></div>";
                                         htmlsections += "</div></div>";
 
@@ -1177,9 +1184,9 @@
                                 case 4:
                                     var htmlvalores = "<select>";
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.valores.length; index++) {
+                                    for (var index = 0; index < this.readingtmp.preguntas[indeq].listselection.valores.length; index++) {
                                         htmlvalores += "<option>";
-                                        htmlvalores += this.listeningtmp.preguntas[indeq].listselection.valores[index].texto;
+                                        htmlvalores += this.readingtmp.preguntas[indeq].listselection.valores[index].texto;
                                         htmlvalores += "</option>";
 
                                     }
@@ -1187,10 +1194,10 @@
 
 
 
-                                    for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.itemsList.length; index++) {
+                                    for (var index = 0; index < this.readingtmp.preguntas[indeq].listselection.itemsList.length; index++) {
                                         htmlsections += "<div class='itemls'><div class='ident'>";
                                         //htmllistselection += "<p>";
-                                        htmlsections += this.listeningtmp.preguntas[indeq].listselection.itemsList[index].texto;
+                                        htmlsections += this.readingtmp.preguntas[indeq].listselection.itemsList[index].texto;
                                         htmlsections += htmlvalores;
                                         //htmllistselection += "</p>";
                                         htmlsections += "</div></div>";
@@ -1199,7 +1206,7 @@
 
                                     break;
                                 case 5:
-                                    this.questionC.completa.vistaHtml = this.listeningtmp.preguntas[indeq].completa.vistaHtml;
+                                    this.questionC.completa.vistaHtml = this.readingtmp.preguntas[indeq].completa.vistaHtml;
                                     htmlsections += this.previewPregunta();
 
                                     break;
@@ -1271,7 +1278,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gitem = item;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionTF.truefalse.incisos[gindex].id != -1) {
@@ -1439,7 +1446,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gitem = item;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionSS.itemsSimple[gindex].id != -1) {
@@ -1646,7 +1653,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gval = val;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionLS.listselection.valores[gindex].id != -1) {
@@ -1662,7 +1669,7 @@
                     var gthis = this;
                     var gindex = index;
                     var gitem = item;
-                    //a = this.listeningtmp.secciones;
+                    //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
                             if (gthis.questionLS.listselection.itemsList[gindex].id != -1) {
@@ -1682,7 +1689,7 @@
                             question.completa.itemsComplete = this.questionC.completa.itemsComplete;
                         }
                         this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas[this.numPregunta] = question;
+                        this.readingtmp.preguntas[this.numPregunta] = question;
 
                     } else {
                         question.ordenPregunta = this.obtenerOrden();
@@ -1692,7 +1699,7 @@
                             question.completa.itemsComplete = this.questionC.completa.itemsComplete;
                         }
                         this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas.push(question);
+                        this.readingtmp.preguntas.push(question);
                     }
                     this.visibilidad = 1;
                     this.inciopagina();
@@ -1700,9 +1707,9 @@
 
                 continuarQuestion: function (question) {
                     /*if (this.editPregunta == 1) {
-                     this.listeningtmp.secciones[this.numSeccion - 1].preguntas[this.numPregunta] = question;
+                     this.readingtmp.secciones[this.numSeccion - 1].preguntas[this.numPregunta] = question;
                      } else {
-                     this.listeningtmp.secciones[this.numSeccion - 1].preguntas.push(question);
+                     this.readingtmp.secciones[this.numSeccion - 1].preguntas.push(question);
                      }*/
                     if (this.editPregunta == 1) {
                         if (question.tipoPregunta == 5) {
@@ -1711,7 +1718,7 @@
                         }
 
                         this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas[this.numPregunta] = question;
+                        this.readingtmp.preguntas[this.numPregunta] = question;
 
                     } else {
                         question.ordenPregunta = this.obtenerOrden();
@@ -1721,7 +1728,7 @@
                             question.completa.itemsComplete = this.questionC.completa.itemsComplete;
                         }
                         this.actualizarTotalItem(question);
-                        this.listeningtmp.preguntas.push(question);
+                        this.readingtmp.preguntas.push(question);
                     }
                     this.editPregunta == 1;
                 },
@@ -1915,9 +1922,9 @@
 
 
                 //============================BEGIN CRUD==================================
-                postNewTest: function (listeningtmp) {
-                    //alert(JSON.stringify(this.listeningtmp));
-                    var longcadena = ((JSON.stringify(this.listeningtmp)).split("\"\"")).length;
+                postNewTest: function (readingtmp) {
+                    //alert(JSON.stringify(this.readingtmp));
+                    var longcadena = ((JSON.stringify(this.readingtmp)).split("\"\"")).length;
                     if (longcadena > 1) {
                         bootbox.dialog({
                             message: "Existen datos nulos en la seccion",
@@ -1932,26 +1939,26 @@
                             },
                         });
                     } else {
-                        //alert(JSON.stringify(this.listeningtmp));
+                        //alert(JSON.stringify(this.readingtmp));
 
                         jQuery('.overlay').css('display','block');
                         NProgress.start(); 
                         
                         this.$http.post("{{  path('new_bank_listening') }}", {
-                            listeningtmp: this.listeningtmp,
+                            readingtmp: this.readingtmp,
                         }, function (data, status, request) {
-                            this.listeningtmp.id = data;
-                            this.$route.params.id = this.listeningtmp.id;
+                            this.readingtmp.id = data;
+                            this.$route.params.id = this.readingtmp.id;
                             this.getList();
-                            window.location.href = '#' + this.listeningtmp.id;
+                            window.location.href = '#' + this.readingtmp.id;
                             NProgress.done(); 
                             NProgress.remove(); 
                         });
                     }
                 },
-                postEditTest: function (listeningtmp) {
-                    //alert(JSON.stringify(this.listeningtmp));
-                    var longcadena = ((JSON.stringify(this.listeningtmp)).split("\"\"")).length;
+                postEditTest: function (readingtmp) {
+                    //alert(JSON.stringify(this.readingtmp));
+                    var longcadena = ((JSON.stringify(this.readingtmp)).split("\"\"")).length;
                     if (longcadena > 1) {
                         bootbox.dialog({
                             message: "Existen datos nulos en la seccion",
@@ -1966,12 +1973,12 @@
                             },
                         });
                     } else {
-                        //alert(JSON.stringify(this.listeningtmp));
+                        //alert(JSON.stringify(this.readingtmp));
                         jQuery('.overlay').css('display','block');
 
                         NProgress.start(); 
                         this.$http.post("{{  path('edit_bank_listening') }}", {
-                            listeningtmp: listeningtmp,
+                            readingtmp: readingtmp,
                             delQuestion: this.delQuestion,
                             delItemVoF: this.delItemVoF,
                             delItemSS: this.delItemSS,
@@ -2005,10 +2012,10 @@
 
                         NProgress.start(); 
                         this.$http.post("{{  path('bank_listening_json') }}", {
-                            id: this.listeningtmp.id,
+                            id: this.readingtmp.id,
                         }, function (data, status, request) {
-                            this.listeningtmp = data;
-                            //alert(JSON.stringify(this.listeningtmp));
+                            this.readingtmp = data;
+                            //alert(JSON.stringify(this.readingtmp));
                             jQuery('.overlay').css('display','none');
 
                             //this.$route.params.id = 2;
@@ -2082,24 +2089,24 @@
                     this.$http.post("{{  path('bank_listening_json') }}", {
                         id: index,
                     }, function (data, status, request) {
-                        this.listeningtmp = data;
-                        //alert(JSON.stringify(this.listeningtmp));
+                        this.readingtmp = data;
+                        //alert(JSON.stringify(this.readingtmp));
 
 
-                    //var htmlsections = "<div><p>"+this.listeningtmp.textoInstrucciones+"</p>";
+                    //var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
                     var htmlsections = "<div>";
-                    //for (var indes = 0; indes < this.listeningtmp.secciones.length; indes++) {
+                    //for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
 
-                    htmlsections += "<div class='secciones'><p>" + this.listeningtmp.textoInstruccion + "</p>";
-                    htmlsections += "<audio src='"+this.listeningtmp.urlAudio+"' controls='controls'></audio>";
-                    for (var indeq = 0; indeq < this.listeningtmp.preguntas.length; indeq++) {
-                        htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].textoPregunta + "</p>";
+                    htmlsections += "<div class='secciones'><p>" + this.readingtmp.textoInstruccion + "</p>";
+                    htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
+                    for (var indeq = 0; indeq < this.readingtmp.preguntas.length; indeq++) {
+                        htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].textoPregunta + "</p>";
 
-                        switch (this.listeningtmp.preguntas[indeq].tipoPregunta){
+                        switch (this.readingtmp.preguntas[indeq].tipoPregunta){
                             case 1:
 
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].truefalse.incisos.length; index++) {
-                                    htmlsections += "<div><p>"+this.listeningtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].truefalse.incisos.length; index++) {
+                                    htmlsections += "<div><p>"+this.readingtmp.preguntas[indeq].truefalse.incisos[index].texto+"</p><div class='ident'>";
                                     htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
                                     htmlsections += "TRUE";
                                     htmlsections += "</p></label></div>";
@@ -2115,11 +2122,11 @@
 
                                 break;
                             case 2:
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].itemsSimple.length; index++) {
-                                    htmlsections += "<div><p>" + this.listeningtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
-                                    for (var indi = 0; indi < this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].itemsSimple.length; index++) {
+                                    htmlsections += "<div><p>" + this.readingtmp.preguntas[indeq].itemsSimple[index].texto + "</p><div class='ident'>";
+                                    for (var indi = 0; indi < this.readingtmp.preguntas[indeq].itemsSimple[index].incisos.length; indi++) {
                                         htmlsections += "<div class='div-radio'><input type='radio' id='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_" + indi + "' name='form_p_r_s"+indes+"_q"+indeq+"_ss" + index + "_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                        htmlsections += this.listeningtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
+                                        htmlsections += this.readingtmp.preguntas[indeq].itemsSimple[index].incisos[indi].texto;
                                         htmlsections += "</p></label></div>";
                                     }
                                     htmlsections += "</div></div>";
@@ -2130,10 +2137,10 @@
                                 break;
                             case 3:
 
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].selectionmultiple.incisos.length; index++) {
                                     htmlsections += "<div><div class='ident'>";
                                     htmlsections += "<div class='div-radio'><input type='checkbox' id='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1' name='form_p_r_s"+indes+"_q"+indeq+"_ss"+index+"_1'>   <label for='form_p_r_s2_q0_ss8_0' style='font-weight: inherit;' class='required'><p>";
-                                    htmlsections += this.listeningtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
+                                    htmlsections += this.readingtmp.preguntas[indeq].selectionmultiple.incisos[index].texto;
                                     htmlsections += "</p></label></div>";
                                     htmlsections += "</div></div>";
 
@@ -2142,9 +2149,9 @@
                             case 4:
                                 var htmlvalores = "<select>";
 
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.valores.length; index++) {
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].listselection.valores.length; index++) {
                                     htmlvalores += "<option>";
-                                    htmlvalores += this.listeningtmp.preguntas[indeq].listselection.valores[index].texto;
+                                    htmlvalores += this.readingtmp.preguntas[indeq].listselection.valores[index].texto;
                                     htmlvalores += "</option>";
 
                                 }
@@ -2152,10 +2159,10 @@
 
 
 
-                                for (var index = 0; index < this.listeningtmp.preguntas[indeq].listselection.itemsList.length; index++) {
+                                for (var index = 0; index < this.readingtmp.preguntas[indeq].listselection.itemsList.length; index++) {
                                     htmlsections += "<div class='itemls'><div class='ident'>";
                                     //htmllistselection += "<p>";
-                                    htmlsections += this.listeningtmp.preguntas[indeq].listselection.itemsList[index].texto;
+                                    htmlsections += this.readingtmp.preguntas[indeq].listselection.itemsList[index].texto;
                                     htmlsections += htmlvalores;
                                     //htmllistselection += "</p>";
                                     htmlsections += "</div></div>";
@@ -2164,7 +2171,7 @@
 
                                 break;
                             case 5:
-                                this.questionC.completa.vistaHtml = this.listeningtmp.preguntas[indeq].completa.vistaHtml;
+                                this.questionC.completa.vistaHtml = this.readingtmp.preguntas[indeq].completa.vistaHtml;
                                 htmlsections += this.previewPregunta();
 
                                 break;

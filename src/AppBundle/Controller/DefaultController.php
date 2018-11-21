@@ -54,18 +54,10 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/postacceptor", name="postacceptor")
+     * @Route("/postacceptort/{type}/{id}", name="postacceptort")
      * @Method({"GET", "POST"})
      */
-    public function postacceptorAction(Request $r){
-
-//echo $_SERVER["HTTP_HOST"];
-//echo 'aa'.$_SERVER['HTTP_ORIGIN'];
-        /*******************************************************
-         * Only these origins will be allowed to upload images *
-         ******************************************************/
-        //$accepted_origins = array("http://localhost", "http://192.168.1.1","http://192.168.43.1", "http://192.168.43.73","http://example.com");
-
+    public function postacceptortAction(Request $r, $type, $id){
         /*********************************************
          * Change this line to set the upload folder *
          *********************************************/
@@ -74,46 +66,13 @@ class DefaultController extends Controller
 
         //$imageFolder = __DIR__.'/../../../../web/uploads/images/';
         $imageFolder = $this->container->getParameter('directorio.imagenes').$carpeta."/";
-        //$imageFolder = $_SERVER["DOCUMENT_ROOT"]."/".$carpeta."/";
-        //echo $this->getRootDir();
-        //exit;
-        //$imageUrl=$_SERVER["HTTP_HOST"]."/".$carpeta."/";
+
         $imageUrl=$r->getBasePath()."/".$carpeta."/";
 
-        //$imageFolder = $_SERVER["DOCUMENT_ROOT"]."/images/images/";
-        //$imageUrl=$_SERVER["HTTP_HOST"]."/images/images/";
-        $imageUrl=$r->getBasePath()."/".$carpeta."/";
-
-
-
-
-        /*
-        echo $imageUrl;
-        echo '<br>';
-        echo $imageFolder;
-        */
         reset ($_FILES);
         $temp = current($_FILES);
         //echo json_encode(array('location' => 'http://localhost/images/blobid1506221658855.jpg'));
         if (is_uploaded_file($temp['tmp_name'])){
-            /*  if (isset($_SERVER['HTTP_ORIGIN'])) {
-              // same-origin requests won't set an origin. If the origin is set, it must be valid.
-              if (in_array($_SERVER['HTTP_ORIGIN'], $accepted_origins)) {
-                header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
-              } else {
-                header("HTTP/1.0 403 Origin Denied");
-                return;
-              }
-
-            }*/
-
-            /*
-              If your script needs to receive cookies, set images_upload_credentials : true in
-              the configuration and enable the following two headers.
-            */
-            //header('Access-Control-Allow-Credentials: true');
-            //header('P3P: CP="There is no P3P policy."');
-
             // Sanitize input
             if (preg_match("/([^\w\s\d\-_~,;:\[\]\(\).])|([\.]{2,})/", $temp['name'])) {
                 header("HTTP/1.0 500 Invalid file name.");
@@ -126,15 +85,19 @@ class DefaultController extends Controller
                 return;
             }
 
+            $fechaa = new \DateTime("now");
+            $date1 = $fechaa->format('Y')
+                .($fechaa->format('m'))
+                .$fechaa->format('d')
+                .($fechaa->format('H'))
+                .($fechaa->format('i'))
+                .$fechaa->format('s');
             // Accept upload if there was no origin, or if it is an accepted origin
-            $filetowrite = $imageFolder . $temp['name'];
+            $filetowrite = $imageFolder.$date1.'_'.$temp['name'];
             move_uploaded_file($temp['tmp_name'], $filetowrite);
 
-            $imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.$temp['name'];
-            //$imagenurl=$r->getBasePath()."/".$carpeta."/".$temp['name'];
-            // Respond to the successful upload with JSON.
-            // Use a location key to specify the path to the saved image resource.
-            // { location : '/your/uploaded/image/file'}
+            $imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.$date1.'_'.$temp['name'];
+
             echo json_encode(array('location' => $imagenurl));
             //echo json_encode(array('location' => 'http://localhost/images/blobid1506221658855.jpg'));
 
@@ -147,17 +110,27 @@ class DefaultController extends Controller
     }
 
 
+
+
     /**
-     * @Route("/loadAudio/{id}", name="loadaudio")
+     * @Route("/loadAudio/{type}/{id}", name="loadaudio")
      *     @Method({"GET", "POST"})
      */
-    public function loadAction(Request $r, $id)
+    public function loadAction(Request $r, $type, $id)
     {
 
+        $fechaa = new \DateTime("now");
+        $date1 = $fechaa->format('Y')
+            .($fechaa->format('m'))
+            .$fechaa->format('d')
+            .($fechaa->format('H'))
+            .($fechaa->format('i'))
+            .$fechaa->format('s');
+
         //$uploaddir = '/var/www/uploads/';
-        $uploaddir = $this->getParameter('audio_directory').'/'.$id.'/';
+        $uploaddir = $this->getParameter('audio_directory').'/';
         $curr = current($_FILES);
-        $uploadfile = $uploaddir. basename($curr['name']);
+        $uploadfile = $uploaddir. $date1.'_'.basename($curr['name']);
 
         $val = 'lolo';
         $tipo_archivo = $curr['type'];
@@ -168,12 +141,15 @@ class DefaultController extends Controller
             }
         }
 
+
         if($tamano_archivo < 100000000) {
+
+
 
                 if (move_uploaded_file($curr['tmp_name'], $uploadfile)) {
                     // return $this->render('AppBundle:Default:product/ok.html.twig');
-                    $audioUrl = $r->getBasePath() . "/uploads/audio/".$id."/";
-                    $audiourl = "http://" . $_SERVER['HTTP_HOST'] . $audioUrl . $curr['name'];
+                    $audioUrl = $r->getBasePath() . "/uploads/audio/";
+                    $audiourl = "http://" . $_SERVER['HTTP_HOST'] . $audioUrl .''.$date1.'_'.$curr['name'];
                     return new Response($audiourl);
                 } else {
 

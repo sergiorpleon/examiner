@@ -39,6 +39,24 @@ class Funciones_Completa
     }
 
 
+    public static function rmFile_rf($uploaddir)
+    {
+        foreach (glob($uploaddir . "/*") as $archivos_carpeta)
+        {
+            if (is_dir($archivos_carpeta))
+            {
+                Funciones_Completa::rmFile_rf($archivos_carpeta);
+            }
+
+            else
+            {
+                unlink($archivos_carpeta);
+            }
+        }
+        //rmdir($uploaddir);
+    }
+
+
     public static function full_copy( $source, $target ) {
         if ( is_dir( $source ) ) {
             @mkdir( $target );

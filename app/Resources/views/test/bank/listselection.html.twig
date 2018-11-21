@@ -6,7 +6,7 @@
 
             <div class="col-xs-0"></div>
             <div class="col-xs-12 col-editor">
-                <text-ckeditor nnumber="150" :nhab="habilidad" nname="questionls"  :ntext="questionLS.textoPregunta" @update-text="updateTextListSelection" ></text-ckeditor>
+                <text-ckeditor nnumber="150" :nhab="habilidad" nname="questionls"  :ntext="questionLS.textoPregunta" :nidt="readingtmp.id" @update-text="updateTextListSelection" ></text-ckeditor>
             </div>
             <div class="col-xs-0"></div>
 
@@ -81,7 +81,7 @@
                 </div>
                 <label class="col-sm-0" style="visibility: hidden">{{"{{item.orden}}"}}</label>
                 <div class="col-xs-11 col-sm-9 col-editor">
-                    <text-ckeditor  nnumber="100" :nhab="habilidad" nname="itemls" :nindex="index" :ntext="item.texto" @update-text="updateTextItemLS" ></text-ckeditor>
+                    <text-ckeditor  nnumber="100" :nhab="habilidad" nname="itemls" :nindex="index" :ntext="item.texto" :nidt="readingtmp.id" @update-text="updateTextItemLS" ></text-ckeditor>
                 </div>
                 <div class="col-xs-12 col-sm-2">
                     <!-- div class="col-xs-0 col-sm-1"></div -->

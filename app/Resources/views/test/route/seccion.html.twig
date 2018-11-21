@@ -2,7 +2,7 @@
 <div id="habilidad" class="reading row form-panel box box-primary" v-show="visibilidad==1">
     <div class="col-sm-12 container">
         <div class="col-xs-12 col-editor">
-            <text-ckeditor  nnumber="150" :nhab="habilidad" nname="habilidad" :ntext="readingtmp.textoInstrucciones" @update-text="updateTextInstReading" ></text-ckeditor>
+            <text-ckeditor  nnumber="150" :nhab="habilidad" nname="habilidad" :ntext="readingtmp.textoInstrucciones" :nidt="prueba.id" @update-text="updateTextInstReading" ></text-ckeditor>
         </div>
 
     </div>
@@ -30,7 +30,7 @@
                 <div  v-for="(seccionx, index) in this.readingtmp.secciones" class="tab-pane" v-bind:class="{ active: index==0 }" v-bind:id="obtenerId(index)">
                     <h4>Section {{"{{ seccionx.num}}"}}</h4>
                     <div class="col-xs-12 col-editor">
-                        <text-ckeditor  nnumber="150" :nhab="habilidad" nname="seccion" :ntext="seccionx.textoInstruccion"  @update-text="updateTextInstSeccion" ></text-ckeditor>
+                        <text-ckeditor  nnumber="150" :nhab="habilidad" nname="seccion" :ntext="seccionx.textoInstruccion"  :nidt="prueba.id" @update-text="updateTextInstSeccion" ></text-ckeditor>
                     </div>
 
                     <div class="col-xs-12 audio" v-show="habilidad==2">

@@ -5,7 +5,7 @@
         <div class="col-sm-12">
             <div class="col-xs-0"></div>
             <div class="col-xs-12 col-editor">
-                <text-ckeditor nnumber="150" :nhab="habilidad" nname="questionms" :ntext="questionMS.textoPregunta" @update-text="updateTextMultipleSelection" ></text-ckeditor>
+                <text-ckeditor nnumber="150" :nhab="habilidad" nname="questionms" :ntext="questionMS.textoPregunta" :nidt="prueba.id" @update-text="updateTextMultipleSelection" ></text-ckeditor>
             </div>
             <div class="col-xs-0"></div>
         </div>
@@ -33,7 +33,7 @@
                 <input class="col-sm-1" type="checkbox" v-model="inciso.correcta" v-bind:id="getIndex(index, 'item')">
 
                 <div class="col-xs-10 col-editor">
-                    <text-ckeditor nnumber="100" :nhab="habilidad" nname="itemms" :nindex="index" :ntext="inciso.texto" @update-text="updateTextItemMS" ></text-ckeditor>
+                    <text-ckeditor nnumber="100" :nhab="habilidad" nname="itemms" :nindex="index" :ntext="inciso.texto" :nidt="prueba.id" @update-text="updateTextItemMS" ></text-ckeditor>
                 </div>
 
                 <!-- div class="col-sm-2">

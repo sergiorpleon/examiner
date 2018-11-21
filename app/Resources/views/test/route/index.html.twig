@@ -261,8 +261,9 @@
                 </section>
                 
                 <div class="prueba row form-panel box box-primary" v-show="visibilidad==0">
+                    <div class="col-xs-12 container">
                     <div class="col-xs-12 col-editor">
-                        <text-ckeditor  nnumber="150" :nhab="0" nname="prueba" :nindex="1" :ntext="prueba.textoOrientacion" @update-text="updateTextPrueba" ></text-ckeditor>
+                        <text-ckeditor  nnumber="150" :nhab="0" nname="prueba" :nindex="1" :ntext="prueba.textoOrientacion" :nidt="prueba.id" @update-text="updateTextPrueba" ></text-ckeditor>
                     </div>
                     <div class="row col-sm-12">
                         <p>
@@ -400,6 +401,7 @@
                         </div>
                     </div>
 
+                    </div>
                 </div>
                 {{ include('test/route/seccion.html.twig') }}
                 {{ include('test/route/listselection.html.twig') }}
@@ -490,7 +492,7 @@
 
         var veditorc = Vue.component( 'text-ckeditor' , {
             template : '<textarea v-model="ntext" v-bind:id="newid" v-bind:class="newid">{{ '{{ntext}}' }}</textarea>',
-            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex' ],
+            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex', 'nidt' ],
             data: {
                 valor: '',
                 newid: '',
@@ -511,6 +513,11 @@
             mounted : function () {
                 //this.valor = "." + this.nid;
                 var self = this ;
+
+                var rutaphp = "{{ path('postacceptort',
+                    { 'type': '****' , 'id': '***' }) }}";
+                var ruta = rutaphp.replace('****', 't');
+                ruta = ruta.replace('***', this.nidt);
 
                 tinymce.init({
                     mode: "specific_textareas",
@@ -569,7 +576,7 @@
                     }],
 
                     image_advtab: true,
-                    images_upload_url: "{{ path('postacceptor') }}",
+                    images_upload_url: ruta, //"{ path('postacceptort') }}",
 
                     // enable title field in the Image dialog
                     image_title: true,
@@ -1359,8 +1366,9 @@
                     formData.append("dato", "valor");
                     //formData.append(f.attr("name"), $(this)[0].files[0]);
                     var rutaphp = "{{ path('loadaudio',
-                    { 'id': '***' }) }}";
-                    var ruta = rutaphp.replace('***', gthis.prueba.id);
+                    { 'type': '****' , 'id': '***' }) }}";
+                    var ruta = rutaphp.replace('****', 't');
+                    ruta = ruta.replace('***', gthis.prueba.id);
                     jQuery.ajax({
                                 url: ruta,
                                 type: "post",

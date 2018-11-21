@@ -348,7 +348,7 @@
 
         var veditorc = Vue.component( 'text-ckeditor' , {
             template : '<textarea v-model="ntext" v-bind:id="newid" v-bind:class="newid">{{ '{{ntext}} ' }}</textarea>',
-            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex' ],
+            props : [ 'nnumber' ,'nname', 'nhab', 'ntext', 'nindex', 'nsubindex', 'nidt' ],
             data: {
                 valor: '',
                 newid: '',
@@ -369,6 +369,11 @@
             mounted : function () {
                 //this.valor = "." + this.nid;
                 var self = this ;
+
+                var rutaphp = "{{ path('postacceptort',
+                    { 'type': '****' , 'id': '***' }) }}";
+                var ruta = rutaphp.replace('****', 'r');
+                ruta = ruta.replace('***', this.nidt);
 
                 tinymce.init({
                     mode: "specific_textareas",
@@ -427,7 +432,7 @@
                     }],
 
                     image_advtab: true,
-                    images_upload_url: "{{ path('postacceptor') }}",
+                    images_upload_url: ruta,
 
                     // enable title field in the Image dialog
                     image_title: true,
@@ -880,8 +885,9 @@
                 formData.append("dato", "valor");
                 //formData.append(f.attr("name"), $(this)[0].files[0]);
                 var rutaphp = "{{ path('loadaudio',
-                    { 'id': '***' }) }}";
-                var ruta = rutaphp.replace('***', 'r'+gthis.readintmp.id);
+                    { 'type': '****' , 'id': '***' }) }}";
+                var ruta = rutaphp.replace('****', 't');
+                ruta = ruta.replace('***', gthis.readingtmp.id);
                 jQuery.ajax({
                             url: ruta,
                             type: "post",

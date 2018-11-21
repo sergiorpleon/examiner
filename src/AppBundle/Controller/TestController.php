@@ -556,13 +556,16 @@ class TestController extends Controller
         $x = json_decode($request->getContent());
         $activeReading = $x->prueba->activeReading;
 
+
+
+
         $r = null;
         if ($activeReading) {
             $r = new \AppBundle\Entity\Reading();
             $reading = $x->prueba->reading;
             if ($reading) {
                 $r->setFecha(\DateTime::createFromFormat('d-m-Y', $reading->fecha));
-                $r->setTextoInstrucciones($reading->textoInstrucciones);
+                $r->setTextoInstrucciones(  $reading->textoInstrucciones);
                 //$r->setTextoInformacion($reading->textoInformacion);
                 $r->setHoraComienzo(\DateTime::createFromFormat('H:i', $reading->horaComienzo));
                 $r->setTiempo(120);
@@ -580,7 +583,7 @@ class TestController extends Controller
                 foreach ($seccionR as $s) {
                     $sec = new \AppBundle\Entity\Section_Reading();
                     $sec->setOrdenSeccion($s->ordenSeccion);
-                    $sec->setTextoInstruccion($s->textoInstruccion);
+                    $sec->setTextoInstruccion( $s->textoInstruccion);
                     //$sec->setTextoReading($s->textoReading);
                     $sec->setIdReading($r);
 
@@ -592,7 +595,7 @@ class TestController extends Controller
                     foreach ($questions as $question) {
                         $q = new \AppBundle\Entity\Question();
                         $q->setOrdenPregunta($question->ordenPregunta);
-                        $q->setTextoPregunta($question->textoPregunta);
+                        $q->setTextoPregunta( $question->textoPregunta);
                         $q->setTipoPregunta($question->tipoPregunta);
                         $q->setTotalItem($question->totalItem);
 
@@ -611,7 +614,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_True_False();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setTextoItem($i->texto);
+                                    $item->setTextoItem( $i->texto);
                                     $item->setOpcionCorrecta($i->seleccion);
                                     $item->setIdQuestion($q);
 
@@ -626,7 +629,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_Simple_Selection();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setTextoItem($i->texto);
+                                    $item->setTextoItem( $i->texto);
                                     $item->setOpcionCorrecta($i->correcta);
                                     $item->setIdQuestion($q);
 
@@ -635,7 +638,7 @@ class TestController extends Controller
                                     foreach ($incisosL as $in) {
                                         $inc = new \AppBundle\Entity\Inciso_Simple_Selection();
                                         $inc->setOrdenInciso($in->orden);
-                                        $inc->setTextoOpcion($in->texto);
+                                        $inc->setTextoOpcion( $in->texto);
                                         $inc->setIdItemSimpleSelection($item);
 
                                         $item->addIncisosSimpleSelection($inc);
@@ -656,7 +659,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Inciso_Multiple_Selection();
                                     $item->setOrdenInciso($i->orden);
-                                    $item->setTextoOpcion($i->texto);
+                                    $item->setTextoOpcion( $i->texto);
                                     $item->setCorrectaInciso($i->correcta);
                                     $item->setIdQuestion($q);
 
@@ -671,7 +674,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_List_Selection();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setTextoItem($i->texto);
+                                    $item->setTextoItem( $i->texto);
                                     $item->setOpcionCorrecta($i->correcta);
                                     $item->setIdQuestion($q);
 
@@ -729,7 +732,7 @@ class TestController extends Controller
             $l = new \AppBundle\Entity\Listening();
             if ($listening) {
                 $l->setFecha(\DateTime::createFromFormat('d-m-Y', $listening->fecha));
-                $l->setTextoInstrucciones($listening->textoInstrucciones);
+                $l->setTextoInstrucciones( $listening->textoInstrucciones);
                 //$l->setTextoInformacion('info');
                 $l->setHoraComienzo(\DateTime::createFromFormat('H:i', $listening->horaComienzo));
                 $l->setTiempo(12);
@@ -743,7 +746,7 @@ class TestController extends Controller
                 foreach ($seccionL as $s) {
                     $sec = new \AppBundle\Entity\Section_Listening();
                     $sec->setOrdenSeccion($s->ordenSeccion);
-                    $sec->setTextoInstruccion($s->textoInstruccion);
+                    $sec->setTextoInstruccion( $s->textoInstruccion);
                     $sec->setUrlAudio($s->urlAudio);
 
                     //$sec->setTextoReading($s->textoReading);
@@ -757,7 +760,7 @@ class TestController extends Controller
                     foreach ($questions as $question) {
                         $q = new \AppBundle\Entity\Question();
                         $q->setOrdenPregunta($question->ordenPregunta);
-                        $q->setTextoPregunta($question->textoPregunta);
+                        $q->setTextoPregunta( $question->textoPregunta);
                         $q->setTipoPregunta($question->tipoPregunta);
                         $q->setTotalItem($question->totalItem);
 
@@ -776,7 +779,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_True_False();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setTextoItem($i->texto);
+                                    $item->setTextoItem( $i->texto);
                                     $item->setOpcionCorrecta($i->seleccion);
                                     $item->setIdQuestion($q);
 
@@ -791,7 +794,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_Simple_Selection();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setTextoItem($i->texto);
+                                    $item->setTextoItem( $i->texto);
                                     $item->setOpcionCorrecta($i->correcta);
                                     $item->setIdQuestion($q);
 
@@ -800,7 +803,7 @@ class TestController extends Controller
                                     foreach ($incisosL as $in) {
                                         $inc = new \AppBundle\Entity\Inciso_Simple_Selection();
                                         $inc->setOrdenInciso($in->orden);
-                                        $inc->setTextoOpcion($in->texto);
+                                        $inc->setTextoOpcion( $in->texto);
                                         $inc->setIdItemSimpleSelection($item);
 
                                         $item->addIncisosSimpleSelection($inc);
@@ -821,7 +824,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Inciso_Multiple_Selection();
                                     $item->setOrdenInciso($i->orden);
-                                    $item->setTextoOpcion($i->texto);
+                                    $item->setTextoOpcion( $i->texto);
                                     $item->setCorrectaInciso($i->correcta);
                                     $item->setIdQuestion($q);
 
@@ -836,7 +839,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_List_Selection();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setTextoItem($i->texto);
+                                    $item->setTextoItem( $i->texto);
                                     $item->setOpcionCorrecta($i->correcta);
                                     $item->setIdQuestion($q);
 
@@ -866,7 +869,7 @@ class TestController extends Controller
                                 foreach ($itemsL as $i) {
                                     $item = new \AppBundle\Entity\Item_Complete();
                                     $item->setOrdenItem($i->orden);
-                                    $item->setRespuestaCorrecta($i->texto);
+                                    $item->setRespuestaCorrecta( $i->texto);
                                     $item->setIdQuestion($q);
 
                                     $q->addItemsComplete($item);
@@ -882,22 +885,12 @@ class TestController extends Controller
             } else {
                 $em->persist($l);
                 $em->flush();
-                //$l->setFecha(new \DateTime('today'));
-                //$l->setTextoInstrucciones('textoInstrucciones');
-                //$l->setTextoInformacion('info');
-                //$l->setHoraComienzo(new \DateTime('today'));
-                //$l->setTiempo(12);
             }
         }
 
-
-        //$l->setTextoInstrucciones($listening->textoInstrucciones);
-        //$l->setTextoInformacion($listening->textoInformacion);
-        //$l->setHoraComienzo($listening->horaComienzo);
-        //$l->setTiempo($listening->tiempo);
+        $t = new \AppBundle\Entity\Test();
 
         $test = $x->prueba;
-        $t = new \AppBundle\Entity\Test();
         if ($test) {
             //$t->setFecha(new \DateTime('today'));
             //$t->setFecha($test->fecha);
@@ -924,13 +917,21 @@ class TestController extends Controller
 
 
         $em->persist($t);
+        $em->flush();
 
         if ($activeReading) {
             $em->persist($r);
         }
+
         if ($activeListening) {
             $em->persist($l);
+
+
+        }else{
+            //Funciones_Completa::full_copy( $Entry, $target . '/' . $entry );
         }
+
+
 
 
         $em->flush();
@@ -2733,7 +2734,7 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $x = json_decode($request->getContent());
-        $s = $x->listeningtmp;
+        $s = $x->readingtmp;
 
         $sec = new \AppBundle\Entity\B_Section_Listening();
         $sec->setOrdenSeccion($s->ordenSeccion);
@@ -2899,7 +2900,7 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $x = json_decode($request->getContent());
-        $listening = $x->listeningtmp;
+        $listening = $x->readingtmp;
 
         $s = $em->getRepository('AppBundle:B_Section_Listening')->find($listening->id);
 

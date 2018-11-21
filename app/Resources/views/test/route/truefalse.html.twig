@@ -3,7 +3,7 @@
     <div class="col-sm-12 container">
         <h4>Question True False</h4>
         <div class="col-xs-12 col-editor">
-            <text-ckeditor  nnumber="150" :nhab="habilidad" nname="questiontf" :ntext="questionTF.textoPregunta" @update-text="updateTextTrueFalse" ></text-ckeditor>
+            <text-ckeditor  nnumber="150" :nhab="habilidad" nname="questiontf" :ntext="questionTF.textoPregunta" :nidt="prueba.id" @update-text="updateTextTrueFalse" ></text-ckeditor>
         </div>
     </div>
     <h1 class="col-sm-12">Incisos</h1>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="col-sm-9 col-editor">
-                <text-ckeditor  nnumber="100" :nhab="habilidad" nname="itemtf" :nindex="index" :ntext="inciso.texto" @update-text="updateTextItemTF" ></text-ckeditor>
+                <text-ckeditor  nnumber="100" :nhab="habilidad" nname="itemtf" :nindex="index" :ntext="inciso.texto" :nidt="prueba.id" @update-text="updateTextItemTF" ></text-ckeditor>
             </div>
 
             <!-- div class="col-sm-1">

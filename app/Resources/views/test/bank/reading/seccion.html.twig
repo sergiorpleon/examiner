@@ -5,7 +5,7 @@
                 
                     <h4>Section</h4>
                     <div class="col-xs-12 col-editor">
-                        <text-ckeditor  nnumber="150" :nhab="habilidad" nname="seccion" :ntext="readingtmp.textoInstruccion"  @update-text="updateTextInstSeccion" ></text-ckeditor>
+                        <text-ckeditor  nnumber="150" :nhab="habilidad" nname="seccion" :ntext="readingtmp.textoInstruccion"   :nidt="readingtmp.id" @update-text="updateTextInstSeccion" ></text-ckeditor>
                     </div>
 
                     <div class="col-xs-12 audio" v-show="habilidad==2">
