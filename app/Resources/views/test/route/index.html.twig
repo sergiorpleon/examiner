@@ -2515,11 +2515,12 @@
                     }
                 },
 
-                verDetalleBancoReading: function(idbp){
+                verDetalleBancoReading: function(idbp, idtest){
                     if(this.habilidad==1){
                         NProgress.start();
                         this.$http.post("{{  path('bank_reading_json') }}", {
                             id: idbp,
+                            idtest: idtest,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
@@ -2536,6 +2537,7 @@
                          
                         this.$http.post("{{  path('bank_listening_json') }}", {
                             id: idbp,
+                            idtest: idtest,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
@@ -2550,12 +2552,13 @@
                     }
                 },
 
-                addDetalleBancoReading: function(idbp){
+                addDetalleBancoReading: function(idbp, idtest){
                     if(this.habilidad==1){
                         NProgress.start(); 
                         
                         this.$http.post("{{  path('bank_reading_json') }}", {
                             id: idbp,
+                            idtest: idtest,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
@@ -2578,6 +2581,7 @@
                         
                         this.$http.post("{{  path('bank_listening_json') }}", {
                             id: idbp,
+                            idtest: idtest,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;

@@ -8,6 +8,7 @@ use AppBundle\Entity\Estudia;
 use AppBundle\Entity\Inciso_Simple_Selection;
 use AppBundle\Entity\Institucion;
 use AppBundle\Entity\Item_List_Selection;
+use AppBundle\Entity\Recursos;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -925,15 +926,13 @@ class TestController extends Controller
 
         if ($activeListening) {
             $em->persist($l);
-
-
-        }else{
-            //Funciones_Completa::full_copy( $Entry, $target . '/' . $entry );
         }
 
-
-
-
+        $dql = 'UPDATE AppBundle:Recursos r SET r.idTest = :idt WHERE r.idTest = :defaultid AND r.idBreading = :defaultid  AND r.idBlistening = :defaultid';
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('defaultid', '-1');
+        $consulta->setParameter('idt', $t->getId().'');
+        $result = $consulta->getOneOrNullResult();
         $em->flush();
 
         //redirigir ojoooo
@@ -1681,10 +1680,18 @@ class TestController extends Controller
         }
 
 
+
+        $dql = 'UPDATE AppBundle:Recursos r SET r.idTest = :idt WHERE r.idTest = :defaultid AND r.idBreading = :defaultid  AND r.idBlistening = :defaultid';
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('defaultid', '-1');
+        $consulta->setParameter('idt', $t->getId().'');
+        $result = $consulta->getOneOrNullResult();
+        $em->flush();
+
         $id = $x->prueba->id;
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';
-        $error = '{ "id" : "' . $id . '"}';
+        $error = '{ "error" : "error"}';
         $response = new Response();
         $response->setContent(json_encode($error));
         $response->headers->set('Content-Type', 'application/json');
@@ -1720,20 +1727,37 @@ class TestController extends Controller
             $em->flush();
         }
         if ($t != null) {
+
+            $recursos = $em->getRepository('AppBundle:Recursos')->findBy(array('idTest'=>$id));
+            foreach ($recursos as $re) {
+                //cuento si esta e test
+                $em->remove($re);
+            }
+
+            $urlrecurso = $em->getRepository('AppBundle:Urlrecurso')->findAll();
+            foreach ($urlrecurso as $urlrec) {
+                $rec = $em->getRepository('AppBundle:Recursos')->findBy(array('idRecurso'=>$urlrec->getId()));
+                if(count($rec)){
+                    if(is_file($urlrec->getUrl())){
+                        unlink($urlrec->getUrl());
+
+                        $em->remove($urlrec);
+                    }
+
+                }
+            }
+
+
+            $em->remove($t);
+            $em->flush();
+
             $em->remove($t);
             $em->flush();
         }
 
-        $uploaddir = $this->getParameter('audio_directory') . '/' . $id . '';
-        if (is_dir($uploaddir)) {
 
 
-            if (!Funciones_Completa::rmDir_rf($uploaddir)) {
-                return new Response("Error, eliminación del directorio ".$uploaddir." no permitido");
-            }
 
-
-        }
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';
         $error = '{ "elimiado" : "true"}';
@@ -1824,6 +1848,7 @@ class TestController extends Controller
         //-------------------------------------------------------------------------------------
         $em = $this->getDoctrine()->getManager();
         $x = json_decode($request->getContent());
+
         $sr = $em->getRepository('AppBundle:B_Section_Reading')->find($x->id);
 
         try {
@@ -1942,6 +1967,21 @@ class TestController extends Controller
                 $k++;
             }
             $rawdatasecciones['preguntas'] = $rawdata;
+
+            if($x->idtest != 0){
+                $recursos = $em->getRepository('AppBundle:Recursos')->findBy(array('idBreading'=>$x->id));
+                foreach ($recursos as $re) {
+                    $newR = new Recursos();
+                    $newR->setIdTest($x->idtest);
+                    $newR->setIdBreading('-1');
+                    $newR->setIdBListening('-1');
+                    $newR->setIdRecurso($re->getIdRecurso());
+                    $em->persist($newR);
+                }
+            }
+
+
+            $em->flush();
 
 
             $response = new Response();
@@ -2112,6 +2152,11 @@ class TestController extends Controller
         $sec->setIdProfesor($user);
         $em->persist($sec);
 
+        $dql = 'UPDATE AppBundle:Recursos r SET r.idBreading = :idr WHERE r.idBreading = :defaultid AND r.idBlistening = :defaultid AND r.idTest = :defaultid';
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('defaultid', '-1');
+        $consulta->setParameter('idr', $sec->getId().'');
+        $result = $consulta->getOneOrNullResult();
 
         $em->flush();
 
@@ -2475,7 +2520,7 @@ class TestController extends Controller
 
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';
-        $error = '{ "id" : "' . $id . '"}';
+        $error = '{ "error" : "error"}';
         $response = new Response();
         $response->setContent(json_encode($error));
         $response->headers->set('Content-Type', 'application/json');
@@ -2503,6 +2548,29 @@ class TestController extends Controller
 
 
         if ($t != null) {
+
+            //Recorrer todos los elementos e ir borrando por url
+            $recursos = $em->getRepository('AppBundle:Recursos')->findBy(array('idBreading'=>$id));
+            $i = 0;
+            foreach ($recursos as $re) {
+                //cuento si esta e test
+                $em->remove($re);
+
+            }
+
+            $urlrecurso = $em->getRepository('AppBundle:Urlrecurso')->findAll();
+            foreach ($urlrecurso as $urlrec) {
+                $rec = $em->getRepository('AppBundle:Recursos')->findBy(array('idRecurso'=>$urlrec->getId()));
+                if(count($rec)){
+                    if(is_file($urlrec->getUrl())){
+                        unlink($urlrec->getUrl());
+
+                        $em->remove($urlrec);
+                    }
+
+                }
+            }
+
             $em->remove($t);
             $em->flush();
         }
@@ -2706,6 +2774,21 @@ class TestController extends Controller
             }
             $rawdatasecciones['preguntas'] = $rawdata;
 
+
+            if($x->idtest != 0) {
+                $recursos = $em->getRepository('AppBundle:Recursos')->findBy(array('idBlistening' => $x->id));
+                foreach ($recursos as $re) {
+                    $newR = new Recursos();
+                    $newR->setIdTest($x->idtest);
+                    $newR->setIdBreading('-1');
+                    $newR->setIdReading('-1');
+                    $newR->setIdRecurso($re->getId());
+                    $em->persist($newR);
+                }
+            }
+
+            $em->flush();
+
             $response = new Response();
             $response->setContent(json_encode($rawdatasecciones));
             $response->headers->set('Content-Type', 'application/json');
@@ -2872,6 +2955,12 @@ class TestController extends Controller
         $user = $this->getUser();
         $sec->setIdProfesor($user);
         $em->persist($sec);
+
+        $dql = 'UPDATE AppBundle:Recursos r SET r.idBlistening = :idl WHERE r.idBlistening = :defaultid AND r.idBreading = :defaultid AND r.idTest = :defaultid';
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('defaultid', '-1');
+        $consulta->setParameter('idl', $sec->getId().'');
+        $result = $consulta->getOneOrNullResult();
 
         $em->flush();
 
@@ -3260,6 +3349,26 @@ class TestController extends Controller
         $t = $em->getRepository('AppBundle:B_Section_Listening')->find($id);
 
         if ($t != null) {
+            //Recorrer todos los elementos e ir borrando por url
+//Recorrer todos los elementos e ir borrando por url
+            $recursos = $em->getRepository('AppBundle:Recursos')->findBy(array('idBlistening'=>$id));
+            foreach ($recursos as $re) {
+                $em->remove($re);
+            }
+
+            $urlrecurso = $em->getRepository('AppBundle:Urlrecurso')->findAll();
+            foreach ($urlrecurso as $urlrec) {
+                $rec = $em->getRepository('AppBundle:Recursos')->findBy(array('idRecurso'=>$urlrec->getId()));
+                if(count($rec)){
+                    if(is_file($urlrec->getUrl())){
+                        unlink($urlrec->getUrl());
+
+                        $em->remove($urlrec);
+                    }
+
+                }
+            }
+
             $em->remove($t);
             $em->flush();
         }

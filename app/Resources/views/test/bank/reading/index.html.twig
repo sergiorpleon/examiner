@@ -2012,6 +2012,7 @@
                          
                         this.$http.post("{{  path('bank_reading_json') }}", {
                             id: this.readingtmp.id,
+                            idtest: 0,
                         }, function (data, status, request) {
                             this.readingtmp = data;
                             //alert(JSON.stringify(this.readingtmp));
@@ -2087,6 +2088,7 @@
 
                     this.$http.post("{{  path('bank_reading_json') }}", {
                         id: index,
+                        idtest: 0,
                     }, function (data, status, request) {
                         this.readingtmp = data;
                         //alert(JSON.stringify(this.readingtmp));

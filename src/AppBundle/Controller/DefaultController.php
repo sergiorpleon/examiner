@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Recursos;
+use AppBundle\Entity\Urlrecurso;
 use AppBundle\Entity\User;
 use AppBundle\Form\ResetPwFormType;
 use AppBundle\Form\UserChangePasswordType;
@@ -98,6 +100,37 @@ class DefaultController extends Controller
 
             $imagenurl="http://".$_SERVER['HTTP_HOST'].$imageUrl.$date1.'_'.$temp['name'];
 
+            $em = $this->getDoctrine()->getManager();
+
+            $urlrecurso = new Urlrecurso();
+            $urlrecurso->setUrl($filetowrite);
+            $em->persist($urlrecurso);
+            $em->flush();
+
+
+            $recurso = new Recursos();
+
+            if($type == 't'){
+                $recurso->setIdTest($id);
+                //$recurso->setIdTest(-1);
+                $recurso->setIdBreading('-1');
+                $recurso->setIdBlistening('-1');
+            }else if($type == 'r'){
+                $recurso->setIdBreading($id);
+                $recurso->setIdTest('-1');
+                //$recurso->setIdBreading(-1);
+                $recurso->setIdBlistening('-1');
+            }else if($type == 'l'){
+                $recurso->setIdBlistening($id);
+                $recurso->setIdTest('-1');
+                $recurso->setIdBreading('-1');
+                //$recurso->setIdBlistening(-1);
+            }
+            $recurso->setIdRecurso($urlrecurso->getId());
+
+            $em->persist($recurso);
+            $em->flush();
+
             echo json_encode(array('location' => $imagenurl));
             //echo json_encode(array('location' => 'http://localhost/images/blobid1506221658855.jpg'));
 
@@ -150,6 +183,38 @@ class DefaultController extends Controller
                     // return $this->render('AppBundle:Default:product/ok.html.twig');
                     $audioUrl = $r->getBasePath() . "/uploads/audio/";
                     $audiourl = "http://" . $_SERVER['HTTP_HOST'] . $audioUrl .''.$date1.'_'.$curr['name'];
+
+                    $em = $this->getDoctrine()->getManager();
+
+                    $urlrecurso = new Urlecurso();
+                    $urlrecurso->setUrl($uploadfile);
+                    $em->persist($urlrecurso);
+                    $em->flush();
+
+
+                    $recurso = new Recursos();
+                    $recurso->setIdRecurso($urlrecurso->getId());
+
+                    if($type == 't'){
+                        $recurso->setIdTest($id);
+                        //$recurso->setIdTest(-1);
+                        $recurso->setIdBreading('-1');
+                        $recurso->setIdBlistening('-1');
+                    }else if($type == 'r'){
+                        $recurso->setIdBreading($id);
+                        $recurso->setIdTest('-1');
+                        //$recurso->setIdBreading(-1);
+                        $recurso->setIdBlistening('-1');
+                    }else if($type == 'l'){
+                        $recurso->setIdBlistening($id);
+                        $recurso->setIdTest('-1');
+                        $recurso->setIdBreading('-1');
+                        //$recurso->setIdBlistening(-1);
+                    }
+
+                    $em->persist($recurso);
+                    $em->flush();
+
                     return new Response($audiourl);
                 } else {
 
