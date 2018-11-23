@@ -256,7 +256,7 @@
                     <li v-show="visibilidad==4" class="active">Question Multiple Selection</li>
                     <li v-show="visibilidad==5" class="active">Question List Selection</li>
                     <li v-show="visibilidad==6" class="active">Question Complete</li>
-                    <li v-show="visibilidad==7" class="active">Bank Section</li>
+                    <li v-show="visibilidad==8" class="active">Bank</li>
                   </ol>
                 </section>
                 
@@ -446,7 +446,8 @@
                                 <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
                                     <template slot="items" scope="props">
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
-                                        <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
+                                        <td class="text-xs-right">{{  "{{  props.item.deprueba}}" }}</td>
+
 
                                         <td class="text-xs-right" ><div class="limit-height" v-html=" props.item.texto"></div></td>
                                         <td class="text-xs-right">{{ "{{ props.item.profesor}}" }}</td>
@@ -2768,6 +2769,7 @@
                             id: -1,
                             //fecha: 'fecha',
                             texto: '',
+                            testeo: '',
                         },
                     ],
                     startDate: '25-04-2010',

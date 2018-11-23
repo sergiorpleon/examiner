@@ -891,7 +891,7 @@
                 ruta = ruta.replace('***', gthis.readingtmp.id);
 
                 jQuery.ajax({
-                            url: "{{ path('loadaudio' ))",
+                            url: ruta,
                             type: "post",
                             dataType: "html",
                             data: formData,

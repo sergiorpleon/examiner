@@ -51,7 +51,7 @@ class B_Section_Listening
 
 
     /**
-     *@ORM\ManyToOne(targetEntity="User", inversedBy="blistenig")
+     *@ORM\ManyToOne(targetEntity="User", inversedBy="blistening")
      *@ORM\JoinColumn(name="id_profesor", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
     private $id_profesor;
@@ -178,12 +178,12 @@ class B_Section_Listening
     /**
      * Set id_profesor
      *
-     * @param \AppBundle\Entity\User $idProfesor
+     * @param \AppBundle\Entity\User $id_profesor
      * @return User
      */
-    public function setIdProfesor(\AppBundle\Entity\User $idProfesor)
+    public function setIdProfesor(\AppBundle\Entity\User $id_profesor)
     {
-        $this->id_profesor = $idProfesor;
+        $this->id_profesor = $id_profesor;
 
         return $this;
     }

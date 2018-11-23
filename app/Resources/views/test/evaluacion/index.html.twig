@@ -43,26 +43,27 @@
 <div class="wrapper">
     <div class="col-lg-12 tarjeta examen">
         <div class="col-lg-12">
-            TEST {{ pruebas|length }}
+            TEST
 
         </div>
+
         <div class="col-lg-12">
         <div class="col-lg-12 areabuttontest">
-            <div class="col-lg-6 t-hab"><a href="{{ path('list_reading') }}" class="btn btn-default"><div>READING</div></a></div>
-            <div class="col-lg-6 t-hab"><a href="{{ path('list_listening') }}" class="btn btn-default"><div>LISTENING</div></a></div>
+            <div class="col-lg-6 t-hab"><a href="{{ path('list_reading') }}" class="btn btn-default"><div>READING ({{ pruebasr|length }})</div></a></div>
+            <div class="col-lg-6 t-hab"><a href="{{ path('list_listening') }}" class="btn btn-default"><div>LISTENING ({{ pruebasl|length }})</div></a></div>
         </div>
         </div>
     </div>
     <div class="col-lg-12 tarjeta practica">
 
         <div class="col-lg-12">
-            PRACTICE {{ depruebas|length }}
+            PRACTICE
 
         </div>
         <div class="col-lg-12">
         <div class="col-lg-12 areabuttonpractice">
-            <div class="col-lg-6 t-hab"><a href="{{ path('list_reading_practice') }}" class="btn btn-default"><div >READING</div></a></div>
-            <div class="col-lg-6 t-hab"><a href="{{ path('list_listening_practice') }}"class="btn btn-default"><div >LISTENING</div></a></div>
+            <div class="col-lg-6 t-hab"><a href="{{ path('list_reading_practice') }}" class="btn btn-default"><div >READING ({{ depruebasr|length }})</div></a></div>
+            <div class="col-lg-6 t-hab"><a href="{{ path('list_listening_practice') }}"class="btn btn-default"><div >LISTENING ({{ depruebasl|length }})</div></a></div>
         </div>
     </div>
     </div>

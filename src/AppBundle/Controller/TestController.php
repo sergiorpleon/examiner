@@ -1716,13 +1716,14 @@ class TestController extends Controller
         $id = $x->id;
 
         $t = $em->getRepository('AppBundle:Test')->find($id);
-        $r = $t->getIdReading();
-        if ($r != null) {
+        if ($t->getIdReading()!=null) {
+            $r = $t->getIdReading();
             $em->remove($r);
             $em->flush();
         }
-        $l = $t->getIdListening();
-        if ($l != null) {
+
+        if ($t->getIdListening()!=null) {
+            $l = $t->getIdListening();
             $em->remove($l);
             $em->flush();
         }
@@ -1743,20 +1744,12 @@ class TestController extends Controller
 
                         $em->remove($urlrec);
                     }
-
                 }
             }
-
-
-            $em->remove($t);
-            $em->flush();
 
             $em->remove($t);
             $em->flush();
         }
-
-
-
 
         //redirigir ojoooo
         //$error = '{"error":{"text":'. $e->getMessage() .'}}';

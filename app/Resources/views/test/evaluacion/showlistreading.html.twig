@@ -6,13 +6,13 @@
 
     {% set fecha1 = '10-2-2018-2-5'  %}
     <div id="tiempo" class="tiempo" style="position: absolute;
-    top: 85px;
+    top: 65px;
     right: 50px;
     z-index: 10;">
 
         {{ fecha1 | hora_actual(zonahoraria) }}
     </div>
-    <canvas id="canvas_reloj" style="position:absolute; transform: scale(0.6); right: -20px; top: -20px; background-color: #fefefe; border-radius: 100%;"></canvas>
+    <canvas id="canvas_reloj" style="position:absolute; transform: scale(0.6); right: -20px; top: -40px; background-color: #fefefe; border-radius: 100%;"></canvas>
     {% set fechaactual = anno_actual~','~mes_actual~','~dia_actual~','~hora_actual~','~minuto_actual~','~segundo_actual  %}
 
 
@@ -38,13 +38,14 @@
         {% set minuto = prueba.idReading.horaComienzo | date('i') %}
         {% set fecha = anno~'-'~mes~'-'~dia~'-'~hora~'-'~minuto  %}
 
+
         {{ dia }}-{{ mes }}-{{ anno }} {{ hora }}:{{ minuto }}
         {#{{ dia_actual }}-{{ mes_actual }}-{{ anno_actual }} {{ hora_actual }}:{{ minuto_actual }}
 #}
 
         {%   if ((true)) %}
             <br/>
-
+            <div style="border: 1px solid #adadad; padding: 20px; border-radius: 4px;">
 
             {{ prueba.id }}
             Orientacion Prueba: {{ prueba.textoOrientacion |raw}}
@@ -67,8 +68,10 @@
             {% endif %}
 
 
+            </div>
             <hr/>
         {% endif %}
+
     {% endif %}
     {% endfor %}
 </div>

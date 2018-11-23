@@ -426,7 +426,9 @@
                                 <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
                                     <template slot="items" scope="props">
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
-                                        <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
+                                        <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}
+
+                                        </td>
 
                                         <td class="text-xs-right" ><div class="limit-height" v-html="props.item.texto"></div></td>
                                         <td class="text-xs-right">{{ "{{ props.item.profesor}}" }}</td>

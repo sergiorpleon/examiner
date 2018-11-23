@@ -430,19 +430,13 @@ class EvaluacionesController extends Controller
             }
 
             $evaluacionTest = $em->getRepository('AppBundle:Evaluaciones')->findOneBy(array('id_test' => $test, 'id_estudiante' => $user));
-            //if($evaluacionTest){
-            //    $evaluacionTest->setPuntosReading($totalPuntos);
-            //    $em->persist($evaluacionTest);
-            //    $em->flush();
-            //}else{
+
                 $evaluacionTest = new Evaluaciones();
                 $evaluacionTest->setIdEstudiante($user);
                 $evaluacionTest->setIdTest($test);
                 $evaluacionTest->setPuntosReading($totalPuntos);
                 $em->persist($evaluacionTest);
                 $em->flush();
-            //}
-
 
             //return new Response("OK");
             return $this->render('global/pruebaenviada.html.twig', array(
@@ -450,26 +444,8 @@ class EvaluacionesController extends Controller
             //return $this->redirectToRoute("app_list_pregunta");
         }
 
-
-        /*
-        $user_login = $this->get('security.context')->getToken()->getUser();
-        $user_nombre = $user_login->getNombre();
-        $user_pin = $user_login->getPin();
-        $user_curso = $user_login->getAnnoCurso();
-        */
-
-        //$arrayR['fecha'] = $r->getFecha()->format("d-m-Y");
-        //$arrayR['horaComienzo'] = $r->getHoraComienzo()->format("H:i");
-        //tomar en variables eteras anno mes dia hora minuto
-
-        //if no esta tiempo enviar pagina tiempo pasado
-        //si ya hizo el examen prueba ya realizada
-
         $date_test = $test->getIdReading()->getFecha();
         $time_test = $test->getIdReading()->getHoraComienzo();
-
-        //$comienzo = new \DateTime('now - 1 hour');
-        //$fin = new \DateTime('now - 10 minutes');
 
 
         return $this->render('test/evaluacion/shownewevalreading.html.twig', array(
@@ -500,7 +476,14 @@ class EvaluacionesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //$test = $em->getRepository('AppBundle:Test')->findReadyAll();
-        $test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_reading r WHERE t.deprueba = 0 AND r.fecha < :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
+
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $test = $consulta->getResult();
+
+        //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
         //$usuarios = $em->getRepository('AppBundle:User')->find(1) ;
 
 
@@ -549,9 +532,13 @@ class EvaluacionesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //$test = $em->getRepository('AppBundle:Test')->findReadyAll();
-        $test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
+        //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
         //$usuarios = $em->getRepository('AppBundle:User')->find(1) ;
-
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha < :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $test = $consulta->getResult();
 
         $datetime = new \DateTime();
         $datetime -> setTimezone(new \DateTimeZone( $this->container->getParameter('zona_horaria')));
@@ -685,6 +672,7 @@ class EvaluacionesController extends Controller
                             'choices' => array('0'=>'True','1'=>'False','2'=>'Not Given'),
                             'expanded' => true,
                             'multiple' => false,
+                            'required'    => false,
                         ));
                         $indzTF++;
                     }
@@ -707,6 +695,7 @@ class EvaluacionesController extends Controller
                             'choices' => $arrayValoresSS,
                             'expanded' => true,
                             'multiple' => false,
+                            'required'    => false,
                         ));
 
                         $indzSS++;
@@ -727,6 +716,7 @@ class EvaluacionesController extends Controller
                             'choices' => $arrayValoresSM,
                             'expanded' => true,
                             'multiple' => true,
+                            'required' => false,
                         ));
                         $indzSM++;
                     }
@@ -749,6 +739,7 @@ class EvaluacionesController extends Controller
 
                         $builder->add($textoLS, ChoiceType :: class, array(
                             'choices' => $arrayValoresLS,
+                            'required'    => false,
                         ));
                         $indzLS++;
                     }
@@ -759,7 +750,9 @@ class EvaluacionesController extends Controller
                     $indzC = 0;
                     foreach ($item_Complete as $objeto) {
                         $textoC = 'p' . '_r' . '_s' . $j . '_q' . $k . '_c' . $indzC;
-                        $builder->add($textoC, TextType :: class);
+                        $builder->add($textoC, TextType :: class, array(
+                            'required'    => false,
+                        ));
                         $indzC++;
                     }
                 }
@@ -977,8 +970,13 @@ class EvaluacionesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //$test = $em->getRepository('AppBundle:Test')->findReadyAll();
-        $test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
-        //$usuarios = $em->getRepository('AppBundle:User')->find(1) ;
+        //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_listening l WHERE t.deprueba = 0 AND l.fecha < :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
+
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $test = $consulta->getResult();
 
         $fecha = new \DateTime();
         $fecha -> setTimezone(new \DateTimeZone( $this->container->getParameter('zona_horaria')));
@@ -1023,8 +1021,14 @@ class EvaluacionesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //$test = $em->getRepository('AppBundle:Test')->findReadyAll();
-        $test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
+        //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
         //$usuarios = $em->getRepository('AppBundle:User')->find(1) ;
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_listening l WHERE t.deprueba = 1 AND l.fecha < :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
+
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $test = $consulta->getResult();
 
         $fecha = new \DateTime();
         $fecha -> setTimezone(new \DateTimeZone( $this->container->getParameter('zona_horaria')));
