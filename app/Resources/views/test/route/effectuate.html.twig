@@ -2459,9 +2459,30 @@
 
                 },
 
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
+                },
+
                 getBancoR: function () {
                     if(this.habilidad==1){
-                        NProgress.start(); 
+                        this.empezarCarga();
                         this.$http.get("{{  path('list_bank_reading_json') }}", function (data, status, request) {
                             this.items = data;
                             if(this.items.length > 0){
@@ -2472,19 +2493,21 @@
                                 this.check = a;
 
                                 this.loading = true;
-                                jQuery('.overlay').css('display','none');
                                 this.visibilidad=8;
                                 this.inciopagina();
                             }else{
                                 //banco vacio
                             }
-                            NProgress.done(); 
-                            NProgress.remove(); 
+                            this.terminarCarga();
+
                         }).catch(function (data, status, request) {
                             console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
                     }else if(this.habilidad==2){
-                        NProgress.start(); 
+                        this.empezarCarga();
                         
                         this.$http.get("{{  path('list_bank_listening_json') }}", function (data, status, request) {
                             this.items = data;
@@ -2497,94 +2520,103 @@
                                 this.check = a;
 
                                 this.loading = true;
-                                jQuery('.overlay').css('display','none');
+                                //jQuery('.overlay').css('display','none');
 
                                 this.visibilidad=8;
                                 this.inciopagina();
                             }else{
                                 //banco vacio
                             }
-                            NProgress.done(); 
-                            NProgress.remove(); 
+                            this.terminarCarga();
                         }).catch(function (data, status, request) {
                             console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
                     }
                 },
 
                 verDetalleBancoReading: function(idbp){
                     if(this.habilidad==1){
-                        NProgress.start();
+                        this.empezarCarga();
                         this.$http.post("{{  path('bank_reading_json') }}", {
                             id: idbp,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
-                            jQuery('.overlay').css('display','none');
+                            this.terminarCarga();
                             this.visibilidad=9;
                             this.inciopagina();
                         }).catch(function (data, status, request) {
                             console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
-                        NProgress.done(); 
-                        NProgress.remove(); 
+
                     }else if(this.habilidad==2){
-                        NProgress.start(); 
+                        this.empezarCarga();
                          
                         this.$http.post("{{  path('bank_listening_json') }}", {
                             id: idbp,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
-                            jQuery('.overlay').css('display','none');
+                            this.terminarCarga();
                             this.visibilidad=9;
                             this.inciopagina();
                         }).catch(function (data, status, request) {
                             console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
-                        NProgress.done(); 
-                        NProgress.remove(); 
+
                     }
                 },
 
                 addDetalleBancoReading: function(idbp){
                     if(this.habilidad==1){
-                        NProgress.start(); 
+                        this.empezarCarga();
                         
                         this.$http.post("{{  path('bank_reading_json') }}", {
                             id: idbp,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
-                            jQuery('.overlay').css('display','none');
+                            //jQuery('.overlay').css('display','none');
 
                             this.readingtmp.secciones.push(this.seccionbancox);
 
                             this.visibilidad=1;
                             this.inciopagina();
-                            NProgress.done(); 
-                        NProgress.remove(); 
+                            this.terminarCarga();
                         }).catch(function (data, status, request) {
                             console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
                     }else if(this.habilidad==2){
-                        NProgress.start(); 
+                        this.empezarCarga();
                         
                         this.$http.post("{{  path('bank_listening_json') }}", {
                             id: idbp,
                         }, function (data, status, request) {
                             this.seccionbancox = data;
                             this.loading = true;
-                            jQuery('.overlay').css('display','none');
 
                             this.readingtmp.secciones.push(this.seccionbancox);
 
                             this.visibilidad=1;
                             this.inciopagina();
-                            NProgress.done(); 
-                        NProgress.remove(); 
+                            this.terminarCarga();
                         }).catch(function (data, status, request) {
                             console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
                     }
                 },
@@ -2635,8 +2667,7 @@
                         }
 
                         //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display','block');
-                        NProgress.start(); 
+                        this.empezarCarga();
                         this.$http.post("{{  path('new_prueba') }}", {
                             prueba: this.prueba,
                         }, function (data, status, request) {
@@ -2644,8 +2675,12 @@
                             this.$route.params.id = this.prueba.id;
                             this.getList();
                             window.location.href = '#' + this.prueba.id;
-                            NProgress.done(); 
-                            NProgress.remove(); 
+                            this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
                     }
                 },
@@ -2668,9 +2703,7 @@
 
                     } else {
                         //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display','block');
-
-                        NProgress.start(); 
+                        this.empezarCarga();
                         this.$http.post("{{  path('edit_prueba') }}", {
                             prueba: this.prueba,
                             delSecR: this.delSecR,
@@ -2693,8 +2726,12 @@
                             this.delValorLS = [];
                             this.delItemC = [];
                             this.getList();
-                            NProgress.done(); 
-                        NProgress.remove(); 
+                           this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                         });
                     }
                 },
@@ -2703,24 +2740,22 @@
                 getList: function () {
 
                     if (this.$route.params.id != -1) {
-                        NProgress.start(); 
+                       this.empezarCarga();
                        
                         this.$http.post("{{  path('prueba_json') }}", {
                             id: this.prueba.id,
                         }, function (data, status, request) {
                             this.prueba = data;
                             //alert(JSON.stringify(this.prueba));
-                            jQuery('.overlay').css('display','none');
+                            this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
 
-                            //this.$route.params.id = 2;
-
-                            NProgress.done(); 
-                            NProgress.remove(); 
-                        })
+                        });
                     }else{
-                        jQuery('.overlay').css('display','none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
                     }
                 },
                 //========================END CRUD==================================
@@ -2810,15 +2845,16 @@
                 //read question
                 getList: function () {
                     
-                    NProgress.start();
+                    this.empezarCarga();
                     this.$http.get("{{  path('effectuate_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
-                        jQuery('.overlay').css('display','none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
                     }).catch(function (data, status, request) {
                         console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                     });
                 },
                 delTest: function( index){
@@ -2827,14 +2863,19 @@
                     //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
-                            jQuery('.overlay').css('display','block');
-                            NProgress.start(); 
+                            this.empezarCarga();
                             gthis.$http.post("{{  path('delete_prueba') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
-                                NProgress.done(); 
-                                NProgress.remove(); 
+                                this.terminarCarga();
+                                this.showMessage('alert-success','Info:','Data delete successfully');
+
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                this.terminarCarga();
+                                this.showMessage('alert-warning','Error:','It was not possible to delete the data');
+
                             });
                         }
                     });  

@@ -614,6 +614,7 @@
 
                 //read question
                 getConfig: function () {
+                    this.empezarCarga();
                     this.$http.get("{{  path('config_json') }}", {
                         //id: this.results.prueba,
                     }, function (data, status, request) {
@@ -630,14 +631,18 @@
                             this.actualizarIndex(0);
                         }
 
-                        //alert(JSON.stringify(this.config));
-                        jQuery('.overlay').css('display', 'none');
-                    })
+                        this.terminarCarga()();
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
+                    });
                 },
 
                 guardarCarreraInstitucion: function () {
 
-
+                    this.empezarCarga();
                     this.$http.post("{{  path('save_carrera_institucion') }}", {
                         config: this.config,
                         delCarrera: this.delCarrera,
@@ -646,12 +651,19 @@
                         this.getConfig();
 
                         //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display', 'none');
-                    })
+                        this.terminarCarga();
+                        this.showMessage('alert-success','Info:','Data saved successfully');
+
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to save the data');
+
+                    });
 
                 },
                 guardarEstudia: function () {
-                    alert(JSON.stringify(this.config));
+                    this.empezarCarga();
                     //console.log(this.config.estudias);
                     this.$http.post("{{  path('save_estudia') }}", {
                         config: this.config,
@@ -661,8 +673,14 @@
                         this.getConfig();
 
                         //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display', 'none');
-                    })
+                        this.terminarCarga();
+                        this.showMessage('alert-success','Info:','Data saved successfully');
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to save the data');
+
+                    });
 
                 },
                 //========================END CRUD==================================

@@ -814,23 +814,22 @@
                 getList: function () {
 
                     if (this.$route.params.id != -1) {
-                        NProgress.start(); 
+                       this.empezarCarga();
                         
                         this.$http.post("{{  path('view_user_json') }}", {
                             id: this.user.id,
                         }, function (data, status, request) {
                             this.user = data;
                             //alert(JSON.stringify(this.prueba));
-                            jQuery('.overlay').css('display', 'none');
+                            this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
 
-                            //this.$route.params.id = 2;
-                            NProgress.done(); 
-                        NProgress.remove(); 
-                        })
+                        });
                     } else {
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
 
                     }
                 },
@@ -1084,7 +1083,7 @@
 
                 //read question
                 getTest: function () {
-                    NProgress.start(); 
+                    this.empezarCarga();
                        
                     this.$http.post("{{  path('prueba_json') }}", {
                         id: this.results.prueba_id,
@@ -1092,19 +1091,19 @@
                         this.theprueba = data;
 
                         //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display', 'none');
+                        this.terminarCarga();
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to save the data');
 
-                        //this.$route.params.id = 2;
-
-                        NProgress.done(); 
-                        NProgress.remove(); 
-                    })
+                    });
                 },
 
                 getList: function () {
 
                     if (this.$route.params.id != -1) {
-                        NProgress.start(); 
+                        this.empezarCarga();
                         
                         this.$http.post("{{  path('view_result_json') }}", {
                             id: this.results.id,
@@ -1113,16 +1112,15 @@
                             this.getTest();
 
                             //alert(JSON.stringify(this.prueba));
-                            jQuery('.overlay').css('display', 'none');
+                            this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to save the data');
 
-                            //this.$route.params.id = 2;
-                            NProgress.done(); 
-                        NProgress.remove(); 
-                        })
+                        });
                     } else {
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
 
                     }
                 },
@@ -1216,18 +1214,17 @@
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {
-                    NProgress.start(); 
+                    this.empezarCarga();
                         
                     this.$http.get("{{  path('list_users_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
                     }).catch(function (data, status, request) {
                         console.log('error');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                     });
                 },
 

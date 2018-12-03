@@ -1975,8 +1975,7 @@
                     } else {
                         //alert(JSON.stringify(this.readingtmp));
 
-                        jQuery('.overlay').css('display','block');
-                        NProgress.start(); 
+                        this.empezarCarga();
                         
                         this.$http.post("{{  path('new_bank_listening') }}", {
                             readingtmp: this.readingtmp,
@@ -1985,8 +1984,13 @@
                             this.$route.params.id = this.readingtmp.id;
                             this.getList();
                             window.location.href = '#' + this.readingtmp.id;
-                            NProgress.done(); 
-                            NProgress.remove(); 
+                            this.terminarCarga();
+                            this.showMessage('alert-success','Info:','Successfully saved data');
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to save the data');
+
                         });
                     }
                 },
@@ -2008,9 +2012,7 @@
                         });
                     } else {
                         //alert(JSON.stringify(this.readingtmp));
-                        jQuery('.overlay').css('display','block');
-
-                        NProgress.start(); 
+                        this.empezarCarga();
                         this.$http.post("{{  path('edit_bank_listening') }}", {
                             readingtmp: readingtmp,
                             delQuestion: this.delQuestion,
@@ -2034,8 +2036,13 @@
                             this.delValorLS = [];
                             this.delItemC = [];
                             this.getList();
-                            NProgress.done(); 
-                            NProgress.remove(); 
+                            this.terminarCarga();
+                            this.showMessage('alert-success','Info:','Successfully saved data');
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to save the data');
+
                         });
                     }
                 },
@@ -2052,7 +2059,12 @@
                             this.readingtmp = data;
                             //alert(JSON.stringify(this.readingtmp));
                             this.terminarCarga()
-                        })
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
+                        });
                     }else{
                         this.terminarCarga();
                     }
@@ -2117,8 +2129,7 @@
                 },
                 showSection: function(index){
 
-                    jQuery('.overlay').css('display','block');
-                    NProgress.start();
+                    this.empezarCarga();
 
                     this.$http.post("{{  path('bank_listening_json') }}", {
                         id: index,
@@ -2216,11 +2227,7 @@
                     htmlsections += "</div>";
                     //}
 
-                    jQuery('.overlay').css('display','none');
-
-                    //this.$route.params.id = 2;
-                    NProgress.done();
-                    NProgress.remove();
+                    this.terminarCarga();
 
                     bootbox.dialog({
                         message: htmlsections,
@@ -2236,7 +2243,12 @@
                         },
                     });
 
-                    })
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to show the data');
+
+                    });
 
                 },
 
@@ -2263,15 +2275,16 @@
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {
-                    NProgress.start(); 
+                    this.empezarCarga();
                     this.$http.get("{{  path('list_bank_listening_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
-                        jQuery('.overlay').css('display','none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
                     }).catch(function (data, status, request) {
                         console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                     });
                 },
                 delTest: function( index){
@@ -2280,15 +2293,20 @@
                     //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
-                            jQuery('.overlay').css('display','block'); 
-                            NProgress.start(); 
+                            this.empezarCarga()();
                         
                             gthis.$http.post("{{  path('delete_bank_listening') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
-                                NProgress.done(); 
-                                NProgress.remove(); 
+                                this.terminarCarga();
+                                this.showMessage('alert-success','Info:','Successfully deleted data');
+
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                this.terminarCarga();
+                                this.showMessage('alert-warning','Error:','It was not possible to delete the data');
+
                             });
                         }
                     });

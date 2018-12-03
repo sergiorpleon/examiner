@@ -896,7 +896,7 @@
 
                 //read question
                 getTest: function () {
-                    NProgress.start(); 
+                    this.empezarCarga();
                        
                     this.$http.post("{{  path('prueba_json') }}", {
                         id: this.results.prueba_id,
@@ -904,13 +904,13 @@
                         this.theprueba = data;
 
                         //alert(JSON.stringify(this.prueba));
-                        jQuery('.overlay').css('display', 'none');
+                        this.terminarCarga();
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to load the data');
 
-                        //this.$route.params.id = 2;
-
-                        NProgress.done(); 
-                        NProgress.remove(); 
-                    })
+                    });
                 },
 
                 empezarCarga: function(){
@@ -939,7 +939,7 @@
                 getList: function () {
 
                     if (this.$route.params.id != -1) {
-                        NProgress.start(); 
+                        this.empezarCarga();
                         
                         this.$http.post("{{  path('view_result_json') }}", {
                             id: this.results.id,
@@ -947,17 +947,15 @@
                             this.results = data;
                             this.getTest();
                             //alert(JSON.stringify(this.prueba));
-                            jQuery('.overlay').css('display', 'none');
+                            this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
 
-                            //this.$route.params.id = 2;
-                            NProgress.done(); 
-                        NProgress.remove(); 
-                        })
+                        });
                     } else {
-                        jQuery('.overlay').css('display', 'none');
-
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.termina();
 
                     }
                 },
@@ -1054,16 +1052,17 @@
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 // evaluacion
                 getList: function () {
-                    NProgress.start(); 
+                    this.empezarCarga();
                 
                     this.$http.get("{{  path('list_results_json') }}", function (data, status, request) {
                         this.items = data;
                         this.loading = true;
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
                     }).catch(function (data, status, request) {
                         console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
                     });
                 },
 
@@ -1073,14 +1072,17 @@
                     //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
-                            jQuery('.overlay').css('display','block');
-                            NProgress.start();
+                            this.empezarCarga();
                             gthis.$http.post("{{  path('delete_eval') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
-                                NProgress.done();
-                                NProgress.remove();
+                                this.terminarCarga();
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                this.terminarCarga();
+                                this.showMessage('alert-warning','Error:','It was not possible to delete the data');
+
                             });
                         }
                     });

@@ -648,7 +648,7 @@
 
                 //read question
                 getEdit: function () {
-                    NProgress.start();
+                    this.empezarCarga();
 
                     this.$http.post("{{  path('update_user') }}", {
                         id: this.user.id,
@@ -664,35 +664,38 @@
                         //alert(JSON.stringify(data));
                         this.getUser();
 
-                        jQuery('.overlay').css('display', 'none');
+                        this.terminarCarga();
+                        this.showMessage('alert-success','Info:','Data saved successfully');
 
-                        //this.$route.params.id = 2;
+                    }).catch(function (data, status, request) {
+                        console.log('error');
+                        this.terminarCarga();
+                        this.showMessage('alert-warning','Error:','It was not possible to save the data');
 
-                        NProgress.done();
-                        NProgress.remove();
-                    })
+                    });
                 },
 
                 getUser: function () {
 
                     if (this.$route.params.id != -1) {
-                        NProgress.start();
+                        this.empezarCarga();
 
                         this.$http.post("{{  path('edit_user') }}", {
                             id: this.user.id,
                         }, function (data, status, request) {
                             this.user = data;
                             //alert(JSON.stringify(this.prueba));
-                            jQuery('.overlay').css('display', 'none');
+                            this.terminarCarga();
+                            this.showMessage('alert-success','Info:','Data saved successfully');
 
-                            //this.$route.params.id = 2;
-                            NProgress.done();
-                            NProgress.remove();
-                        })
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to save the data');
+
+                        });
                     } else {
-                        jQuery('.overlay').css('display', 'none');
-                        NProgress.done();
-                        NProgress.remove();
+                        this.terminarCarga();
 
                     }
                 },
