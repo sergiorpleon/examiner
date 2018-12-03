@@ -269,6 +269,17 @@
         <!-- plantilla componente prueba -->
         <script type="text/x-template" id="config">
             <div>
+
+                <section class="content-header">
+                    <ol class="breadcrumb">
+                        <li class="active">Config Institution Career</li>
+                    </ol>
+                </section>
+
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
+
                 <div class="row form-panel box box-primary">
                     <div class="col-sm-6">
                         <h4>Institution</h4>
@@ -411,6 +422,10 @@
             template: '#config',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
 
                     config: {
                         carreras:[ ],
@@ -438,6 +453,27 @@
             },
 
             methods: {
+
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
+                },
 
                 actualizarIndex: function (index) {
                     if(this.config.estudias){

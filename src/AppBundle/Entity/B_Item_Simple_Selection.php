@@ -53,7 +53,7 @@ class B_Item_Simple_Selection
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\B_Inciso_Simple_Selection" , mappedBy="id_item_simple_selection", cascade={"all"}, orphanRemoval=true)
      */
-    private $item_simple_selection;
+    private $b_incisos_simple_selection;
 
 
     /**
@@ -156,5 +156,38 @@ class B_Item_Simple_Selection
     public function getIdQuestion()
     {
         return $this->id_question;
+    }
+
+    /**
+     * Add b_incisos_simple_selection
+     *
+     * @param \AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection
+     * @return B_Item_Simple_Selection
+     */
+    public function addBIncisosSimpleSelection(\AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection)
+    {
+        $this->b_incisos_simple_selection[] = $b_incisosSimpleSelection;
+
+        return $this;
+    }
+
+    /**
+     * Remove b_incisos_simple_selection
+     *
+     * @param \AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection
+     */
+    public function removeBIncisosSimpleSelection(\AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection)
+    {
+        $this->b_incisos_simple_selection->removeElement($b_incisosSimpleSelection);
+    }
+
+    /**
+     * Get b_incisos_simple_selection
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBIncisosSimpleSelection()
+    {
+        return $this->b_incisos_simple_selection;
     }
 }

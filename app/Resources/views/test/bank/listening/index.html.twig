@@ -261,6 +261,10 @@
                   </ol>
                 </section>
 
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
+
                 <div class="prueba row form-panel box box-primary" v-show="visibilidad==0">
 
                 </div>
@@ -286,6 +290,10 @@
                     <li class="active">Bank of Listening</li>
                   </ol>
                 </section>
+
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
 
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
@@ -557,6 +565,11 @@
             template: '#listening',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
+
                     numIdUnico: 1,
                     habilidad: 2,
                     stringfecha : "10-11-2011",
@@ -1921,6 +1934,27 @@
                 //==============================END COMPLETA=====================================
 
 
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
+                },
+
                 //============================BEGIN CRUD==================================
                 postNewTest: function (readingtmp) {
                     //alert(JSON.stringify(this.readingtmp));
@@ -1961,10 +1995,10 @@
                     var longcadena = ((JSON.stringify(this.readingtmp)).split("\"\"")).length;
                     if (longcadena > 1) {
                         bootbox.dialog({
-                            message: "Existen datos nulos en la seccion",
+                            message: "There are null data in the section",
                             buttons: {
                                 "click": {
-                                    "label": "Aceptar",
+                                    "label": "Accept",
                                     "className": "btn-sm btn-primary",
                                     "callback": function () {
                                         //Example.show("Primary button");
@@ -2010,23 +2044,17 @@
                 getList: function () {
                     if (this.$route.params.id != -1) {
 
-                        NProgress.start(); 
+                        this.empezarCarga();
                         this.$http.post("{{  path('bank_listening_json') }}", {
                             id: this.readingtmp.id,
                             idtest: 0,
                         }, function (data, status, request) {
                             this.readingtmp = data;
                             //alert(JSON.stringify(this.readingtmp));
-                            jQuery('.overlay').css('display','none');
-
-                            //this.$route.params.id = 2;
-                            NProgress.done(); 
-                            NProgress.remove(); 
+                            this.terminarCarga()
                         })
                     }else{
-                        jQuery('.overlay').css('display','none');
-                        NProgress.done(); 
-                        NProgress.remove(); 
+                        this.terminarCarga();
                     }
                 },
                 //========================END CRUD==================================
@@ -2039,6 +2067,11 @@
             template: '#list',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
+
                     isActive: false,
                     search: '',
                     pagination: {},
@@ -2205,6 +2238,27 @@
 
                     })
 
+                },
+
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
                 },
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question

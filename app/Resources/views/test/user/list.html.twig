@@ -255,6 +255,10 @@
                     </ol>
                 </section>
 
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
+
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
                         <div class="col-sm-4 col-xs-6 col col-editor">
@@ -320,7 +324,6 @@
             <div>
 
                 <section class="content-header">
-                    <section class="content-header">
                         <ol class="breadcrumb">
                             <li>
                                 <router-link
@@ -332,6 +335,10 @@
 
                         </ol>
                     </section>
+
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
 
                     <div class="row form-panel box box-primary results">
 
@@ -440,6 +447,11 @@
             template: '#list',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
+
                     isActive: false,
                     search: '',
                     pagination: {},
@@ -503,6 +515,27 @@
 
                 },
 
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
+                },
+
                 delUser: function(index){
                     var gthis = this;
                     var gindex = index;
@@ -549,6 +582,10 @@
             template: '#user',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
 
                     user: {
                         id: '-1',
@@ -586,6 +623,26 @@
                 },
 
 
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
+                },
 
                 //============================BEGIN CRUD==================================
 

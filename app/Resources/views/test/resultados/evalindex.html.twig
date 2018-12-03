@@ -258,6 +258,10 @@
                   </ol>
                 </section>
 
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
+
                 <div class="row form-panel box box-primary">
                     <div class='col-sm-12'>
                     <h5><strong>Id:</strong> {{ '{{ test.id }}' }}</h5>
@@ -318,7 +322,6 @@
             <div>
 
                 <section class="content-header">
-                  <section class="content-header">
                   <ol class="breadcrumb">
                     <li><a href="#">List Results for Test</a></li>
                     
@@ -332,6 +335,10 @@
                     
                   </ol>
                 </section>
+
+                    <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                        <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                    </div>
 
                 <div class="row form-panel box box-primary results">
                     <ul class="nav nav-tabs" role="tab-list">
@@ -653,12 +660,15 @@
             <div class="list1">
 
                 <section class="content-header">
-                  <section class="content-header">
                   <ol class="breadcrumb">
                     <li class="active">List Results for Test</li>
                     
                   </ol>
                 </section>
+
+                <div class="alert" v-bind:class="[typemessage]" v-bind:style="{display: stylemessage}">
+                    <strong>{{ ' {{ titlemessage }}' }} </strong> {{ ' {{ textmessage }}' }}
+                </div>
 
                 <div class="row form-panel box box-primary">
                     <div class="row col-xs-12" style="margin-bottom: 10px; margin-left: 0px;">
@@ -729,6 +739,10 @@
             template: '#test',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
 
                     test: {
                         id: '',
@@ -805,6 +819,11 @@
             template: '#result',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
+
                     indact: 0,
                     hability: 'reading',
                     results: {
@@ -1072,6 +1091,11 @@
             template: '#list',
             data: function () {
                 return {
+                    typemessage: 'alert-success',
+                    stylemessage: 'none',
+                    titlemessage: 'Title',
+                    textmessage: 'message',
+
                     isActive: false,
                     search: '',
                     pagination: {},
@@ -1123,6 +1147,28 @@
                 mostrar: function () {
                     this.isActive = true;
                 },
+
+                empezarCarga: function(){
+                    jQuery('.overlay').css('display','block');
+                    NProgress.start();
+                },
+
+                terminarCarga: function(){
+                    jQuery('.overlay').css('display','none');
+                    NProgress.done();
+                    NProgress.remove();
+                },
+
+                showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
+                    this.typemessage = mtypemessage;
+                    this.stylemessage = 'box';
+                    this.titlemessage = mtitlemessage;
+                    this.textmessage = mtextmessage;
+                    setTimeout(function(){
+                        this.stylemessage = 'none';
+                    }, 4000);
+                },
+
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
                 //read question
                 getList: function () {

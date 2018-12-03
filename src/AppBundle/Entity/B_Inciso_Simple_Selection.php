@@ -37,7 +37,7 @@ class B_Inciso_Simple_Selection
     private $textoOpcion;
 
     /**
-     *@ORM\ManyToOne(targetEntity="B_Item_Simple_Selection", inversedBy="item_simple_selection")
+     *@ORM\ManyToOne(targetEntity="B_Item_Simple_Selection", inversedBy="b_inciso_simple_selection")
      *@ORM\JoinColumn(name="id_item_simple_selection", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $id_item_simple_selection;
