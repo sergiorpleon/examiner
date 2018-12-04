@@ -1,9 +1,20 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends 'themefrontend.html.twig' %}
 
-{% block fos_user_content %}
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+{% block content %}
+    <div class="row form-panel box" style="margin-top: 70px">
+    <p>Logged in as {{ app.user.username }} | <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default">Logout</a></p>
+
     {% if app.session is not empty %}
-        {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
-        {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
+        <p>The user has been created successfully.
+        </p><p>
+        Congrats {{ app.user.nombre }}, your account is now activated.
+        </p>
+        <p>
+            <a href="{{ path('homepage') }}" class="btn btn-default">Back to the originating page</a>
+
+        </p>
     {% endif %}
-{% endblock fos_user_content %}
+    </div>
+{% endblock content %}
+
+

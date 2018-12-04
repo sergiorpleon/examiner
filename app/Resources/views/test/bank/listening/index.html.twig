@@ -335,6 +335,10 @@
                                     </template>
                                 </v-data-table>
                             </v-card>
+
+                            <div class="row col-xs-12">
+                                <a  class="btn btn-default btn-100w" v-on:click="delSelectedTest()"><i class="fa fa-check"></i> Delete selected</a></li>
+                            </div>
                         </template>
                     </div >
                 </div>
@@ -916,6 +920,8 @@
                             //alert(res);
                             //alert(gthis.readingtmp.urlAudio);
                             gthis.readingtmp.urlAudio=res;
+                            gthis.visible = 6;
+                            gthis.visible = 1;
                             //seccionx.urlAudio=res;
                             //alert(gthis.readingtmp.urlAudio);
                         });
@@ -1144,7 +1150,7 @@
                     //var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
                     var htmlsections = "<div>";
                     //for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
-
+                    var indes = 0;
                         htmlsections += "<div class='secciones'><p>" + this.readingtmp.textoInstruccion + "</p>";
                         htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
                         for (var indeq = 0; indeq < this.readingtmp.preguntas.length; indeq++) {
@@ -1947,11 +1953,12 @@
 
                 showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
                     this.typemessage = mtypemessage;
-                    this.stylemessage = 'box';
+                    this.stylemessage = 'block';
                     this.titlemessage = mtitlemessage;
                     this.textmessage = mtextmessage;
+                    var gthis = this;
                     setTimeout(function(){
-                        this.stylemessage = 'none';
+                        gthis.stylemessage = 'none';
                     }, 4000);
                 },
 
@@ -2142,7 +2149,7 @@
                     //var htmlsections = "<div><p>"+this.readingtmp.textoInstrucciones+"</p>";
                     var htmlsections = "<div>";
                     //for (var indes = 0; indes < this.readingtmp.secciones.length; indes++) {
-
+                        var indes = 0;
                     htmlsections += "<div class='secciones'><p>" + this.readingtmp.textoInstruccion + "</p>";
                     htmlsections += "<audio src='"+this.readingtmp.urlAudio+"' controls='controls'></audio>";
                     for (var indeq = 0; indeq < this.readingtmp.preguntas.length; indeq++) {
@@ -2265,11 +2272,12 @@
 
                 showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
                     this.typemessage = mtypemessage;
-                    this.stylemessage = 'box';
+                    this.stylemessage = 'block';
                     this.titlemessage = mtitlemessage;
                     this.textmessage = mtextmessage;
+                    var gthis = this;
                     setTimeout(function(){
-                        this.stylemessage = 'none';
+                        gthis.stylemessage = 'none';
                     }, 4000);
                 },
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
@@ -2293,26 +2301,49 @@
                     //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
-                            this.empezarCarga()();
+                            gthis.empezarCarga();
                         
                             gthis.$http.post("{{  path('delete_bank_listening') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
-                                this.terminarCarga();
-                                this.showMessage('alert-success','Info:','Successfully deleted data');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-success','Info:','Successfully deleted data');
 
                             }).catch(function (data, status, request) {
                                 console.log('error');
-                                this.terminarCarga();
-                                this.showMessage('alert-warning','Error:','It was not possible to delete the data');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-warning','Error:','It was not possible to delete the data');
 
                             });
                         }
                     });
-
-                    
                 },
+
+                delSelectedTest: function() {
+                    var gthis = this;
+
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            gthis.empezarCarga();
+
+                            gthis.$http.post("{{  path('delete_selected_listening') }}", {
+                                selected: gthis.selected,
+                            }, function (data, status, request) {
+                                gthis.getList();
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-success', 'Info:', 'Successfully deleted data');
+
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-warning', 'Error:', 'It was not possible to delete the data');
+
+                            });
+                        }
+                    });
+                }
 
             }
         });

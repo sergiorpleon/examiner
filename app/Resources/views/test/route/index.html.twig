@@ -450,9 +450,21 @@
                     <div class="row col-xs-12" style="margin-left: 0px;">
                         <template>
                             <v-card>
-                                <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
+                                <v-data-table v-bind:headers="headers"
+                                              v-bind:items="items"
+                                              v-bind:search="search"
+                                              v-model="selected"
+                                              item-key="name"
+                                              select-all
+                                              class="elevation-1">
                                     <template slot="items" scope="props">
-                                        <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
+                                        <td @click="props.selected = !props.selected">
+                                            <v-checkbox
+                                                    :input-value="props.selected"
+                                                    primary
+                                                    hide-details
+                                            ></v-checkbox>
+                                        </td><td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
                                         <td class="text-xs-right">{{  "{{  props.item.deprueba}}" }}</td>
 
 
@@ -481,6 +493,10 @@
                                     </template>
                                 </v-data-table>
                             </v-card>
+
+                            <div class="row col-xs-12">
+                                <a  class="btn btn-default btn-100w" v-on:click="delSelectedTest()"><i class="fa fa-check"></i> Delete selected</a></li>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -2646,11 +2662,12 @@
 
                 showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
                     this.typemessage = mtypemessage;
-                    this.stylemessage = 'box';
+                    this.stylemessage = 'block';
                     this.titlemessage = mtitlemessage;
                     this.textmessage = mtextmessage;
+                    var gthis = this;
                     setTimeout(function(){
-                        this.stylemessage = 'none';
+                        gthis.stylemessage = 'none';
                     }, 4000);
                 },
 
@@ -2807,6 +2824,7 @@
                     titlemessage: 'Title',
                     textmessage: 'message',
 
+                    selected: [],
                     isActive: false,
                     search: '',
                     pagination: {},
@@ -2868,11 +2886,12 @@
 
                 showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
                     this.typemessage = mtypemessage;
-                    this.stylemessage = 'box';
+                    this.stylemessage = 'block';
                     this.titlemessage = mtitlemessage;
                     this.textmessage = mtextmessage;
+                    var gthis = this;
                     setTimeout(function(){
-                        this.stylemessage = 'none';
+                        gthis.stylemessage = 'none';
                     }, 4000);
                 },
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
@@ -2897,23 +2916,48 @@
                     //a = this.readingtmp.secciones;
                     bootbox.confirm("Are you sure?", function (result) {
                         if (result) {
-                            this.empezarCarga();
+                            gthis.empezarCarga();
                             gthis.$http.post("{{  path('delete_prueba') }}", {
                                 id: gindex,
                             }, function (data, status, request) {
                                 gthis.getList();
-                                this.terminarCarga();
-                                this.showMessage('alert-success','Info:','Data deleted successfully');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-success','Info:','Data deleted successfully');
 
                             }).catch(function (data, status, request) {
                                 console.log('error');
-                                this.terminarCarga();
-                                this.showMessage('alert-warning','Error:','It was not possible to load the data');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-warning','Error:','It was not possible to load the data');
 
                             });
                         }
                     });  
                 },
+
+                delSelectedTest: function() {
+                    var gthis = this;
+
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            gthis.empezarCarga();
+
+                            gthis.$http.post("{{  path('delete_selected_test') }}", {
+                                selected: gthis.selected,
+                            }, function (data, status, request) {
+                                gthis.getList();
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-success', 'Info:', 'Successfully deleted data');
+
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-warning', 'Error:', 'It was not possible to delete the data');
+
+                            });
+                        }
+                    });
+                }
             }
         });
 

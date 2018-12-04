@@ -164,7 +164,7 @@ class B_Item_Simple_Selection
      * @param \AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection
      * @return B_Item_Simple_Selection
      */
-    public function addBIncisosSimpleSelection(\AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection)
+    public function addIncisosSimpleSelection(\AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection)
     {
         $this->b_incisos_simple_selection[] = $b_incisosSimpleSelection;
 
@@ -176,7 +176,7 @@ class B_Item_Simple_Selection
      *
      * @param \AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection
      */
-    public function removeBIncisosSimpleSelection(\AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection)
+    public function removeIncisosSimpleSelection(\AppBundle\Entity\B_Inciso_Simple_Selection $b_incisosSimpleSelection)
     {
         $this->b_incisos_simple_selection->removeElement($b_incisosSimpleSelection);
     }
@@ -186,7 +186,7 @@ class B_Item_Simple_Selection
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getBIncisosSimpleSelection()
+    public function getIncisosSimpleSelection()
     {
         return $this->b_incisos_simple_selection;
     }

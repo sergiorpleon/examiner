@@ -267,12 +267,12 @@
     <div id="app">
         <router-view></router-view>
         <!-- plantilla componente prueba -->
-        <script type="text/x-template" id="config">
+        <script type="text/x-template" id="home">
             <div>
 
                 <section class="content-header">
                     <ol class="breadcrumb">
-                        <li class="active">Config Institution Career</li>
+                        <li class="active">Home</li>
                     </ol>
                 </section>
 
@@ -281,125 +281,8 @@
                 </div>
 
                 <div class="row form-panel box box-primary">
-                    <div class="col-sm-6">
-                        <h4>Institution</h4>
-
-                        <div v-for="(inst, index) in this.config.instituciones">
-
-                            <div v-if="inst.edit==false">
-                                <div class="row-margin col-sm-9">
-                                    {{ "{{ inst.nombre }}" }}
-                                </div>
-                                <div class="row-margin1 col-sm-3">
-                                    <button type="button" v-on:click="editInstitucion(index)" class="btn_empty"
-                                            style="float: left  !important; margin-right: 5px;"><span
-                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
-                                    <button type="button" v-on:click="deleteInstitucion(index)" class="btn_empty"
-                                            style="float: left  !important; margin-right: 5px;"><span
-                                                class="btn__content"><i class="fa fa-trash-o"></i></span></button>
-                                </div>
-                            </div>
-                            <div v-if="inst.edit==true">
-                                <div class="row-margin col-sm-9">
-                                    <input class="" v-model="inst.nombre">
-                                </div>
-                                <div class="row-margin1 col-sm-3">
-                                    <button type="button" v-on:click="editInstitucion(index)" class="btn_empty"
-                                            style="float: left  !important; margin-right: 5px;"><span
-                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-9 addbtn">
-                            <button type="button" v-on:click="addInstitucion()" class="btn_empty"
-                                    style="float: left  !important; margin-right: 5px;"><span class="btn__content"><i
-                                            class="fa fa-plus-circle"></i> New</span></button>
-
-                        </div>
-                        <div class="col-sm-3">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <h4>Career</h4>
-
-                        <div v-for="(car, index) in this.config.carreras">
-
-                            <div v-if="car.edit==false">
-                                <div class="row-margin col-sm-9">
-                                    {{ "{{ car.nombre }}" }}
-                                </div>
-                                <div class="row-margin1 col-sm-3">
-                                    <button type="button" v-on:click="editCarrera(index)" class="btn_empty"
-                                            style="float: left  !important; margin-right: 5px;"><span
-                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
-                                    <button type="button" v-on:click="deleteCarrera(index)" class="btn_empty"
-                                            style="float: left  !important; margin-right: 5px;"><span
-                                                class="btn__content"><i class="fa fa-trash-o"></i></span></button>
-                                </div>
-                            </div>
-                            <div v-if="car.edit==true">
-                                <div class="row-margin col-sm-9">
-                                    <input class="" v-model="car.nombre">
-                                </div>
-                                <div class="row-margin1 col-sm-3">
-                                    <button type="button" v-on:click="editCarrera(index)" class="btn_empty"
-                                            style="float: left  !important; margin-right: 5px;"><span
-                                                class="btn__content"><i class="fa fa-pencil"></i></span></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-9 addbtn">
-                            <button type="button" v-on:click="addCarrera()" class="btn_empty"
-                                    style="float: left  !important; margin-right: 5px;"><span class="btn__content"><i
-                                            class="fa fa-plus-circle"></i> New</span></button>
-
-                        </div>
-                        <div class="col-sm-3">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarCarreraInstitucion()">
-                            <i class="fa fa-save"></i> Save
-                        </button>
-                    </div>
-                </div>
 
 
-
-                <div class="row form-panel box box-primary">
-                    <h4>Define Institution Career</h4>
-                    <div class="institucionr col-sm-6">
-                        <div v-for="(est, index) in this.config.estudias">
-
-                            <div class="col-sm-12" v-on:click="actualizarIndex(index)" v-bind:class="{ inactivei: index!=indinstactual, activei: index==indinstactual }">
-                                {{ "{{ est.nombre_institucion }}" }}
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 carrerar">
-                        <div v-for="(estt, indext) in this.carrerasActuales">
-
-
-                            <div class="carrera col-sm-12">
-                                <input class="" type="checkbox" v-model="estt.select">
-                              {{ "{{ estt.nombre_carrera }}" }}
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <button class="btn btn-info" style="margin-top: 20px;" v-on:click="guardarEstudia()">
-                            <i class="fa fa-save"></i> Save
-                        </button>
-                    </div>
                 </div>
             </div>
         </script>
@@ -418,8 +301,8 @@
 
 
         //-----------------Result user x prueba x
-        var Config = Vue.extend({
-            template: '#config',
+        var Home = Vue.extend({
+            template: '#home',
             data: function () {
                 return {
                     typemessage: 'alert-success',
@@ -689,7 +572,7 @@
 
         // 2. Define some routes
         const routes = [
-            {path: '/', name: 'view_config', component: Config},
+            {path: '/', name: 'view_home', component: Home},
         ]
 
         // 3. Create the router instance and pass the `routes` option

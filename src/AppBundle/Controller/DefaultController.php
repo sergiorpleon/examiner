@@ -214,7 +214,7 @@ JOIN t.id_listening l WHERE t.deprueba = 1 AND l.fecha < :fecha1  AND l.fecha >=
 
                     $em = $this->getDoctrine()->getManager();
 
-                    $urlrecurso = new Urlecurso();
+                    $urlrecurso = new Urlrecurso();
                     $urlrecurso->setUrl($uploadfile);
                     $em->persist($urlrecurso);
                     $em->flush();

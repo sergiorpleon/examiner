@@ -429,9 +429,21 @@
                     <div class="row col-xs-12" style="margin-left: 0px;">
                         <template>
                             <v-card>
-                                <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
+                                <v-data-table v-bind:headers="headers"
+                                              v-bind:items="items"
+                                              v-bind:search="search"
+                                              v-model="selected"
+                                              item-key="name"
+                                              select-all
+                                              class="elevation-1">
                                     <template slot="items" scope="props">
-                                        <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
+                                        <td @click="props.selected = !props.selected">
+                                            <v-checkbox
+                                                    :input-value="props.selected"
+                                                    primary
+                                                    hide-details
+                                            ></v-checkbox>
+                                        </td><td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
                                         <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}
 
                                         </td>
@@ -2472,11 +2484,12 @@
 
                 showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
                     this.typemessage = mtypemessage;
-                    this.stylemessage = 'box';
+                    this.stylemessage = 'block';
                     this.titlemessage = mtitlemessage;
                     this.textmessage = mtextmessage;
+                    var gthis = this;
                     setTimeout(function(){
-                        this.stylemessage = 'none';
+                        gthis.stylemessage = 'none';
                     }, 4000);
                 },
 
@@ -2773,6 +2786,7 @@
                     titlemessage: 'Title',
                     textmessage: 'message',
 
+                    selected: [],
                     isActive: false,
                     search: '',
                     search2: '',
@@ -2834,11 +2848,12 @@
 
                 showMessage: function(mtypemessage, mtitlemessage, mtextmessage){
                     this.typemessage = mtypemessage;
-                    this.stylemessage = 'box';
+                    this.stylemessage = 'block';
                     this.titlemessage = mtitlemessage;
                     this.textmessage = mtextmessage;
+                    var gthis =this;
                     setTimeout(function(){
-                        this.stylemessage = 'none';
+                        gthis.stylemessage = 'none';
                     }, 4000);
                 },
                 //--------------------------------------BEGIN-CRUD---------------------------------------------
