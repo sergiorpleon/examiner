@@ -840,6 +840,7 @@ class ResultController extends Controller
 
 
             $rawdatausuario['id'] = $test->getId();
+            $rawdatausuario['deprueba'] = $test->getDeprueba();
             $rawdatausuario['texto'] = $test->getTextoOrientacion();
 
             $em = $this->getDoctrine()->getManager();
@@ -849,9 +850,10 @@ class ResultController extends Controller
             $i = 0;
             foreach ($evaluaciones as $e) {
                 $arrayE[$i]['id'] = $e->getId();
-                $arrayE[$i]['user'] = $e->getIdEstudiante()->getNombre();
-                $arrayE[$i]['deprueba'] = $e->getIdTest()->getDeprueba();
-                $arrayE[$i]['prueba'] = $e->getIdTest()->getTextoOrientacion();
+                $arrayE[$i]['nombre'] = $e->getIdEstudiante()->getNombre();
+                $arrayE[$i]['username'] = $e->getIdEstudiante()->getUsername();
+                $arrayE[$i]['email'] = $e->getIdEstudiante()->getEmail();
+                $arrayE[$i]['year'] = $e->getIdEstudiante()->getAnnoCurso();
 
                 $sfr = '-';
                 if ($e->getIdTest()->getIdReading()) {
@@ -892,5 +894,62 @@ class ResultController extends Controller
         }
     }
 
+    /**
+     * Creates a new question_List_Selection entity.
+     *
+     * @Route("/delete_selected_result/json", name="delete_selected_result")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteselectedresultAction(Request $request)
+    {
+        //-------------------------------------------------------------------------------------
+        //--------------------eliminar json de prueba------------------------------------
+        //-------------------------------------------------------------------------------------
+
+        $em = $this->getDoctrine()->getManager();
+
+        $x = json_decode($request->getContent());
+        $selected = $x->selected;
+
+        foreach ($selected as $s) {
+            $t = $em->getRepository('AppBundle:Evaluaciones')->find($s->id);
+
+
+            if ($t != null) {
+
+                //Recorrer todos los elementos e ir borrando por url
+                $recursos = $em->getRepository('AppBundle:Recursos')->findBy(array('idTest' => $s->id));
+                $i = 0;
+                foreach ($recursos as $re) {
+                    //cuento si esta e test
+                    $em->remove($re);
+
+                }
+
+                $urlrecurso = $em->getRepository('AppBundle:Urlrecurso')->findAll();
+                foreach ($urlrecurso as $urlrec) {
+                    $rec = $em->getRepository('AppBundle:Recursos')->findBy(array('idRecurso' => $urlrec->getId()));
+                    if (count($rec)) {
+                        if (is_file($urlrec->getUrl())) {
+                            unlink($urlrec->getUrl());
+
+                            $em->remove($urlrec);
+                        }
+
+                    }
+                }
+
+                $em->remove($t);
+                $em->flush();
+            }
+        }
+        //redirigir ojoooo
+        //$error = '{"error":{"text":'. $e->getMessage() .'}}';
+        $error = '{ "elimiado" : "true"}';
+        $response = new Response();
+        $response->setContent(json_encode($error));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
 }

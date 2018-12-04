@@ -292,10 +292,22 @@
                     </div>
                     <template>
                         <v-card  class="col-xs-12">
-                            <v-data-table v-bind:headers="headersu" v-bind:items="user.evaluaciones" v-bind:search="searchu">
+                            <v-data-table v-bind:headers="headersu"
+                                          v-bind:items="user.evaluaciones"
+                                          v-bind:search="searchu"
+                                          v-model="selected"
+                                          item-key="name"
+                                          select-all
+                                          class="elevation-1">
                                 <template slot="items" scope="props">
+                                    <td @click="props.selected = !props.selected">
+                                        <v-checkbox
+                                                :input-value="props.selected"
+                                                primary
+                                                hide-details
+                                        ></v-checkbox>
+                                    </td>
                                     <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
-                                    <td class="text-xs-right">{{ "{{ props.item.user}}" }}</td>
                                     <td class="text-xs-right">{{ "{{ props.item.deprueba}}" }}</td>
                                     <td class="text-xs-right limit-height"><div v-html="props.item.prueba"></div></td>
                                     <td class="text-xs-right">{{ "{{ props.item.fecha_reading}}" }}</td>
@@ -314,6 +326,9 @@
                                 </template>
                             </v-data-table>
                         </v-card>
+                        <div class="col-xs-12">
+                            <a  class="btn btn-default btn-100w" v-on:click="exportCSV()"><i class="fa fa-check"></i> Export selected</a></li>
+                        </div>
                     </template>
                 </div>
             </div>
@@ -752,10 +767,9 @@
                         id: '',
                         nombre: '',
                         evaluaciones: [],
-
                     },
 
-
+                    selected: [],
                     searchu: '',
                     paginationu: {},
                     headersu: [
@@ -766,7 +780,6 @@
                             value: 'id'
                         },
                         //{text: 'Fecha', value: 'fecha'},
-                        {text: 'User', value: 'user'},
                         {text: 'Testeo', value: 'testeo'},
                         {text: 'Prueba', value: 'prueba'},
                         {text: 'Fecha Reading', value: 'fecha_reading'},
@@ -832,6 +845,65 @@
                     } else {
                         this.terminarCarga();
 
+                    }
+                },
+
+                exportCSV: function() {
+                    var fileTitle = 'orders'; // or 'my-unique-title'
+
+                    var delimiter = ";";
+                    var csv = "";
+
+                    csv += "Id"  + delimiter + this.user.id;
+                    csv += "\r\n";
+                    csv += "Name"  + delimiter + this.user.nombre;
+                    csv += "\r\n";
+                    csv += "Username"  + delimiter + this.user.username;
+                    csv += "\r\n";
+                    csv += "Email"  + delimiter + this.user.email;
+                    csv += "\r\n";
+                    csv += "Year"  + delimiter + this.user.annocurso;
+                    csv += "\r\n";
+
+                    csv += "Id"  + delimiter;
+                    csv += "Tester"  + delimiter;
+                    csv += "Test"  + delimiter;
+                    csv += "Date reading"  + delimiter;
+                    csv += "Points reading"  + delimiter;
+                    csv += "Date listening"  + delimiter;
+                    csv += "Points Listening"  + delimiter;
+                    csv += "\r\n";
+                    for(var i=0; i<this.selected.length; i++){
+                        csv += this.selected[i].id  + delimiter;
+                        csv += this.selected[i].testeo  + delimiter;
+                        csv += this.selected[i].prueba  + delimiter;
+                        csv += this.selected[i].fecha_reading  + delimiter;
+                        csv += this.selected[i].puntos_reading  + delimiter;
+                        csv += this.selected[i].fecha_listening  + delimiter;
+                        csv += this.selected[i].puntos_listening  + delimiter;
+
+                        csv += "\r\n";
+                    }
+
+
+
+                    var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+                    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                    if (navigator.msSaveBlob) { // IE 10+
+                        navigator.msSaveBlob(blob, exportedFilenmae);
+                    } else {
+                        var link = document.createElement("a");
+                        if (link.download !== undefined) { // feature detection
+                            // Browsers that support HTML5 download attribute
+                            var url = URL.createObjectURL(blob);
+                            link.setAttribute("href", url);
+                            link.setAttribute("download", exportedFilenmae);
+                            link.style.visibility = 'hidden';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }
                     }
                 },
                 //========================END CRUD==================================

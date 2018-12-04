@@ -474,6 +474,10 @@
                                     </template>
                                 </v-data-table>
                             </v-card>
+
+                            <div class="row col-xs-12">
+                                <a  class="btn btn-default btn-100w" v-on:click="delSelectedEffectuate()"><i class="fa fa-check"></i> Delete selected</a></li>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -2894,6 +2898,31 @@
                             });
                         }
                     });  
+                },
+
+                delSelectedEffectuate: function() {
+                    var gthis = this;
+
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            gthis.empezarCarga();
+
+                            gthis.$http.post("{{  path('delete_selected_test') }}", {
+                                selected: gthis.selected,
+                            }, function (data, status, request) {
+                                gthis.getList();
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-success', 'Info:', 'Successfully deleted data');
+
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-warning', 'Error:', 'It was not possible to delete the data');
+
+                            });
+                        }
+                    });
                 },
 
                 goTo: function(index){

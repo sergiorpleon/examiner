@@ -23,64 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 //lolo
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction(Request $request)
-    {
 
-        $em = $this->getDoctrine()->getManager();
-
-        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_reading r WHERE t.deprueba = 0 AND r.fecha < :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
-        $consulta->setParameter('fecha1', new \DateTime('today'));
-        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
-        $testsr = $consulta->getResult();
-
-        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_listening l WHERE t.deprueba = 0 AND l.fecha < :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
-        $consulta->setParameter('fecha1', new \DateTime('today'));
-        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
-        $testsl = $consulta->getResult();
-
-        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha < :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
-        $consulta->setParameter('fecha1', new \DateTime('today'));
-        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
-        $depruebasr = $consulta->getResult();
-
-        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_listening l WHERE t.deprueba = 1 AND l.fecha < :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
-        $consulta->setParameter('fecha1', new \DateTime('today'));
-        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
-        $depruebasl = $consulta->getResult();
-
-        //$tests = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
-        //$depruebas = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
-        /*$query = $em->createQuery('
-        SELECT COUNT(p.id)
-        FROM AppBundle:Test p
-        ');
-        $tests = $query->getResult();
-*/
-        return $this->render('test/evaluacion/index.html.twig', array(
-            //'form' => $form->createView(),
-            'pruebasr' => $testsr,
-            'pruebasl' => $testsl,
-            'depruebasr' => $depruebasr,
-            'depruebasl' => $depruebasl,
-            //'comienzo' => $comienzo->format('H:i'),
-            //'fin'=> $fin->format('H:i'),
-            //'testeo'=> true,
-            //'audioSeccion'=> $audioSeccion
-            // 'estudiante'=>$usuarios,
-
-        ));
-        // replace this example code with whatever you need
-        //return $this->render('default/index.html.twig', array(
-        //    'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        //));
-    }
 
 
     /**

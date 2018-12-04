@@ -30,68 +30,62 @@ class EvaluacionesController extends Controller
 {
 
     /**
-     * Lists one Test entities to Studients.
-     *
-     * @Route("/examen", name="responder_examen")
-     * @Method({"GET","POST"})
+     * @Route("/", name="homepage")
      */
-    public function responderExamen(Request $request)
+    public function indexAction(Request $request)
     {
-        /*
-                //$em = $this->getDoctrine()->getManager();
-                // $tests = $em->getRepository('AppBundle:Test')->findAll();
-                $name='name';
-                $defaultData = array ( 'message' => 'Type your message here' );
 
-                $builder = $this -> createFormBuilder($defaultData);
-                $builder  -> add ( $name , TextType :: class );
-                $builder-> add ( 'email' , EmailType :: class );
-                $builder-> add ( 'email' , EmailType :: class );
-                $builder-> add ( 'message' , TextareaType :: class );
-                $builder-> add ( 'send' , SubmitType :: class );
+        $em = $this->getDoctrine()->getManager();
 
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_reading r WHERE t.deprueba = 0 AND r.fecha <= :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $testsr = $consulta->getResult();
 
-                $form = $builder -> getForm ();
-        */
-        /*
-                $form = $this -> createFormBuilder ( $defaultData )
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_listening l WHERE t.deprueba = 0 AND l.fecha <= :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $testsl = $consulta->getResult();
 
-                    -> add ( $name , TextType :: class )
-                    -> add ( 'email' , EmailType :: class )
-                    -> add ( 'message' , TextareaType :: class )
-                    -> add ( 'send' , SubmitType :: class )
-                    -> getForm ();
-        */
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha <= :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $depruebasr = $consulta->getResult();
 
-        $defaultData = array ( 'message' => 'Type your message here' );
+        $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
+JOIN t.id_listening l WHERE t.deprueba = 1 AND l.fecha <= :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
+        $consulta->setParameter('fecha1', new \DateTime('today'));
+        $consulta->setParameter('fecha2', new \DateTime('yesterday'));
+        $depruebasl = $consulta->getResult();
 
-        $form = $this -> createFormBuilder ( $defaultData )
-            -> add ( 'name' , TextType::class )
-            // -> add ( 'email' , EmailType :: class )
-            // -> add ( 'message' , TextareaType :: class )
-            -> add ( 'send' , SubmitType :: class )
-            -> getForm ();
-        $form -> handleRequest ( $request );
+        //$tests = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
+        //$depruebas = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
+        /*$query = $em->createQuery('
+        SELECT COUNT(p.id)
+        FROM AppBundle:Test p
+        ');
+        $tests = $query->getResult();
+*/
+        return $this->render('test/evaluacion/index.html.twig', array(
+            //'form' => $form->createView(),
+            'pruebasr' => $testsr,
+            'pruebasl' => $testsl,
+            'depruebasr' => $depruebasr,
+            'depruebasl' => $depruebasl,
+            //'comienzo' => $comienzo->format('H:i'),
+            //'fin'=> $fin->format('H:i'),
+            //'testeo'=> true,
+            //'audioSeccion'=> $audioSeccion
+            // 'estudiante'=>$usuarios,
 
-        if ( $form -> isSubmitted () && $form -> isValid ()) {
-            // data is an array with "name", "email", and "message" keys
-            $data = $form -> getData ();
-            //$message = $request -> request -> get ( 'message' );
-
-            return $this->render('test/evaluacion/show.html.twig'
-                , array(
-                    'name' => $data['atribute_0'],
-                    // 'message' => $data['message'],
-                )
-            );
-        }
-
-        return $this->render('test/evaluacion/index.html.twig'
-            , array(
-                'form' => $form->createView(),
-            )
-        );
-
+        ));
+        // replace this example code with whatever you need
+        //return $this->render('default/index.html.twig', array(
+        //    'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+        //));
     }
 
 
@@ -477,7 +471,7 @@ class EvaluacionesController extends Controller
         $em = $this->getDoctrine()->getManager();
         //$test = $em->getRepository('AppBundle:Test')->findReadyAll();
         $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_reading r WHERE t.deprueba = 0 AND r.fecha < :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
+JOIN t.id_reading r WHERE t.deprueba = 0 AND r.fecha <= :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
 
         $consulta->setParameter('fecha1', new \DateTime('today'));
         $consulta->setParameter('fecha2', new \DateTime('yesterday'));
@@ -535,7 +529,7 @@ JOIN t.id_reading r WHERE t.deprueba = 0 AND r.fecha < :fecha1  AND r.fecha >= :
         //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
         //$usuarios = $em->getRepository('AppBundle:User')->find(1) ;
         $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha < :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
+JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha <= :fecha1  AND r.fecha >= :fecha2 ORDER BY r.fecha ASC');
         $consulta->setParameter('fecha1', new \DateTime('today'));
         $consulta->setParameter('fecha2', new \DateTime('yesterday'));
         $test = $consulta->getResult();
@@ -651,8 +645,9 @@ JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha < :fecha1  AND r.fecha >= :
             $questionSeccionListening = $sr->getQuestionsSeccionListenings();
 
 
-            $audioUrl=$request->getBasePath()."/uploads/audio/";
-            $audiourl="http://".$_SERVER['HTTP_HOST'].$audioUrl."Section01.mp3";
+            //$audioUrl=$request->getBasePath()."/uploads/audio/";
+            //$audiourl="http://".$_SERVER['HTTP_HOST'].$audioUrl."Section01.mp3";
+            $audiourl=$sr->getUrlAudio();
             $audio = file_get_contents($audiourl);
             $audioData = base64_encode($audio);
             $sound = "<audio id='audio_player' src='data:audio/mp3;base64,".$audioData."'  controls='controls' autobuffer='autobuffer'></audio>";
@@ -972,7 +967,7 @@ JOIN t.id_reading r WHERE t.deprueba = 1 AND r.fecha < :fecha1  AND r.fecha >= :
         //$test = $em->getRepository('AppBundle:Test')->findReadyAll();
         //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>0));
         $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_listening l WHERE t.deprueba = 0 AND l.fecha < :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
+JOIN t.id_listening l WHERE t.deprueba = 0 AND l.fecha <= :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
 
         $consulta->setParameter('fecha1', new \DateTime('today'));
         $consulta->setParameter('fecha2', new \DateTime('yesterday'));
@@ -1024,7 +1019,7 @@ JOIN t.id_listening l WHERE t.deprueba = 0 AND l.fecha < :fecha1  AND l.fecha >=
         //$test = $em->getRepository('AppBundle:Test')->findBy(array('deprueba'=>1));
         //$usuarios = $em->getRepository('AppBundle:User')->find(1) ;
         $consulta = $em->createQuery('SELECT t FROM AppBundle:Test t
-JOIN t.id_listening l WHERE t.deprueba = 1 AND l.fecha < :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
+JOIN t.id_listening l WHERE t.deprueba = 1 AND l.fecha <= :fecha1  AND l.fecha >= :fecha2 ORDER BY l.fecha ASC');
 
         $consulta->setParameter('fecha1', new \DateTime('today'));
         $consulta->setParameter('fecha2', new \DateTime('yesterday'));

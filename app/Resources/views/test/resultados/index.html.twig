@@ -605,8 +605,21 @@
                     <div class="row col-xs-12" style="margin-left: 0px;">
                         <template>
                             <v-card>
-                                <v-data-table v-bind:headers="headers" v-bind:items="items" v-bind:search="search">
+                                <v-data-table v-bind:headers="headers"
+                                              v-bind:items="items"
+                                              v-bind:search="search"
+                                              v-model="selected"
+                                              item-key="name"
+                                              select-all
+                                              class="elevation-1">
                                     <template slot="items" scope="props">
+                                        <td @click="props.selected = !props.selected">
+                                            <v-checkbox
+                                                    :input-value="props.selected"
+                                                    primary
+                                                    hide-details
+                                            ></v-checkbox>
+                                        </td>
                                         <td class="text-xs-right">{{ "{{ props.item.id}}" }}</td>
 
                                         <td class="text-xs-right">
@@ -655,6 +668,13 @@
                                     </template>
                                 </v-data-table>
                             </v-card>
+                            <div class="row col-xs-12">
+                                <a  class="btn btn-default btn-100w" v-on:click="delSelectedResult()"><i class="fa fa-check"></i> Delete selected</a></li>
+                            </div>
+                            <div class="row col-xs-12">
+                                <a  class="btn btn-default btn-100w" v-on:click="exportCSV()"><i class="fa fa-check"></i> Export selected</a></li>
+                            </div>
+
                         </template>
                     </div>
                 </div>
@@ -975,6 +995,7 @@
                     titlemessage: 'Title',
                     textmessage: 'message',
 
+                    selected: [],
                     isActive: false,
                     search: '',
                     pagination: {},
@@ -1089,8 +1110,79 @@
                         }
                     });
                 },
+                delSelectedTest: function() {
+                    var gthis = this;
+
+                    //a = this.readingtmp.secciones;
+                    bootbox.confirm("Are you sure?", function (result) {
+                        if (result) {
+                            gthis.empezarCarga();
+
+                            gthis.$http.post("{{  path('delete_selected_result') }}", {
+                                selected: gthis.selected,
+                            }, function (data, status, request) {
+                                gthis.getList();
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-success', 'Info:', 'Successfully deleted data');
+
+                            }).catch(function (data, status, request) {
+                                console.log('error');
+                                gthis.terminarCarga();
+                                gthis.showMessage('alert-warning', 'Error:', 'It was not possible to delete the data');
+
+                            });
+                        }
+                    });
+                },
+
+                exportCSV: function() {
+                    var fileTitle = 'orders'; // or 'my-unique-title'
+
+                    var delimiter = ";";
+                    var csv = "";
+                    csv += "Id"  + delimiter;
+                    csv += "User"  + delimiter;
+                    csv += "Tester"  + delimiter;
+                    csv += "Test"  + delimiter;
+                    csv += "Date reading"  + delimiter;
+                    csv += "Points reading"  + delimiter;
+                    csv += "Date listening"  + delimiter;
+                    csv += "Points Listening"  + delimiter;
+                    csv += "\r\n";
+                    for(var i=0; i<this.selected.length; i++){
+                        csv += this.selected[i].id  + delimiter;
+                        csv += this.selected[i].user  + delimiter;
+                        csv += this.selected[i].deprueba  + delimiter;
+                        csv += this.selected[i].prueba  + delimiter;
+                        csv += this.selected[i].fecha_reading  + delimiter;
+                        csv += this.selected[i].puntos_reading  + delimiter;
+                        csv += this.selected[i].fecha_listening  + delimiter;
+                        csv += this.selected[i].puntos_listening  + delimiter;
+
+                        csv += "\r\n";
+                    }
 
 
+
+                    var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+                    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                    if (navigator.msSaveBlob) { // IE 10+
+                        navigator.msSaveBlob(blob, exportedFilenmae);
+                    } else {
+                        var link = document.createElement("a");
+                        if (link.download !== undefined) { // feature detection
+                            // Browsers that support HTML5 download attribute
+                            var url = URL.createObjectURL(blob);
+                            link.setAttribute("href", url);
+                            link.setAttribute("download", exportedFilenmae);
+                            link.style.visibility = 'hidden';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }
+                    }
+                },
             }
         });
 
