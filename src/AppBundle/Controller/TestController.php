@@ -28,7 +28,7 @@ class TestController extends Controller
     /**
      * Lists all Test entities.
      *
-     * @Route("/home", name="admin_home")
+     * @Route("/", name="admin_home")
      * @Method("GET")
      */
     public function adminHomeAction()
@@ -541,6 +541,23 @@ class TestController extends Controller
             }
             $arrayP['listening'] = $arrayL;
 
+            $est = $em->getRepository('AppBundle:Estudia')->findAll();
+            $arrayte = array();
+            $j = 0;
+            foreach ($est as $element) {
+                $arrayte[$j]['id'] = $element->getId();
+
+                $te = $em->getRepository('AppBundle:TestEstudia')->findOneBy(array("id_test"=>$x->id, "id_estudia"=>$element->getId()));
+                if($te){
+                    $arrayte[$j]['selected'] = true;
+                }else{
+                    $arrayte[$j]['selected'] = false;
+                }
+                $arrayte[$j]['text'] = $element->__toString();
+                $j ++;
+            }
+
+            $arrayP['testestudia'] = $arrayte;
 
             $response = new Response();
             $response->setContent(json_encode($arrayP));
@@ -556,6 +573,47 @@ class TestController extends Controller
     }
 
 
+
+    /**
+     * JSON de una test estudia prueba.
+     *
+     * @Route("/testestudia/json", name="list_testestudia_json")
+     * @Method({"GET", "POST"})
+     */
+    public function listtestestudiaAction(Request $request)
+    {
+
+        //-------------------------------------------------------------------------------------
+        //------------------------listar json de una prueba------------------------------------
+        //-------------------------------------------------------------------------------------
+        $em = $this->getDoctrine()->getManager();
+        $x = json_decode($request->getContent());
+        $est = $em->getRepository('AppBundle:Estudia')->findAll();
+
+        try {
+            $arrayte = array();
+            $j = 0;
+            foreach ($est as $element) {
+                $arrayte[$j]['id'] = $element->getId();
+                $arrayte[$j]['selected'] = false;
+                $arrayte[$j]['text'] = $element->__toString();
+                $j ++;
+            }
+
+
+
+            $response = new Response();
+            $response->setContent(json_encode($arrayte));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        } catch (Exception $e) {
+            $error = '{"error":{"text":' . $e->getMessage() . '}}';
+            $response = new Response();
+            $response->setContent(json_encode($error));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+    }
 
 
     //POST OBTENER PRUEBA
@@ -947,6 +1005,26 @@ class TestController extends Controller
         if ($activeListening) {
             $em->persist($l);
         }
+
+
+        $testestudia = $x->prueba->testestudia;
+        $em = $this->getDoctrine()->getManager();
+        $testx = $em->getRepository('AppBundle:Test')->findOneBy(array("id"=>$t->getId()));
+
+        foreach ($x->prueba->testestudia as $s) {
+            if($s->selected){
+                $te = new \AppBundle\Entity\TestEstudia();
+
+                $est= $em->getRepository('AppBundle:Estudia')->findOneBy(array("id"=>$s->id));
+                $te->setIdEstudia($est);
+
+                $te->setIdTest($testx);
+                $em->persist($te);
+                $em->flush();
+            }
+        }
+
+
 
         $dql = 'UPDATE AppBundle:Recursos r SET r.idTest = :idt WHERE r.idTest = :defaultid AND r.idBreading = :defaultid  AND r.idBlistening = :defaultid';
         $consulta = $em->createQuery($dql);
@@ -1695,6 +1773,29 @@ class TestController extends Controller
             }
             if ($item != null) {
                 $em->remove($item);
+                $em->flush();
+            }
+        }
+
+
+        $testestudia = $x->prueba->testestudia;
+        $em = $this->getDoctrine()->getManager();
+        $testx = $em->getRepository('AppBundle:Test')->findOneBy(array("id"=>$t->getId()));
+
+        foreach ($x->prueba->testestudia as $s) {
+            if($s->selected){
+
+                $te = $em->getRepository('AppBundle:TestEstudia')->findOneBy(array("id_estudia"=>$s->id,"id_test"=>$t->getId()));
+                if($te){
+
+                }else{
+                    $te = new \AppBundle\Entity\TestEstudia();
+                }
+
+                $est = $em->getRepository('AppBundle:Estudia')->findOneBy(array("id"=>$s->id));
+                $te->setIdEstudia($est);
+                $te->setIdTest($testx);
+                $em->persist($te);
                 $em->flush();
             }
         }

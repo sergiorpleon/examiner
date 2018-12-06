@@ -66,6 +66,12 @@ class Test
 
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TestEstudia" , mappedBy="id_test", cascade={"all"}, orphanRemoval=true)
+     */
+    private $id_testestudia;
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -281,5 +287,38 @@ class Test
     public function getIdReading()
     {
         return $this->id_reading;
+    }
+
+    /**
+     * Add id_testestudia
+     *
+     * @param \AppBundle\Entity\TestEstudia $idTestestudia
+     * @return Test
+     */
+    public function addIdTestestudium(\AppBundle\Entity\TestEstudia $idTestestudia)
+    {
+        $this->id_testestudia[] = $idTestestudia;
+
+        return $this;
+    }
+
+    /**
+     * Remove id_testestudia
+     *
+     * @param \AppBundle\Entity\TestEstudia $idTestestudia
+     */
+    public function removeIdTestestudium(\AppBundle\Entity\TestEstudia $idTestestudia)
+    {
+        $this->id_testestudia->removeElement($idTestestudia);
+    }
+
+    /**
+     * Get id_testestudia
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdTestestudia()
+    {
+        return $this->id_testestudia;
     }
 }

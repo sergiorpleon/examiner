@@ -40,6 +40,10 @@ class Estudia
     private $id_user;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TestEstudia" , mappedBy="id_estudia", cascade={"all"}, orphanRemoval=true)
+     */
+    private $id_testestudia;
 
 
     /**
@@ -143,5 +147,38 @@ class Estudia
     public function __toString()
     {
         return $this->getIdInstitucion()->getNombre().' / '.$this->getIdCarrera()->getNombre();
+    }
+
+    /**
+     * Add id_testestudia
+     *
+     * @param \AppBundle\Entity\TestEstudia $idTestestudia
+     * @return Estudia
+     */
+    public function addIdTestestudium(\AppBundle\Entity\TestEstudia $idTestestudia)
+    {
+        $this->id_testestudia[] = $idTestestudia;
+
+        return $this;
+    }
+
+    /**
+     * Remove id_testestudia
+     *
+     * @param \AppBundle\Entity\TestEstudia $idTestestudia
+     */
+    public function removeIdTestestudium(\AppBundle\Entity\TestEstudia $idTestestudia)
+    {
+        $this->id_testestudia->removeElement($idTestestudia);
+    }
+
+    /**
+     * Get id_testestudia
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdTestestudia()
+    {
+        return $this->id_testestudia;
     }
 }

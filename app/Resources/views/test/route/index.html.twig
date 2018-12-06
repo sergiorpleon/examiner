@@ -216,6 +216,10 @@
             padding: 80px;
         }
 
+        li.test-estudia > a{
+            color: #111 !important;
+        }
+
     </style>
 {% endblock %}
 
@@ -394,6 +398,42 @@
 
                     <br/>
                     <br/>
+
+                    <div class="col-sm-12">
+
+                        <ul class="nav top-menu" style="">
+
+                            <!-- li><a class="logout" href={ path('fos_user_security_logout') }}>Logout</a></li -->
+
+                            <li class="dropdown test-estudia">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="display: flex;margin-right: 100px; border: 0px solid #ccc !important; background-color: #eee;" >
+                                    <div v-for="(tes, index) in prueba.testestudia">
+                                        <span v-if="tes.selected==true">
+                                            {{'{{ tes.text}} '}},
+                                        </span>
+                                    </div>
+
+                                    <i style="margin-top: .3em" class="fa fa-angle-down pull-right"></i>
+                                    <div class="ripple-container"></div></a>
+                                <ul class="dropdown-menu" style="padding: 10px;">
+
+                                    <!-- Menu Body -->
+                                    <li class="user-body" v-for="(tes, index) in prueba.testestudia">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                            <input type="checkbox" v-model="tes.selected"/>    {{ ' {{ tes.text }} ' }}
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
                     <div class="col-sm-12">
                         <div class="en-barra" v-show="this.prueba.id==-1">
                             <button class="btn btn-info" v-on:click="postNewTest(prueba)"><i class="fa fa-save"></i> Save
@@ -961,6 +1001,7 @@
                         deprueba: false,
                         activeReading: false,
                         activeListening: false,
+                        testestudia: [],
                         reading: {
                             id: '1',
                             fecha: '10-10-2020',
@@ -2806,7 +2847,18 @@
 
                         });
                     }else{
-                        this.terminarCarga();
+                        this.$http.post("{{  path('list_testestudia_json') }}", {
+                        }, function (data, status, request) {
+                            this.prueba.testestudia = data;
+                            alert(JSON.stringify(this.prueba.testestudia));
+                            this.terminarCarga();
+                        }).catch(function (data, status, request) {
+                            console.log('error');
+                            this.terminarCarga();
+                            this.showMessage('alert-warning','Error:','It was not possible to load the data');
+
+                        });
+
                     }
                 },
                 //========================END CRUD==================================
